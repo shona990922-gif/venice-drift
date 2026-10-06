@@ -1,3 +1,299 @@
-:root{color-scheme:dark;font-family:Arial,'PingFang SC',sans-serif;color:#f3f0e6;background:#13262d}*{box-sizing:border-box}body{margin:0;overflow:hidden}canvas{display:block;width:100vw;height:100dvh;touch-action:none;outline:none}button,select{font:inherit;cursor:pointer}button:focus-visible,select:focus-visible{outline:2px solid #edcb86;outline-offset:4px}#entry{position:fixed;inset:0;z-index:3;display:flex;align-items:center;padding:7vw;background:linear-gradient(90deg,#081b27c4,transparent 68%);transition:opacity 1.7s,visibility 1.7s}.entry-content{max-width:490px}.eyebrow{font-size:10px;letter-spacing:3.6px;line-height:2.1;color:#e3ddcc}h1{font:normal clamp(76px,10vw,156px)/.89 Georgia,'Times New Roman',serif;letter-spacing:-5px;margin:25px 0 27px;text-shadow:0 4px 30px #0002}h1 i{font-weight:normal}.intro{font:15px/1.8 Georgia,serif;color:#eee6d3}#start{display:flex;align-items:center;justify-content:space-between;gap:65px;border:1px solid #e8dfc2aa;background:#e7dfc9ed;color:#23342f;padding:17px 23px;margin-top:34px;font-size:12px;letter-spacing:.5px;min-width:236px}#start:disabled{opacity:.4;cursor:wait}.entry-hint{font-size:10px;color:#d4d2c2;letter-spacing:.8px;margin-top:17px}.edition{position:absolute;left:7vw;bottom:29px;font-size:9px;letter-spacing:2.3px;color:#c4cec5}.started #entry{opacity:0;visibility:hidden}#controls{position:fixed;right:25px;bottom:max(24px,env(safe-area-inset-bottom));display:flex;gap:8px;z-index:4}#controls button,#controls select{background:#102d3180;color:#e3e9df;border:1px solid #d1ded14d;border-radius:30px;padding:10px 15px;font-size:10px;backdrop-filter:blur(10px)}#hint{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);padding:11px 19px;background:#13322d88;border:1px solid #c0d3c650;backdrop-filter:blur(8px);border-radius:30px;font-size:11px;letter-spacing:.4px;opacity:0;transition:opacity 1s;pointer-events:none}#hint.visible{opacity:1}#loading{position:fixed;left:7vw;bottom:75px;font-size:11px;letter-spacing:1px;z-index:5}#fade{position:fixed;inset:0;background:#152831;opacity:0;pointer-events:none;z-index:6}#debug{position:fixed;top:14px;left:14px;z-index:9;max-width:min(600px,95vw);background:#10282dda;padding:13px;font:10px/1.6 monospace;border:1px solid #b5c6ba55}#debug button{background:#284139;color:#e8e9dc;border:1px solid #7a9084;font-size:10px;margin:8px 4px 0 0;padding:5px 9px}#debug pre{max-height:40vh;overflow:auto;white-space:pre-wrap}#notice{position:fixed;bottom:60px;right:25px;font-size:10px;color:#e0d9b6}#error{position:fixed;inset:12%;padding:25px;background:#172c30ee;color:#f5d0a7;z-index:10;white-space:pre-wrap} .sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0)}@media(max-width:600px){#entry{padding:9vw;background:linear-gradient(90deg,#0a2430c7,transparent)}h1{font-size:91px;letter-spacing:-3px}.eyebrow{font-size:8px;letter-spacing:2.2px}.intro{font-size:13px}#controls{bottom:20px;right:15px;gap:5px}#controls button,#controls select{padding:10px 12px;font-size:9px}.edition{left:9vw;font-size:8px}#hint{bottom:78px;white-space:nowrap}}@media(prefers-reduced-motion:reduce){#entry{transition-duration:.3s}#hint{transition-duration:.3s}}
+:root {
+  color-scheme: dark;
+  font-family: Arial, "PingFang SC", sans-serif;
+  color: #f3f0e6;
+  background: #13262d;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+  width: 100vw;
+  height: 100dvh;
+  touch-action: none;
+  outline: none;
+}
+button,
+select {
+  font: inherit;
+  cursor: pointer;
+}
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid #edcb86;
+  outline-offset: 4px;
+}
+#entry {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  padding: 7vw;
+  background: linear-gradient(90deg, #081b27c4, transparent 68%);
+  transition:
+    opacity 1.7s,
+    visibility 1.7s;
+}
+.entry-content {
+  max-width: 490px;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 3.6px;
+  line-height: 2.1;
+  color: #e3ddcc;
+}
+h1 {
+  font:
+    normal clamp(76px, 10vw, 156px)/0.89 Georgia,
+    "Times New Roman",
+    serif;
+  letter-spacing: -5px;
+  margin: 25px 0 27px;
+  text-shadow: 0 4px 30px #0002;
+}
+h1 i {
+  font-weight: normal;
+}
+.intro {
+  font:
+    15px/1.8 Georgia,
+    serif;
+  color: #eee6d3;
+}
+#start {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 65px;
+  border: 1px solid #e8dfc2aa;
+  background: #e7dfc9ed;
+  color: #23342f;
+  padding: 17px 23px;
+  margin-top: 34px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  min-width: 236px;
+}
+#start:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+.entry-hint {
+  font-size: 10px;
+  color: #d4d2c2;
+  letter-spacing: 0.8px;
+  margin-top: 17px;
+}
+.edition {
+  position: absolute;
+  left: 7vw;
+  bottom: 29px;
+  font-size: 9px;
+  letter-spacing: 2.3px;
+  color: #c4cec5;
+}
+.started #entry {
+  opacity: 0;
+  visibility: hidden;
+}
+#controls {
+  position: fixed;
+  right: 25px;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  display: flex;
+  gap: 8px;
+  z-index: 4;
+}
+#controls button,
+#controls select {
+  background: #102d3180;
+  color: #e3e9df;
+  border: 1px solid #d1ded14d;
+  border-radius: 30px;
+  padding: 10px 15px;
+  font-size: 10px;
+  backdrop-filter: blur(10px);
+}
+#hint {
+  position: fixed;
+  left: 50%;
+  bottom: 80px;
+  transform: translateX(-50%);
+  padding: 11px 19px;
+  background: #13322d88;
+  border: 1px solid #c0d3c650;
+  backdrop-filter: blur(8px);
+  border-radius: 30px;
+  font-size: 11px;
+  letter-spacing: 0.4px;
+  opacity: 0;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+#hint.visible {
+  opacity: 1;
+}
+#loading {
+  position: fixed;
+  left: 7vw;
+  bottom: 75px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  z-index: 5;
+}
+#fade {
+  position: fixed;
+  inset: 0;
+  background: #152831;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+#debug {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 9;
+  max-width: min(600px, 95vw);
+  background: #10282dda;
+  padding: 13px;
+  font: 10px/1.6 monospace;
+  border: 1px solid #b5c6ba55;
+}
+#debug button {
+  background: #284139;
+  color: #e8e9dc;
+  border: 1px solid #7a9084;
+  font-size: 10px;
+  margin: 8px 4px 0 0;
+  padding: 5px 9px;
+}
+#debug pre {
+  max-height: 40vh;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+#notice {
+  position: fixed;
+  bottom: 60px;
+  right: 25px;
+  font-size: 10px;
+  color: #e0d9b6;
+}
+#error {
+  position: fixed;
+  inset: 12%;
+  padding: 25px;
+  background: #172c30ee;
+  color: #f5d0a7;
+  z-index: 10;
+  white-space: pre-wrap;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+@media (max-width: 600px) {
+  #entry {
+    padding: 9vw;
+    background: linear-gradient(90deg, #0a2430c7, transparent);
+  }
+  h1 {
+    font-size: 91px;
+    letter-spacing: -3px;
+  }
+  .eyebrow {
+    font-size: 8px;
+    letter-spacing: 2.2px;
+  }
+  .intro {
+    font-size: 13px;
+  }
+  #controls {
+    bottom: 20px;
+    right: 15px;
+    gap: 5px;
+  }
+  #controls button,
+  #controls select {
+    padding: 10px 12px;
+    font-size: 9px;
+  }
+  .edition {
+    left: 9vw;
+    font-size: 8px;
+  }
+  #hint {
+    bottom: 78px;
+    white-space: nowrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #entry {
+    transition-duration: 0.3s;
+  }
+  #hint {
+    transition-duration: 0.3s;
+  }
+}
 
-#controls button,#controls select{min-height:42px} @media(max-width:600px){#controls button,#controls select{min-height:44px;min-width:62px}#debug{max-height:45vh;overflow:auto}}
+#controls button,
+#controls select {
+  min-height: 42px;
+}
+@media (max-width: 600px) {
+  #controls button,
+  #controls select {
+    min-height: 44px;
+    min-width: 62px;
+  }
+  #debug {
+    max-height: 45vh;
+    overflow: auto;
+  }
+}
+
+@media (max-height: 520px) {
+  #entry {
+    padding: 20px 7vw;
+  }
+  h1 {
+    font-size: 62px;
+    line-height: 0.85;
+    margin: 12px 0;
+  }
+  .eyebrow {
+    font-size: 8px;
+    margin: 0;
+  }
+  .intro {
+    display: none;
+  }
+  #start {
+    margin-top: 18px;
+    padding: 12px 18px;
+  }
+  .entry-hint {
+    margin-top: 12px;
+  }
+  .edition {
+    bottom: 12px;
+  }
+  #controls {
+    bottom: 12px;
+  }
+  #hint {
+    bottom: 65px;
+  }
+}

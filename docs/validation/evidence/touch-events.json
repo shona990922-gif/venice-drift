@@ -1,0 +1,73 @@
+{
+  "test": "Browser-dispatched touch PointerEvents; not a physical handset test",
+  "pointer": "touch",
+  "angleChange": [
+    -0.7504166165335274,
+    0.3410984620606943
+  ],
+  "routeAdvanced": 2.3484199965294437,
+  "noRecentering": true,
+  "pass": true,
+  "snapshot": {
+    "version": "round04",
+    "fps": 60.139860139860154,
+    "gpu": {
+      "samples": 180,
+      "meanMs": 7.365659916666666,
+      "p95Ms": 12.870333
+    },
+    "framebuffer": [
+      390,
+      844
+    ],
+    "drawCalls": 92,
+    "triangles": 649864,
+    "time": 67.71080000000161,
+    "distance": 2.3484199965294437,
+    "length": 499.7268851894936,
+    "speed": 1.5481765678893578,
+    "loop": 0,
+    "quality": "medium",
+    "loadedChunks": [
+      1,
+      0,
+      2
+    ],
+    "pendingChunks": [],
+    "chunkLoads": 3,
+    "chunkDisposals": 0,
+    "geometryCount": 126,
+    "textureCount": 28,
+    "renderTargets": 6,
+    "reflectionResolution": 512,
+    "simulationResolution": 256,
+    "emissions": 52,
+    "camera": [
+      -0.011759098641270732,
+      1.4957818985016356,
+      15.30159715207348
+    ],
+    "look": [
+      -0.7512503744904936,
+      0.40147744295022436
+    ],
+    "pointer": "touch",
+    "environment": {
+      "elevation": 58,
+      "azimuth": 148
+    },
+    "errors": [],
+    "audio": {
+      "enabled": false,
+      "ready": false,
+      "state": "not started",
+      "activeSources": 0,
+      "loadedBuffers": 0,
+      "bridgeEnclosure": 0,
+      "waterGain": 0,
+      "cityGain": 0,
+      "rms": 0,
+      "error": null
+    }
+  }
+}

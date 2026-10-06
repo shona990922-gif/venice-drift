@@ -1,5 +1,7 @@
 # WaterThreeJS module map — actual 5194 source
 
+Historical lab inspection, performed before migration. Current release integration is in `src/water/v2/`; unchanged upstream modules are in `src/water/v2/vendor/waterthreejs/`. Lab source and comparison evidence remain in the separate `water-lab/` project.
+
 Source: `research/achrefelouafi--WaterThreeJS`, commit `4f85f4a557da80a1dd24b9243869177f30c604c7` (MIT). The listening Node process on 5194 has this exact working directory. Source files have been copied verbatim to `src/v2/vendor/waterthreejs`; hashes are recorded in `evidence/waterthreejs-source-manifest.json`. Venice has not been modified during this inspection.
 
 | Module / source location | Actual implementation | Migration treatment |

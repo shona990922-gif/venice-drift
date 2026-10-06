@@ -1,5 +1,5 @@
-import { Group, PerspectiveCamera } from 'three';
-import { PointerLook } from '../interaction/PointerLook';
+import { Group, PerspectiveCamera } from "three";
+import { PointerLook } from "../interaction/PointerLook";
 export const PASSENGER_EYE_HEIGHT = 1.52;
 export class PassengerCamera {
   readonly passenger = new Group();
@@ -9,11 +9,11 @@ export class PassengerCamera {
   readonly camera = new PerspectiveCamera(69, 1, 0.07, 450);
   readonly input: PointerLook;
   constructor(root: Group, element: HTMLElement) {
-    this.passenger.name = 'PassengerRig';
-    this.lookRig.name = 'CameraYawRig';
-    this.pitchRig.name = 'CameraPitchRig';
+    this.passenger.name = "PassengerRig";
+    this.lookRig.name = "CameraYawRig";
+    this.pitchRig.name = "CameraPitchRig";
     this.passenger.position.set(0, PASSENGER_EYE_HEIGHT, -2.35);
-    this.lookRig.rotation.order = 'YXZ';
+    this.lookRig.rotation.order = "YXZ";
     root.add(this.passenger);
     this.passenger.add(this.lookRig);
     this.lookRig.add(this.pitchRig);
@@ -22,13 +22,21 @@ export class PassengerCamera {
   }
   update(dt: number, boatYaw: number) {
     this.input.update(dt);
-    if(this.heading===null)this.heading=boatYaw;
-    const delta=Math.atan2(Math.sin(boatYaw-this.heading),Math.cos(boatYaw-this.heading));
-    this.heading+=delta*(1-Math.exp(-2.2*dt));
-    this.passenger.rotation.y=this.heading-boatYaw;
-    this.lookRig.rotation.y=this.input.yaw;
-    this.pitchRig.rotation.x=this.input.pitch;
+    if (this.heading === null) this.heading = boatYaw;
+    const delta = Math.atan2(
+      Math.sin(boatYaw - this.heading),
+      Math.cos(boatYaw - this.heading),
+    );
+    this.heading += delta * (1 - Math.exp(-2.2 * dt));
+    this.passenger.rotation.y = this.heading - boatYaw;
+    this.lookRig.rotation.y = this.input.yaw;
+    this.pitchRig.rotation.x = this.input.pitch;
   }
-  resetHeading(yaw:number){this.heading=yaw;}
-  resize(w: number, h: number) { this.camera.aspect = w / h; this.camera.updateProjectionMatrix(); }
+  resetHeading(yaw: number) {
+    this.heading = yaw;
+  }
+  resize(w: number, h: number) {
+    this.camera.aspect = w / h;
+    this.camera.updateProjectionMatrix();
+  }
 }

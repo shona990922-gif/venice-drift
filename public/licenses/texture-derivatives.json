@@ -1,0 +1,139 @@
+{
+  "process": "JPEG recompression; original dimensions retained, no colour conversion or restyling. Original CC0 provenance in materials.json.",
+  "maps": [
+    {
+      "file": "wood-color.jpg",
+      "quality": 87,
+      "sourceBytes": 701221,
+      "bytes": 369779,
+      "sha256": "a34491a47787c8f7334cbc59c26abe972079b70901ded92d7f6fc9b737274dce"
+    },
+    {
+      "file": "plaster-color.jpg",
+      "quality": 87,
+      "sourceBytes": 1465312,
+      "bytes": 457104,
+      "sha256": "4c1d1b0cce775dc36682c89eaf05ba4b3d313928d1cb5f03c1c02bacce0734e6"
+    },
+    {
+      "file": "plaster-arm.jpg",
+      "quality": 93,
+      "sourceBytes": 1079967,
+      "bytes": 326345,
+      "sha256": "5c767ae0cf90bf87284d291412e4e36538c6800568a472341a1661bc61fe3b22"
+    },
+    {
+      "file": "wood-normal.jpg",
+      "quality": 93,
+      "sourceBytes": 658444,
+      "bytes": 311933,
+      "sha256": "f65d8c64b567be499edfbe5e66631fb858a72a0a492160e80d00493c4a8f06dd"
+    },
+    {
+      "file": "stone-color.jpg",
+      "quality": 87,
+      "sourceBytes": 910262,
+      "bytes": 536856,
+      "sha256": "ad2abca46649a13014aab8696b52a4cd1814b0a0eb933a6114ae45f7ab64e766"
+    },
+    {
+      "file": "roof-color.jpg",
+      "quality": 87,
+      "sourceBytes": 903929,
+      "bytes": 469339,
+      "sha256": "9970940d8c6d54baf55dd172f78ea37ac8e78d4412ab5f521e6492a95e6ec07c"
+    },
+    {
+      "file": "brick-arm.jpg",
+      "quality": 93,
+      "sourceBytes": 741039,
+      "bytes": 358438,
+      "sha256": "2574c0c404c06de0d245854824e7168885e7cdf324499d95160c7e9dfd6d9064"
+    },
+    {
+      "file": "stone-arm.jpg",
+      "quality": 93,
+      "sourceBytes": 683632,
+      "bytes": 334156,
+      "sha256": "a0f28dac7e76f10a5609c68df9f6aeb4db60a19ca939cc3abdacbc44367f6541"
+    },
+    {
+      "file": "wood-arm.jpg",
+      "quality": 93,
+      "sourceBytes": 777830,
+      "bytes": 394700,
+      "sha256": "c23ef82cfeae0f311f8b618b7200714b252ccd3f0185b3910c3b3878bbad674c"
+    },
+    {
+      "file": "plaster-normal.jpg",
+      "quality": 93,
+      "sourceBytes": 1760685,
+      "bytes": 680748,
+      "sha256": "585a448d1e67b431e34d89283f4238816945ad536a7d3c7e42615e77d03ed400"
+    },
+    {
+      "file": "stone-normal.jpg",
+      "quality": 93,
+      "sourceBytes": 826220,
+      "bytes": 427653,
+      "sha256": "a46c8aeb0eade449b482045ef5a38744b268564f6d523b075e1430ff372dcca6"
+    },
+    {
+      "file": "brick-normal.jpg",
+      "quality": 93,
+      "sourceBytes": 1186400,
+      "bytes": 699691,
+      "sha256": "d5f3447c179cb62ed885b35472e495da1bc4c3ab396cc01ebe023d5a1d44c070"
+    },
+    {
+      "file": "roof-arm.jpg",
+      "quality": 93,
+      "sourceBytes": 564611,
+      "bytes": 262431,
+      "sha256": "8b7cb39ce9c75ad517da6fa398be0fa9e6c1185aab9e8b42151d886bedba5ff9"
+    },
+    {
+      "file": "brick-color.jpg",
+      "quality": 87,
+      "sourceBytes": 872053,
+      "bytes": 465021,
+      "sha256": "14da38396961f4b636c3fc388f795cabb9a648932c8519c4a40de329ed50dc3e"
+    },
+    {
+      "file": "roof-normal.jpg",
+      "quality": 93,
+      "sourceBytes": 990101,
+      "bytes": 558032,
+      "sha256": "c0cc217af1cb48d2927e1d9f8948a8b43ec09ac9ad7717bcccbf8fbc06cd8e00"
+    }
+  ],
+  "lowTierMaps": [
+    {
+      "file": "assets/textures-low/plaster-color.jpg",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "bytes": 62758,
+      "sha256": "df33309ad062ce8ef7f2f4df660388c3aeeacac42cdc0fd36fb00624ac7ade37"
+    },
+    {
+      "file": "assets/textures-low/plaster-arm.jpg",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "bytes": 41366,
+      "sha256": "7c55fb0049af4e52ce34247db3fc71f645aae5f50d72c0301ed9380d12315774"
+    },
+    {
+      "file": "assets/textures-low/plaster-normal.jpg",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "bytes": 92203,
+      "sha256": "0661d5e2a85c12c975e01e79badca803686cb7d65a921c0cb96475166cb1dfef"
+    }
+  ]
+}

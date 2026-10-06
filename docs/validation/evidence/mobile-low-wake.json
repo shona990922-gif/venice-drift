@@ -1,0 +1,94 @@
+{
+  "before": {
+    "peakHeightMetres": 0.009625542908906937,
+    "meanSquareHeight": 2.5177514586894946e-7
+  },
+  "after": {
+    "peakHeightMetres": 0.00008775735477684066,
+    "meanSquareHeight": 2.1911407362860192e-10
+  },
+  "reflection": {
+    "changedPixels": 169,
+    "maxChannelChange": 36
+  },
+  "composite": {
+    "changedPixels": 3225,
+    "maxChannelChange": 14
+  },
+  "energyRatio": 0.0008702768212977311,
+  "emissionsAtStop": 2160,
+  "emissionsAfterDecay": 2160,
+  "pass": true,
+  "snapshot": {
+    "resources": {
+      "sameOriginEncodedBytes": 26275761,
+      "pbrMemoryEstimateMiB": 80
+    },
+    "version": "round05",
+    "fps": 59.99720943211969,
+    "gpu": {
+      "samples": 180,
+      "meanMs": 6.353354150000002,
+      "p95Ms": 10.147
+    },
+    "framebuffer": [
+      331,
+      717
+    ],
+    "drawCalls": 166,
+    "triangles": 535864,
+    "time": 78.98550000000365,
+    "distance": 391.0711644913307,
+    "length": 499.7268851894936,
+    "speed": 1.5469388738886378,
+    "loop": 0,
+    "quality": "low",
+    "loadedChunks": [
+      10,
+      11,
+      9,
+      8
+    ],
+    "pendingChunks": [],
+    "chunkLoads": 8,
+    "chunkDisposals": 4,
+    "geometryCount": 217,
+    "textureCount": 27,
+    "sizedRenderTargets": 6,
+    "auxiliaryOnePixelTargets": 5,
+    "adaptive": {
+      "pixelScale": 1,
+      "changes": []
+    },
+    "reflectionResolution": 256,
+    "simulationResolution": 128,
+    "emissions": 2160,
+    "camera": [
+      42.13492388084295,
+      1.5383562164627367,
+      -343.69475310530186
+    ],
+    "look": [
+      0,
+      -0.24999999999999997
+    ],
+    "pointer": "none",
+    "environment": {
+      "elevation": 7.793391567249394,
+      "azimuth": 267
+    },
+    "errors": [],
+    "audio": {
+      "enabled": true,
+      "ready": true,
+      "state": "running",
+      "activeSources": 2,
+      "loadedBuffers": 3,
+      "bridgeEnclosure": 0,
+      "waterGain": 0.315,
+      "cityGain": 0.09281381336228475,
+      "rms": 0.008336430198098594,
+      "error": null
+    }
+  }
+}

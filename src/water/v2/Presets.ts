@@ -1,22 +1,83 @@
-export type ReflectionMode='ssr'|'planar'|'hybrid';
-export type WaterQuality='high'|'medium'|'low';
-export const WATER_QUALITY={
- high:{segments:.25,simulation:512,simulationHz:60,reflection:1024,captureScale:1,ssrSteps:32,detailOctaves:6,pixelRatio:1.25},
- medium:{segments:.34,simulation:256,simulationHz:30,reflection:512,captureScale:.8,ssrSteps:24,detailOctaves:4,pixelRatio:1},
- low:{segments:.48,simulation:128,simulationHz:30,reflection:256,captureScale:.55,ssrSteps:12,detailOctaves:4,pixelRatio:.85},
+export type ReflectionMode = "ssr" | "planar" | "hybrid";
+export type WaterQuality = "high" | "medium" | "low";
+export const WATER_QUALITY = {
+  high: {
+    segments: 0.25,
+    simulation: 512,
+    simulationHz: 60,
+    reflection: 1024,
+    captureScale: 1,
+    ssrSteps: 32,
+    detailOctaves: 6,
+    pixelRatio: 1.25,
+  },
+  medium: {
+    segments: 0.34,
+    simulation: 256,
+    simulationHz: 30,
+    reflection: 512,
+    captureScale: 0.8,
+    ssrSteps: 24,
+    detailOctaves: 4,
+    pixelRatio: 1,
+  },
+  low: {
+    segments: 0.48,
+    simulation: 128,
+    simulationHz: 30,
+    reflection: 256,
+    captureScale: 0.55,
+    ssrSteps: 12,
+    detailOctaves: 4,
+    pixelRatio: 0.85,
+  },
 } as const;
-export const CANAL_DEFAULTS={
- amplitude:.072,choppiness:.10,waveCount:26,speed:.65,directionSpread:.95,swellLength:150,
- rippleDetail:.14,rippleScale:.30,refraction:.028,ssr:.85,glitter:.18,roughness:.08,
- clarity:.65,depthFalloff:.30,absorptionRed:.45,absorptionGreen:.16,absorptionBlue:.10,
- maxOpticalDepth:18,ssrStep:.35,ssrThickness:.55,shadowAmbient:.38,
- bow:1,side:1,stern:1,wakeLifetime:10,interaction:1,
- exposure:1.05,saturation:1.0,sunElevation:58,sunAzimuth:148,
+export const CANAL_DEFAULTS = {
+  amplitude: 0.072,
+  choppiness: 0.1,
+  waveCount: 26,
+  speed: 0.65,
+  directionSpread: 0.95,
+  swellLength: 150,
+  rippleDetail: 0.14,
+  rippleScale: 0.3,
+  refraction: 0.028,
+  ssr: 0.85,
+  glitter: 0.18,
+  roughness: 0.08,
+  clarity: 0.65,
+  depthFalloff: 0.3,
+  absorptionRed: 0.45,
+  absorptionGreen: 0.16,
+  absorptionBlue: 0.1,
+  maxOpticalDepth: 18,
+  ssrStep: 0.35,
+  ssrThickness: 0.55,
+  shadowAmbient: 0.38,
+  bow: 1,
+  side: 1,
+  stern: 1,
+  wakeLifetime: 10,
+  interaction: 1,
+  exposure: 1.05,
+  saturation: 1.0,
+  sunElevation: 58,
+  sunAzimuth: 148,
 };
-export type CanalSettings=typeof CANAL_DEFAULTS;
-export const VENICE_PRESETS={
- VENICE_CANAL_DAY:{...CANAL_DEFAULTS},
- VENICE_CANAL_GOLDEN:{...CANAL_DEFAULTS,sunElevation:9,sunAzimuth:80,glitter:.24},
- VENICE_CANAL_SUNSET:{...CANAL_DEFAULTS,sunElevation:3.5,sunAzimuth:80,glitter:.28},
+export type CanalSettings = typeof CANAL_DEFAULTS;
+export const VENICE_PRESETS = {
+  VENICE_CANAL_DAY: { ...CANAL_DEFAULTS },
+  VENICE_CANAL_GOLDEN: {
+    ...CANAL_DEFAULTS,
+    sunElevation: 9,
+    sunAzimuth: 80,
+    glitter: 0.24,
+  },
+  VENICE_CANAL_SUNSET: {
+    ...CANAL_DEFAULTS,
+    sunElevation: 3.5,
+    sunAzimuth: 80,
+    glitter: 0.28,
+  },
 };
-export type CanalPreset=keyof typeof VENICE_PRESETS;
+export type CanalPreset = keyof typeof VENICE_PRESETS;

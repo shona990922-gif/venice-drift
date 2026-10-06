@@ -1,7 +1,76 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#162c30"><meta name="description" content="A slow, reflective gondola journey through Venice."><title>Venice Drift — A slow journey through Venice</title><link rel="icon" href="./favicon.svg"></head><body>
-<canvas id="scene" tabindex="0" aria-label="Venice gondola journey. Drag to look around."></canvas>
-<div id="entry"><div class="entry-content"><p class="eyebrow">A SLOW JOURNEY THROUGH VENICE</p><h1>Venice<br><i>Drift</i></h1><p class="intro">A seat on the water.<br>Nowhere else to be.</p><button id="start" disabled>Start Journey <span>↗</span></button><p class="entry-hint">Sit back. Drag to look around.</p></div><span class="edition">VENEZIA · LATE AFTERNOON</span></div>
-<div id="loading" role="status">Preparing your gondola…</div><div id="hint">Drag to look around</div><div id="fade"></div>
-<nav id="controls" aria-label="Journey settings"><button id="sound" aria-label="Sound off">Sound off</button><label><span class="sr-only">Quality</span><select id="quality" aria-label="Quality"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></label><button id="fullscreen" aria-label="Fullscreen">Fullscreen</button></nav>
-<aside id="debug" hidden><div id="stats"></div><label>位置 <input id="inspect-distance" type="number" min="0" max="499" value="0" aria-label="检查位置" style="width:65px"></label><button id="inspect-go">定位</button><button id="jump-start">起点</button><button id="jump-bridge">第一座桥</button><button id="jump-golden">金色时刻</button><button id="jump-end">末段</button><button id="interaction-check">验证尾流</button><button id="jump-hero">夕阳构图</button><button id="pause">暂停</button><button id="measure">测量</button><button id="capture">截图</button><button id="touch-check">触摸事件验收</button><button id="record">录制 12 秒</button><pre id="measurement"></pre></aside>
-<p id="notice" role="status"></p><pre id="error" hidden></pre><script type="module" src="/src/main.ts"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#162c30" />
+    <meta
+      name="description"
+      content="A slow, reflective gondola journey through Venice."
+    />
+    <title>Venice Drift — A slow journey through Venice</title>
+    <link rel="icon" href="./favicon.svg" />
+  </head>
+  <body>
+    <canvas
+      id="scene"
+      tabindex="0"
+      aria-label="Venice gondola journey. Drag to look around."
+    ></canvas>
+    <div id="entry">
+      <div class="entry-content">
+        <p class="eyebrow">A SLOW JOURNEY THROUGH VENICE</p>
+        <h1>Venice<br /><i>Drift</i></h1>
+        <p class="intro">A seat on the water.<br />Nowhere else to be.</p>
+        <button id="start" disabled>Start Journey <span>↗</span></button>
+        <p class="entry-hint">Sit back. Drag to look around.</p>
+      </div>
+      <span class="edition">VENEZIA · LATE AFTERNOON</span>
+    </div>
+    <div id="loading" role="status">Preparing your gondola…</div>
+    <div id="hint">Drag to look around</div>
+    <div id="fade"></div>
+    <nav id="controls" aria-label="Journey settings">
+      <button id="sound" aria-label="Sound off">Sound off</button
+      ><label
+        ><span class="sr-only">Quality</span
+        ><select id="quality" aria-label="Quality">
+          <option value="high">High</option>
+          <option value="medium" selected>Medium</option>
+          <option value="low">Low</option>
+        </select></label
+      ><button id="fullscreen" aria-label="Fullscreen">Fullscreen</button>
+    </nav>
+    <aside id="debug" hidden>
+      <div id="stats"></div>
+      <label
+        >位置
+        <input
+          id="inspect-distance"
+          type="number"
+          min="0"
+          max="499"
+          value="0"
+          aria-label="检查位置"
+          style="width: 65px" /></label
+      ><button id="inspect-go">定位</button><button id="jump-start">起点</button
+      ><button id="jump-bridge">第一座桥</button
+      ><button id="jump-golden">金色时刻</button
+      ><button id="jump-end">末段</button
+      ><button id="interaction-check">验证尾流</button
+      ><button id="jump-hero">夕阳构图</button><button id="pause">暂停</button
+      ><button id="measure">测量</button><button id="capture">截图</button
+      ><button id="touch-check">触摸事件验收</button
+      ><button id="record">录制 12 秒</button
+      ><button id="audit">完整两趟验收</button>
+      <p id="audit-status"></p>
+      <pre id="measurement"></pre>
+    </aside>
+    <p id="notice" role="status"></p>
+    <pre id="error" hidden></pre>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

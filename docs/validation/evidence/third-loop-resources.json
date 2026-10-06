@@ -1,0 +1,68 @@
+{
+  "version": "round05",
+  "fps": 60.16510423954497,
+  "gpu": {
+    "samples": 180,
+    "meanMs": 10.101810811111115,
+    "p95Ms": 13.349833
+  },
+  "framebuffer": [
+    1280,
+    720
+  ],
+  "drawCalls": 216,
+  "triangles": 907463,
+  "time": 903.5562999993434,
+  "distance": 313.11727410042914,
+  "length": 499.7268851894936,
+  "speed": 1.524415895959548,
+  "loop": 2,
+  "quality": "medium",
+  "loadedChunks": [
+    6,
+    7,
+    8,
+    9
+  ],
+  "pendingChunks": [],
+  "chunkLoads": 34,
+  "chunkDisposals": 30,
+  "geometryCount": 306,
+  "textureCount": 27,
+  "sizedRenderTargets": 6,
+  "auxiliaryOnePixelTargets": 5,
+  "adaptive": {
+    "pixelScale": 1,
+    "changes": []
+  },
+  "reflectionResolution": 512,
+  "simulationResolution": 256,
+  "emissions": 26948,
+  "camera": [
+    38.225593462972746,
+    1.4914048109361666,
+    -265.8828847640607
+  ],
+  "look": [
+    0,
+    0.06
+  ],
+  "pointer": "none",
+  "environment": {
+    "elevation": 21.9917538834374,
+    "azimuth": 245.3859383607034
+  },
+  "errors": [],
+  "audio": {
+    "enabled": true,
+    "ready": true,
+    "state": "running",
+    "activeSources": 2,
+    "loadedBuffers": 3,
+    "bridgeEnclosure": 0,
+    "waterGain": 0.4182446706112042,
+    "cityGain": 0.025131374034108575,
+    "rms": 0.0028720202971951763,
+    "error": null
+  }
+}

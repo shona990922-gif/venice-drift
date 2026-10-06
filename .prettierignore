@@ -1,0 +1,7 @@
+node_modules
+dist
+.build
+qa
+src/**/vendor
+public
+package-lock.json

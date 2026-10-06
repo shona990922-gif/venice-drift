@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/achrefelouafi/WaterThreeJS",
+  "commit": "4f85f4a557da80a1dd24b9243869177f30c604c7",
+  "files": [
+    {
+      "file": "Ocean.js",
+      "sha256": "dcd2928647fe2dbc345d48939daf5cb6ff67258f771ffa2067bc6afd3a01b16c"
+    },
+    {
+      "file": "Sky.js",
+      "sha256": "a172e9aae87ce56a93d9285a7c4f449e62b730a26553af0ab7dee6966b9db78c"
+    },
+    {
+      "file": "Post.js",
+      "sha256": "e908b6e2fb8bbb870266e88e3969cb99d931b846ae4aa8226467e77bd7d9f552"
+    },
+    {
+      "file": "shaders/common.js",
+      "sha256": "cfd4ec0c6f913f67b1e8c156f40d9a5cab893656aa23473774e0dd7f963d017c"
+    }
+  ]
+}

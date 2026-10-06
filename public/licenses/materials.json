@@ -136,6 +136,8 @@
     "resolution": "2k",
     "file": "afternoon-sky.hdr",
     "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/kloofendal_48d_partly_cloudy_puresky_2k.hdr",
-    "md5": "2eba3a4d7eeb23cbfbeca364c97e7980"
+    "md5": "2eba3a4d7eeb23cbfbeca364c97e7980",
+    "shipped": false,
+    "note": "Historical reference only; analytical sky replaces this HDRI in release."
   }
 ]

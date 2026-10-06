@@ -1,0 +1,73 @@
+{
+  "before": {
+    "peakHeightMetres": 0.010189265944063663,
+    "meanSquareHeight": 3.001710429306375e-7
+  },
+  "after": {
+    "peakHeightMetres": 0.00015287857968360186,
+    "meanSquareHeight": 2.3704936433673586e-10
+  },
+  "reflection": {
+    "changedPixels": 41151,
+    "maxChannelChange": 203
+  },
+  "composite": {
+    "changedPixels": 13506,
+    "maxChannelChange": 48
+  },
+  "energyRatio": 0.0007897142976296764,
+  "emissionsAtStop": 216,
+  "emissionsAfterDecay": 216,
+  "pass": true,
+  "snapshot": {
+    "version": "round03b",
+    "fps": 59.94702356057415,
+    "gpu": {
+      "samples": 180,
+      "meanMs": 9.726409677777779,
+      "p95Ms": 14.901208
+    },
+    "framebuffer": [
+      1280,
+      720
+    ],
+    "drawCalls": 157,
+    "triangles": 738153,
+    "time": 64.00380000000106,
+    "distance": 391.049502357485,
+    "length": 499.7268851894936,
+    "speed": 1.5469310182863594,
+    "loop": 0,
+    "quality": "medium",
+    "loadedChunks": [
+      10,
+      11,
+      8,
+      9
+    ],
+    "pendingChunks": [],
+    "chunkLoads": 7,
+    "chunkDisposals": 3,
+    "geometryCount": 170,
+    "textureCount": 28,
+    "renderTargets": 6,
+    "reflectionResolution": 512,
+    "simulationResolution": 256,
+    "emissions": 216,
+    "camera": [
+      42.135045204666305,
+      1.5373485777456584,
+      -343.6730912553283
+    ],
+    "look": [
+      0,
+      -0.24999999999999997
+    ],
+    "pointer": "none",
+    "environment": {
+      "elevation": 7.795605840897201,
+      "azimuth": 267
+    },
+    "errors": []
+  }
+}

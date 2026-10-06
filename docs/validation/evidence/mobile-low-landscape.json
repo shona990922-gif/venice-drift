@@ -1,0 +1,72 @@
+{
+  "resources": {
+    "sameOriginEncodedBytes": 16061401,
+    "pbrMemoryEstimateMiB": 80
+  },
+  "version": "round05",
+  "fps": 60.00000000000001,
+  "gpu": {
+    "samples": 180,
+    "meanMs": 7.0315662111111035,
+    "p95Ms": 9.534874
+  },
+  "framebuffer": [
+    717,
+    331
+  ],
+  "drawCalls": 190,
+  "triangles": 590281,
+  "time": 55.19910000000085,
+  "distance": 381,
+  "length": 499.7268851894936,
+  "speed": 1.55,
+  "loop": 0,
+  "quality": "low",
+  "loadedChunks": [
+    10,
+    11,
+    9,
+    8
+  ],
+  "pendingChunks": [],
+  "chunkLoads": 7,
+  "chunkDisposals": 3,
+  "geometryCount": 216,
+  "textureCount": 27,
+  "sizedRenderTargets": 6,
+  "auxiliaryOnePixelTargets": 5,
+  "adaptive": {
+    "pixelScale": 1,
+    "changes": []
+  },
+  "reflectionResolution": 256,
+  "simulationResolution": 128,
+  "emissions": 0,
+  "camera": [
+    42.1376120611148,
+    1.5211341028084642,
+    -333.6235931588505
+  ],
+  "look": [
+    0,
+    0.06
+  ],
+  "pointer": "none",
+  "environment": {
+    "elevation": 8.889248843504586,
+    "azimuth": 267
+  },
+  "errors": [],
+  "audio": {
+    "enabled": true,
+    "ready": true,
+    "state": "running",
+    "activeSources": 2,
+    "loadedBuffers": 3,
+    "bridgeEnclosure": 0,
+    "waterGain": 0.315,
+    "cityGain": 0.07150431881340563,
+    "rms": 0.0033457304172699117,
+    "error": null
+  }
+}
