@@ -1,0 +1,103 @@
+{
+  "version": 3,
+  "length": 499.7268830258048,
+  "chunkLength": 42,
+  "chunks": [
+    {
+      "index": 0,
+      "file": "canal-00.glb",
+      "start": 0,
+      "end": 42,
+      "bytes": 2374248,
+      "triangles": 108120
+    },
+    {
+      "index": 1,
+      "file": "canal-01.glb",
+      "start": 42,
+      "end": 84,
+      "bytes": 2344140,
+      "triangles": 107860
+    },
+    {
+      "index": 2,
+      "file": "canal-02.glb",
+      "start": 84,
+      "end": 126,
+      "bytes": 2441936,
+      "triangles": 111816
+    },
+    {
+      "index": 3,
+      "file": "canal-03.glb",
+      "start": 126,
+      "end": 168,
+      "bytes": 2348168,
+      "triangles": 105940
+    },
+    {
+      "index": 4,
+      "file": "canal-04.glb",
+      "start": 168,
+      "end": 210,
+      "bytes": 2470380,
+      "triangles": 114048
+    },
+    {
+      "index": 5,
+      "file": "canal-05.glb",
+      "start": 210,
+      "end": 252,
+      "bytes": 2323588,
+      "triangles": 102664
+    },
+    {
+      "index": 6,
+      "file": "canal-06.glb",
+      "start": 252,
+      "end": 294,
+      "bytes": 2400916,
+      "triangles": 106780
+    },
+    {
+      "index": 7,
+      "file": "canal-07.glb",
+      "start": 294,
+      "end": 336,
+      "bytes": 2245312,
+      "triangles": 98084
+    },
+    {
+      "index": 8,
+      "file": "canal-08.glb",
+      "start": 336,
+      "end": 378,
+      "bytes": 2419400,
+      "triangles": 111620
+    },
+    {
+      "index": 9,
+      "file": "canal-09.glb",
+      "start": 378,
+      "end": 420,
+      "bytes": 2364704,
+      "triangles": 111188
+    },
+    {
+      "index": 10,
+      "file": "canal-10.glb",
+      "start": 420,
+      "end": 462,
+      "bytes": 2367760,
+      "triangles": 111496
+    },
+    {
+      "index": 11,
+      "file": "canal-11.glb",
+      "start": 462,
+      "end": 499.7268830258048,
+      "bytes": 2241640,
+      "triangles": 102608
+    }
+  ]
+}

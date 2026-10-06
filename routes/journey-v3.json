@@ -1,0 +1,9 @@
+{
+ "name":"From the quiet rio to the evening basin",
+ "closed":false,"width":11.2,"cruiseSpeed":1.55,"bridgeDistance":46,
+ "points":[[0,0,20],[0,0,0],[1,0,-35],[3,0,-65],[-5,0,-95],[-25,0,-125],[-25,0,-160],[-10,0,-195],[20,0,-220],[35,0,-250],[40,0,-285],[42,0,-325],[42,0,-365],[42,0,-405],[42,0,-450]],
+ "sections":[{"name":"Rio quieto","start":0,"end":94,"width":11.2},{"name":"Sotto i ponti","start":94,"end":190,"width":10.0},{"name":"Canale aperto","start":190,"end":290,"width":17.5},{"name":"Case della sera","start":290,"end":380,"width":12.8},{"name":"Bacino del sole","start":380,"end":520,"width":27}],
+ "bridges":[{"distance":46,"style":0,"name":"Ponte delle Case"},{"distance":157,"style":1,"name":"Ponte dei Mattoni"},{"distance":434,"style":2,"name":"Ponte del Sole"}],
+ "heroDistance":381,"landmarkDistance":486,
+ "attribution":"Authored Venetian spatial study; not a surveyed reconstruction. Metres, Y up, boat forward -Z."
+}

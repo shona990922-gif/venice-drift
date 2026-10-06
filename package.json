@@ -7,14 +7,24 @@
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build:city": "node scripts/build-city.mjs"
   },
-  "dependencies": { "three": "0.185.1" },
+  "dependencies": {
+    "lil-gui": "0.20.0",
+    "three": "0.185.1"
+  },
   "devDependencies": {
+    "@gltf-transform/core": "^4.4.0",
+    "@gltf-transform/extensions": "^4.4.0",
+    "@gltf-transform/functions": "^4.4.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^26.6.4",
     "@types/three": "^0.185.0",
+    "meshoptimizer": "^1.0.0",
     "typescript": "~5.9.3",
     "vite": "^7.3.0",
-    "vitest": "^4.0.18",
-    "@playwright/test": "^1.58.2"
+    "vitest": "^4.0.18"
   }
 }

@@ -1,0 +1,7 @@
+{
+  "stableMainCommit": "819bcd18ddeefe6ac5416c100e826f98ec72efd0",
+  "waterLabCommit": "bdf5c0a",
+  "waterSource": "WaterThreeJS@4f85f4a557da80a1dd24b9243869177f30c604c7",
+  "labURL": "http://127.0.0.1:5190/venice.html",
+  "status": "Optics and interaction verified; independent 60fps validation pending. Chrome energy saver active."
+}
