@@ -9,3 +9,5 @@ work/
 
 .build/
 qa/
+
+releases/

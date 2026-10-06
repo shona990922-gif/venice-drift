@@ -105,7 +105,7 @@ h1 i {
 }
 #controls {
   position: fixed;
-  right: 25px;
+  right: max(25px, env(safe-area-inset-right));
   bottom: max(24px, env(safe-area-inset-bottom));
   display: flex;
   gap: 8px;
@@ -183,7 +183,7 @@ h1 i {
 #notice {
   position: fixed;
   bottom: 60px;
-  right: 25px;
+  right: max(25px, env(safe-area-inset-right));
   font-size: 10px;
   color: #e0d9b6;
 }
@@ -221,8 +221,8 @@ h1 i {
     font-size: 13px;
   }
   #controls {
-    bottom: 20px;
-    right: 15px;
+    bottom: max(20px, env(safe-area-inset-bottom));
+    right: max(15px, env(safe-area-inset-right));
     gap: 5px;
   }
   #controls button,
@@ -288,10 +288,10 @@ h1 i {
     margin-top: 12px;
   }
   .edition {
-    bottom: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
   }
   #controls {
-    bottom: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
   }
   #hint {
     bottom: 65px;

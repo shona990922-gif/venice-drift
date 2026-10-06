@@ -126,6 +126,7 @@ async function boot() {
     cs = 0,
     ts = 0,
     fade = -1,
+    fadeReset = false,
     loop = 0,
     shot = false,
     disposed = false;
@@ -164,7 +165,12 @@ async function boot() {
   $("start").onclick = start;
   if (matchMedia("(pointer:coarse)").matches)
     $("hint").textContent = "Swipe to look around";
-  const seek = (distance: number) => {
+  const seek = (distance: number, preserveFade = false) => {
+    if (!preserveFade) {
+      fade = -1;
+      fadeReset = false;
+      pipeline.fadeAmount = 0;
+    }
     route.seek(distance);
     boat.update(route);
     passenger.resetHeading(route.yaw);
@@ -197,12 +203,34 @@ async function boot() {
     };
     $("capture").onclick = () => (shot = true);
   }
+  const fullscreenUnavailable = () => {
+    $("notice").textContent = "Full screen is unavailable in this browser.";
+  };
+  document.addEventListener("fullscreenchange", () => {
+    const label = document.fullscreenElement ? "Exit fullscreen" : "Fullscreen";
+    $("fullscreen").textContent = label;
+    $("fullscreen").setAttribute("aria-label", label);
+  });
   $("fullscreen").onclick = async () => {
+    if (
+      !document.fullscreenEnabled ||
+      !document.documentElement.requestFullscreen
+    ) {
+      fullscreenUnavailable();
+      return;
+    }
+    const entering = !document.fullscreenElement;
+    const timeout = setTimeout(() => {
+      if (entering && !document.fullscreenElement) fullscreenUnavailable();
+    }, 1200);
     try {
-      if (document.fullscreenElement) await document.exitFullscreen();
-      else await document.documentElement.requestFullscreen();
+      if (entering) await document.documentElement.requestFullscreen();
+      else await document.exitFullscreen();
+      if (entering && !document.fullscreenElement) fullscreenUnavailable();
     } catch {
-      $("notice").textContent = "此浏览器暂不支持全屏";
+      fullscreenUnavailable();
+    } finally {
+      clearTimeout(timeout);
     }
   };
   ($("quality") as HTMLSelectElement).value = quality;
@@ -556,17 +584,32 @@ async function boot() {
     if (document.hidden || contextLost) return;
     const dt = Math.min(0.05, Math.max(0, raw));
     time += dt;
-    if (started && !paused && fade < 0) route.update(dt);
-    if (route.distance >= route.length && fade < 0) fade = 0;
+    // Keep moving through the fade, including the hidden reset. The end must
+    // never look like the gondola suddenly brakes against an invisible wall.
+    if (started && !paused) route.update(dt);
+    if (
+      started &&
+      !paused &&
+      fade < 0 &&
+      route.length - route.distance <= route.speed * 3.2
+    ) {
+      fade = 0;
+      fadeReset = false;
+    }
     if (fade >= 0) {
       fade += dt;
       pipeline.fadeAmount =
         fade < 3 ? fade / 3 : Math.max(0, 1 - (fade - 3) / 4);
-      if (fade >= 3 && route.distance >= route.length) {
-        seek(0);
+      if (fade >= 3 && !fadeReset) {
+        seek(0, true);
         loop++;
+        fadeReset = true;
+        pipeline.fadeAmount = 1;
       }
-      if (fade > 7) fade = -1;
+      if (fade > 7) {
+        fade = -1;
+        fadeReset = false;
+      }
     }
     boat.update(route);
     const h = water.ocean.heightAt(route.position.x, route.position.z, time);
@@ -602,7 +645,7 @@ async function boot() {
       time,
       route.position,
       route.tangent,
-      started && !paused && fade < 0 ? route.speed : 0,
+      started && !paused ? route.speed : 0,
     );
     pipeline.exposure = environment.exposure;
     pipeline.render(passenger.camera, time);
@@ -677,4 +720,8 @@ boot().catch((error) => {
   $("error").hidden = false;
   $("error").textContent = String(error);
   console.error(error);
+});
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) location.reload();
 });
