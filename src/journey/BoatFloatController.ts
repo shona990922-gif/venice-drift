@@ -1,4 +1,5 @@
 import { Group, MathUtils } from 'three';
+import { PASSENGER_EYE_HEIGHT } from './PassengerCamera';
 import { sampleHull } from '../water/WaveField';
 export class BoatFloatController {
   heave = 0; pitch = 0; roll = 0;
@@ -10,7 +11,7 @@ export class BoatFloatController {
     visual.position.y = this.heave;
     visual.rotation.set(this.pitch, 0, this.roll);
     // A seated passenger follows translation; body/neck damp angular motion.
-    passenger.position.y = 1.34 + this.heave * 0.6;
+    passenger.position.y = PASSENGER_EYE_HEIGHT + this.heave * 0.6;
     passenger.rotation.set(this.pitch * 0.35, 0, this.roll * 0.3);
   }
 }

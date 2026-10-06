@@ -1,10 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { Group, MathUtils, PerspectiveCamera, Raycaster, Vector3, WebGLRenderer } from 'three';
+import { Group, MathUtils, PerspectiveCamera, Raycaster, Vector3, Texture, WebGLRenderer } from 'three';
 import { RouteController, ROUTE } from '../src/journey/RouteController';
 import { LookState } from '../src/interaction/PointerLook';
 import { sampleHull, waveHeight } from '../src/water/WaveField';
 import { BoatFloatController } from '../src/journey/BoatFloatController';
-import { WhiteboxScene } from '../src/city/WhiteboxScene';
+import { VeniceScene, HERO_LENGTH, FACADES } from '../src/city/VeniceScene';
+import type { PBRSet } from '../src/city/Materials';
+import { PASSENGER_EYE_HEIGHT } from '../src/journey/PassengerCamera';
+const set=Object.fromEntries(['plaster','stone','brick','roof','wood'].map(k=>[k,{color:new Texture(),normal:new Texture(),arm:new Texture()}])) as PBRSet;
+const hero=new VeniceScene(new RouteController(),set);hero.root.updateMatrixWorld(true);
 import { applyObliqueNearPlane } from '../src/water/PlanarReflection';
 
 describe('continuous passenger journey',()=>{
@@ -45,17 +49,28 @@ describe('continuous passenger journey',()=>{
       expect(Math.abs(float.roll)).toBeLessThanOrEqual(.018);
       expect(Math.abs(float.pitch)).toBeLessThanOrEqual(.012);
     }
-    expect(root.position.toArray()).toEqual([-16,0,7]);expect(passenger.position.y).toBeGreaterThan(1.32);expect(passenger.position.y).toBeLessThan(1.36);
+    expect(root.position.toArray()).toEqual([-16,0,7]);expect(passenger.position.y).toBeGreaterThan(PASSENGER_EYE_HEIGHT-.02);expect(passenger.position.y).toBeLessThan(PASSENGER_EYE_HEIGHT+.02);
   });
   it('actual bridge geometry is open at boat height and solid overhead',()=>{
-    const route=new RouteController(),city=new WhiteboxScene(route);city.root.updateMatrixWorld(true);
-    const camera=route.pointAtDistance(ROUTE.bridgeDistance).setY(1.34);
+    const route=new RouteController(),city=hero;city.root.updateMatrixWorld(true);
+    const camera=route.pointAtDistance(ROUTE.bridgeDistance).setY(PASSENGER_EYE_HEIGHT);
     const up=new Raycaster(camera,new Vector3(0,1,0),0,10);
     const overhead=up.intersectObject(city.bridge,true);
-    expect(overhead.length).toBeGreaterThan(0);expect(overhead[0].distance).toBeGreaterThan(2.05);expect(overhead[0].distance).toBeLessThan(2.15);
+    expect(overhead.length).toBeGreaterThan(0);expect(overhead[0].distance).toBeGreaterThan(1.87);expect(overhead[0].distance).toBeLessThan(1.99);
     for(let s=ROUTE.bridgeDistance-7;s<ROUTE.bridgeDistance+7;s+=.2){
       const p=route.pointAtDistance(s).setY(1.8),t=route.tangentAtDistance(s);
       const ray=new Raycaster(p,t,0,.5);expect(ray.intersectObjects(city.collisionMeshes,false).length).toBe(0);
+    }
+  });
+  it('the entire 125 m hero fairway and passenger offset clear actual architecture',()=>{
+    const route=new RouteController();expect(FACADES.length).toBe(12);expect(HERO_LENGTH).toBeGreaterThanOrEqual(100);expect(HERO_LENGTH).toBeLessThanOrEqual(150);
+    for(let s=0;s<=HERO_LENGTH;s+=.4){
+      const p=route.pointAtDistance(s),t=route.tangentAtDistance(s),cross=new Vector3(-t.z,0,t.x);
+      for(const side of [-.85,0,.85]){
+        const point=p.clone().addScaledVector(cross,side).setY(1.52);
+        const ray=new Raycaster(point,t,0,2.8);
+        expect(ray.intersectObjects(hero.collisionMeshes,false).length,`fairway at ${s.toFixed(1)} m`).toBe(0);
+      }
     }
   });
   it('oblique clipping projects water plane onto near clip plane',()=>{

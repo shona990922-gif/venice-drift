@@ -2,9 +2,9 @@ import { MathUtils } from 'three';
 /** Shared mouse/touch model. No reference to the route, boat or throttle. */
 export class LookState {
   yaw = 0;
-  pitch = -0.025;
+  pitch = 0.06;
   targetYaw = 0;
-  targetPitch = -0.025;
+  targetPitch = 0.06;
   drag(dx: number, dy: number, sensitivity: number) {
     this.targetYaw -= dx * sensitivity;
     this.targetPitch = MathUtils.clamp(this.targetPitch - dy * sensitivity, -1.22, 1.32);

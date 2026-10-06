@@ -1,13 +1,24 @@
 import { BoxGeometry, BufferGeometry, CatmullRomCurve3, DoubleSide, ExtrudeGeometry, Float32BufferAttribute, Group, Mesh, MeshStandardMaterial, Shape, TubeGeometry, Vector3 } from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RouteController } from './RouteController';
 export class BoatController {
   readonly root = new Group();
   readonly visual = new Group();
   constructor() {
     this.root.name = 'BoatRoot'; this.visual.name = 'BoatVisual'; this.root.add(this.visual);
-    this.buildGondolaStudy();
+    this.buildGondolaStudy(); this.mergeStaticParts();
   }
   update(route: RouteController) { this.root.position.copy(route.position); this.root.rotation.y = route.yaw; }
+  private mergeStaticParts(){
+    const groups=new Map<MeshStandardMaterial,BufferGeometry[]>();
+    for(const child of [...this.visual.children]){
+      const m=child as Mesh<BufferGeometry,MeshStandardMaterial>;m.updateMatrix();
+      const g=(m.geometry.index?m.geometry.toNonIndexed():m.geometry.clone()).applyMatrix4(m.matrix);
+      if(!g.getAttribute('uv'))g.setAttribute('uv',new Float32BufferAttribute(new Float32Array(g.getAttribute('position').count*2),2));
+      const list=groups.get(m.material)??[];list.push(g);groups.set(m.material,list);this.visual.remove(m);m.geometry.dispose();
+    }
+    for(const [material,gs] of groups){const g=mergeGeometries(gs);gs.forEach(x=>x.dispose());if(!g)continue;const m=new Mesh(g,material);m.castShadow=m.receiveShadow=true;m.layers.enable(1);this.visual.add(m);}
+  }
   private buildGondolaStudy() {
     const black = new MeshStandardMaterial({color: '#111b1a', roughness: 0.32, metalness: 0.04, side: DoubleSide});
     const wood = new MeshStandardMaterial({color: '#40312a', roughness: 0.52});
@@ -20,7 +31,7 @@ export class BoatController {
     for (let i = 0; i <= 80; i++) {
       const t = i / 80, z = 4.85 - t * 10;
       const width = Math.pow(Math.sin(Math.PI * t), 0.62) * 0.83 + 0.018;
-      const lift = Math.pow(Math.abs(t * 2 - 1), 5) * 0.68;
+      const lift = Math.pow(Math.abs(t * 2 - 1), 5) * 0.36;
       const profile = [[-width, 0.43 + lift], [-width * 0.76, -0.16 + lift * 0.4], [0, -0.30 + lift * 0.55], [width * 0.76, -0.16 + lift * 0.4], [width, 0.43 + lift]];
       for (const [x,y] of profile) vertices.push(x,y,z);
       rails[0].push(new Vector3(-width,0.45+lift,z)); rails[1].push(new Vector3(width,0.45+lift,z));
@@ -37,9 +48,9 @@ export class BoatController {
     const deck=new Shape();deck.moveTo(-0.58,-2.55);deck.quadraticCurveTo(-0.32,-4.6,0,-5.12);deck.quadraticCurveTo(0.32,-4.6,0.58,-2.55);deck.closePath();
     const deckMesh=add(new Mesh(new ExtrudeGeometry(deck,{depth:0.035,bevelEnabled:false,curveSegments:24}),black)); deckMesh.rotation.x=Math.PI/2;deckMesh.position.y=0.58;
     for(const x of [-0.67,0.67])box(0.026,0.032,3.8,x,0.49,-0.12,trim);
-    // A silhouette study of the ferro; replaced by an authored GLB in ROUND 02.
+    // Restrained ferro silhouette: it remains below the passenger eye line.
     const ferro = new Shape(); ferro.moveTo(-0.12,0);ferro.lineTo(0.06,0);ferro.lineTo(0.09,0.85);ferro.quadraticCurveTo(0.05,1.12,-0.19,1.2);ferro.lineTo(-0.24,1.02);ferro.quadraticCurveTo(-0.08,0.99,-0.07,0.77);ferro.lineTo(-0.12,0);
-    const fm=add(new Mesh(new ExtrudeGeometry(ferro,{depth:0.035,bevelEnabled:true,bevelSegments:2,bevelSize:0.012,bevelThickness:0.01}),metal));fm.rotation.y=Math.PI/2;fm.position.set(-0.018,0.61,-4.95);
-    for(let i=0;i<6;i++)box(0.044,0.036,0.24,0,0.77+i*0.075,-5.06,metal);
+    const fm=add(new Mesh(new ExtrudeGeometry(ferro,{depth:0.035,bevelEnabled:true,bevelSegments:2,bevelSize:0.012,bevelThickness:0.01}),metal));fm.rotation.y=Math.PI/2;fm.scale.setScalar(.55);fm.position.set(-0.018,0.61,-4.95);
+    for(let i=0;i<6;i++)box(0.030,0.026,0.15,0,0.69+i*0.041,-5.03,metal);
   }
 }

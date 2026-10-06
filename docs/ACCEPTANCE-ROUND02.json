@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-06",
+  "round": 2,
+  "browser": "153.0.8010.55",
+  "desktop": {
+    "automaticTravel": {
+      "seconds": 3,
+      "metres": 4.379195567755756
+    },
+    "freeLook": {
+      "yaw": -1.0117538925019904,
+      "retainedYaw": -1.011785073617773,
+      "boatContinuedMetres": 2.275684538413657
+    },
+    "performance": {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "frames": 600,
+      "averageFps": 60.001800054001635,
+      "p95FrameMs": 16.700000000000728,
+      "snapshot": {
+        "started": true,
+        "paused": false,
+        "webgl2": true,
+        "elapsed": 22.865599999999745,
+        "distance": 20.714042062617352,
+        "totalDistance": 30.242519919831544,
+        "routeLength": 125,
+        "fullSplineLength": 259.49389123020774,
+        "facadeCount": 12,
+        "speed": 1.3644870105273734,
+        "boatPosition": [
+          -16.13613694737098,
+          0,
+          13.730558051286094
+        ],
+        "boatYaw": -0.051588500783836214,
+        "cameraPosition": [
+          -16.01495773774396,
+          1.5169528819453821,
+          11.38368447157325
+        ],
+        "cameraWorldQuaternion": [
+          0.029768123817536726,
+          -0.026698893925372124,
+          0.00231289694034291,
+          0.999197517198321
+        ],
+        "lookYaw": -1.1210389768036965e-51,
+        "lookPitch": 0.06000000000000001,
+        "targetYaw": 0,
+        "targetPitch": 0.06,
+        "lastPointerType": "mouse",
+        "heave": -0.0050785300910296495,
+        "roll": 0.010106180593996357,
+        "pitch": -0.00100682115387877,
+        "bridgeDistance": 6.285957937382648,
+        "fps": 59.996129281982164,
+        "frameMs": 16.66774193548377,
+        "drawCalls": 282,
+        "triangles": 1163168,
+        "textureCount": 22,
+        "geometryCount": 114,
+        "reflectionResolution": 1024,
+        "reflectionUpdates": 1369,
+        "reflectionInterval": 1,
+        "quality": "high",
+        "qualityTier": "high",
+        "pixelRatio": 1,
+        "currentChunk": "Hero_A",
+        "loadedChunks": [
+          "Hero_A",
+          "Hero_B",
+          "Hero_C"
+        ]
+      }
+    },
+    "bridge": {
+      "continuous": true,
+      "under": true,
+      "after": true,
+      "start": {
+        "distance": 17,
+        "camera": [
+          -16.215744291405233,
+          1.523306763192662,
+          15.092286752359456
+        ],
+        "elapsed": 24.398799999999667
+      },
+      "end": {
+        "distance": 42.78727693227859,
+        "camera": [
+          -16.00464252070718,
+          1.5219729406212523,
+          -10.686251128389282
+        ],
+        "elapsed": 43.36470000000018
+      },
+      "maxObservedPositionStep": 1.2711727871112906
+    },
+    "segmentRepeat": {
+      "distanceAfterEnd": 1.7879159674591278,
+      "heroLength": 125
+    }
+  },
+  "mobile": {
+    "emulated": true,
+    "physicalDeviceTested": false,
+    "viewport": [
+      390,
+      844
+    ],
+    "touchYawDelta": 1.1063862930105735,
+    "continuedMetres": 3.856279926439072,
+    "reflectionUpdates": 80,
+    "lowSnapshot": {
+      "started": true,
+      "paused": false,
+      "webgl2": true,
+      "elapsed": 7.0424000000059905,
+      "distance": 9.656976833607871,
+      "totalDistance": 9.65697683360779,
+      "routeLength": 125,
+      "fullSplineLength": 259.49389123020774,
+      "facadeCount": 12,
+      "speed": 1.4755757772963844,
+      "boatPosition": [
+        -16.452265050261577,
+        0,
+        24.778042779857003
+      ],
+      "boatYaw": 0.04810655007212759,
+      "cameraPosition": [
+        -16.565271843683206,
+        1.52568204005078,
+        22.430761487672243
+      ],
+      "cameraWorldQuaternion": [
+        -0.026363704226152068,
+        0.5532851008446963,
+        0.01707275947726846,
+        0.8323995874377771
+      ],
+      "lookYaw": 1.1063862930105735,
+      "lookPitch": -0.06293181033450819,
+      "targetYaw": 1.1063869780033615,
+      "targetPitch": -0.06293188644481798,
+      "lastPointerType": "touch",
+      "heave": 0.009470066751300152,
+      "roll": -0.0014035375724683122,
+      "pitch": -0.001779475229655041,
+      "bridgeDistance": 17.34302316639213,
+      "fps": 59.99999999999997,
+      "frameMs": 16.666666666666675,
+      "drawCalls": 158,
+      "triangles": 714259,
+      "textureCount": 22,
+      "geometryCount": 109,
+      "reflectionResolution": 256,
+      "reflectionUpdates": 211,
+      "reflectionInterval": 2,
+      "quality": "low",
+      "qualityTier": "low",
+      "pixelRatio": 1,
+      "currentChunk": "Hero_A",
+      "loadedChunks": [
+        "Hero_A",
+        "Hero_B",
+        "Hero_C"
+      ]
+    }
+  },
+  "errors": []
+}

@@ -9,7 +9,8 @@ import { PassengerCamera } from './journey/PassengerCamera';
 import { PlanarReflection } from './water/PlanarReflection';
 import { CanalWater } from './water/CanalWater';
 import { SkySystem } from './environment/SkySystem';
-import { WhiteboxScene } from './city/WhiteboxScene';
+import { VeniceScene, HERO_LENGTH } from './city/VeniceScene';
+import { loadMaterials } from './city/Materials';
 const $=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
 const params=new URLSearchParams(location.search);
 const mobile=matchMedia('(pointer: coarse)').matches;
@@ -21,14 +22,15 @@ async function main(){
   const environment=new SkySystem(scene,renderer);
   const reflection=new PlanarReflection(renderer,mobile?512:1024);
   const water=new CanalWater(route,reflection,environment.direction);scene.add(water.mesh);
-  const city=new WhiteboxScene(route);scene.add(city.root);
+  const materials=await loadMaterials();await environment.ready;
+  const city=new VeniceScene(route,materials);scene.add(city.root);
   const quality=new QualityController(renderer,reflection,environment.sun,mobile);
   const requested=params.get('quality') as QualityMode;
   if(['auto','high','medium','low'].includes(requested))quality.setMode(requested);
   const tangentArrow=new ArrowHelper(route.tangent,route.position.clone().setY(.4),4,'#f1c271');scene.add(tangentArrow);tangentArrow.visible=false;
   const eye=new Vector3();let started=false,paused=false,debug=params.has('debug'),time=0,last=performance.now();
   let statElapsed=0,statFrames=0,fps=0,frameMs=0,calls=0,triangles=0,drawSum=0,triSum=0;
-  let disposed=false;
+  let disposed=false,repeatFade=-1;
   const resize=()=>{passenger.resize(innerWidth,innerHeight);quality.apply();reflection.invalidate();};
   window.addEventListener('resize',resize);resize();
   const toast=(message:string)=>{$('toast').textContent=message;$('toast').classList.add('visible');setTimeout(()=>$('toast').classList.remove('visible'),2500);};
@@ -44,7 +46,7 @@ async function main(){
   $('close-debug').addEventListener('click',()=>setDebug(false));
   window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='d'&&!e.metaKey&&!e.ctrlKey)setDebug(!debug);if(e.key==='Escape')$('quality-menu').hidden=true;});
   $('route-toggle').addEventListener('change',()=>{city.routeLine.visible=$<HTMLInputElement>('route-toggle').checked;tangentArrow.visible=city.routeLine.visible;});
-  const seek=(distance:number)=>{route.seek(distance);boat.update(route);passenger.resetHeading(route.yaw);passenger.update(.016,route.yaw);reflection.invalidate();};
+  const seek=(distance:number)=>{route.seek(distance);water.interaction.reset();boat.update(route);passenger.resetHeading(route.yaw);passenger.update(.016,route.yaw);reflection.invalidate();};
   $('jump-bridge').addEventListener('click',()=>{start();seek(ROUTE.bridgeDistance-9);toast('已定位桥前 · 将自动连续穿过');});
   $('restart').addEventListener('click',()=>{seek(0);toast('已返回航线起点');});
   $('quality-toggle').addEventListener('click',()=>{const menu=$('quality-menu');menu.hidden=!menu.hidden;$('quality-toggle').setAttribute('aria-expanded',String(!menu.hidden));});
@@ -55,12 +57,12 @@ async function main(){
   document.addEventListener('fullscreenchange',()=>{$('fullscreen').setAttribute('aria-label',document.fullscreenElement?'退出全屏':'进入全屏');resize();});
   const snapshot=()=>{
     passenger.camera.getWorldPosition(eye);
-    return {started,paused,webgl2:renderer.capabilities.isWebGL2,elapsed:time,distance:route.distance,totalDistance:route.totalDistance,routeLength:route.length,speed:route.speed,
+    return {started,paused,webgl2:renderer.capabilities.isWebGL2,elapsed:time,distance:route.distance,totalDistance:route.totalDistance,routeLength:HERO_LENGTH,fullSplineLength:route.length,facadeCount:12,speed:route.speed,
       boatPosition:boat.root.position.toArray(),boatYaw:route.yaw,cameraPosition:eye.toArray(),cameraWorldQuaternion:passenger.camera.getWorldQuaternion(boat.root.quaternion.clone()).toArray(),
       lookYaw:passenger.input.yaw,lookPitch:passenger.input.pitch,targetYaw:passenger.input.targetYaw,targetPitch:passenger.input.targetPitch,lastPointerType:passenger.input.lastPointerType,
       heave:float.heave,roll:float.roll,pitch:float.pitch,bridgeDistance:shortestDistance(route.distance,ROUTE.bridgeDistance,route.length),
-      fps,frameMs,drawCalls:calls,triangles,textureCount:renderer.info.memory.textures,geometryCount:renderer.info.memory.geometries,reflectionResolution:reflection.target.width,reflectionUpdates:reflection.updates,reflectionInterval:reflection.interval,
-      quality:quality.mode,qualityTier:quality.tier,pixelRatio:renderer.getPixelRatio(),currentChunk:'Canal_'+('ABCD'[Math.min(3,Math.floor(route.distance/route.length*4))]),loadedChunks:city.chunks.map(c=>c.name),
+      fps,frameMs,drawCalls:calls,triangles,wakeSamples:water.interaction.samples.length,wakeUpdates:water.interaction.updates,wakeMaskSize:water.interaction.settings.resolution,wakeUpdateMs:water.interaction.updateMs,wakePeakSlope:water.interaction.peakSlope,textureCount:renderer.info.memory.textures,geometryCount:renderer.info.memory.geometries,reflectionResolution:reflection.target.width,reflectionUpdates:reflection.updates,reflectionInterval:reflection.interval,
+      quality:quality.mode,qualityTier:quality.tier,pixelRatio:renderer.getPixelRatio(),currentChunk:'Hero_'+('ABC'[Math.min(2,Math.floor(route.distance/43))]),loadedChunks:city.chunks.map(c=>c.name),
     };
   };
   if(params.has('debug')||import.meta.env.DEV){
@@ -69,7 +71,7 @@ async function main(){
   const updateDebug=()=>{
     const s=snapshot();$('stat-fps').textContent=fps.toFixed(0);$('stat-calls').textContent=calls.toFixed(0);$('stat-triangles').textContent=(triangles/1000).toFixed(1)+'k';
     const v=(a:number[])=>a.map(n=>n.toFixed(1)).join(', ');
-    const rows=[['航速',s.speed.toFixed(2)+' m/s'],['航程',s.distance.toFixed(1)+' / '+s.routeLength.toFixed(1)+' m'],['反射',s.reflectionResolution+'² · 每 '+s.reflectionInterval+' 帧'],['画质 / 像素比',s.quality+' / '+s.pixelRatio.toFixed(2)],['帧耗时',frameMs.toFixed(2)+' ms'],['纹理数 / 反射缓冲估算',s.textureCount+' / '+(s.reflectionResolution**2*12/1048576).toFixed(1)+' MiB'],['当前 / 已驻留 Chunk',s.currentChunk+' / 4'],['相机 XYZ',v(s.cameraPosition)],['船体 XYZ',v(s.boatPosition)],['浮动 / 侧倾', (float.heave*100).toFixed(1)+' cm / '+(float.roll*180/Math.PI).toFixed(2)+'°'],['输入',s.lastPointerType==='none'?'等待拖动':s.lastPointerType]];
+    const rows=[['航速',s.speed.toFixed(2)+' m/s'],['局部尾流',s.wakeSamples+' 点 · '+s.wakeMaskSize+'²'],['尾流更新',s.wakeUpdateMs.toFixed(2)+' ms'],['航程',s.distance.toFixed(1)+' / '+s.routeLength.toFixed(1)+' m'],['反射',s.reflectionResolution+'² · 每 '+s.reflectionInterval+' 帧'],['画质 / 像素比',s.quality+' / '+s.pixelRatio.toFixed(2)],['帧耗时',frameMs.toFixed(2)+' ms'],['纹理数 / 反射缓冲估算',s.textureCount+' / '+(s.reflectionResolution**2*12/1048576).toFixed(1)+' MiB'],['当前 / 已驻留 Chunk',s.currentChunk+' / 3'],['相机 XYZ',v(s.cameraPosition)],['船体 XYZ',v(s.boatPosition)],['浮动 / 侧倾', (float.heave*100).toFixed(1)+' cm / '+(float.roll*180/Math.PI).toFixed(2)+'°'],['输入',s.lastPointerType==='none'?'等待拖动':s.lastPointerType]];
     $('debug-details').innerHTML=rows.map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join('');
   };
   canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();paused=true;$('error-message').textContent='图形上下文已中断。请重新加载以恢复漫游。';$('error').hidden=false;});
@@ -85,9 +87,18 @@ async function main(){
     requestAnimationFrame(frame);
     const raw=(now-last)/1000;last=now;if(document.hidden)return;
     const dt=Math.min(Math.max(raw,0),.05);time+=dt;
-    if(started&&!paused)route.update(dt);
+    if(started&&!paused){
+      if(repeatFade<0)route.update(dt);
+      if(route.distance>=HERO_LENGTH&&repeatFade<0)repeatFade=0;
+      if(repeatFade>=0){
+        repeatFade+=dt;
+        $('repeat-fade').style.opacity=String(repeatFade<1?repeatFade:Math.max(0,2.2-repeatFade));
+        if(repeatFade>=1&&route.distance>=HERO_LENGTH)seek(0);
+        if(repeatFade>2.2)repeatFade=-1;
+      }
+    }
     boat.update(route);float.update(dt,time,boat.root,boat.visual,passenger.passenger);passenger.update(dt,route.yaw);
-    environment.update(route.position,time);water.update(time,route.position,route.tangent);
+    environment.update(route.position,time);city.update(route.position);water.update(time,route.position,route.tangent,started&&!paused&&repeatFade<0?route.speed:0);
     tangentArrow.position.copy(route.position).setY(.4);tangentArrow.setDirection(route.tangent);
     scene.updateMatrixWorld(true);
     renderer.info.reset();reflection.render(scene,passenger.camera);renderer.render(scene,passenger.camera);
@@ -96,6 +107,6 @@ async function main(){
     if(started&&time>4)quality.observe(raw*1000,now);
   }
   last=performance.now();requestAnimationFrame(frame);
-  window.addEventListener('pagehide',()=>{disposed=true;passenger.input.dispose();reflection.dispose();environment.environment.dispose();scene.traverse(o=>{if('geometry'in o)(o.geometry as {dispose:()=>void}).dispose();});renderer.dispose();},{once:true});
+  window.addEventListener('pagehide',()=>{disposed=true;passenger.input.dispose();reflection.dispose();water.interaction.dispose();environment.environment.dispose();scene.traverse(o=>{if('geometry'in o)(o.geometry as {dispose:()=>void}).dispose();});renderer.dispose();},{once:true});
 }
 main().catch(error=>{console.error(error);$('error-message').textContent=error instanceof Error?error.message:String(error);$('error').hidden=false;});

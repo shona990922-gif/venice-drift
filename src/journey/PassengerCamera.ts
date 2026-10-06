@@ -1,5 +1,6 @@
 import { Group, PerspectiveCamera } from 'three';
 import { PointerLook } from '../interaction/PointerLook';
+export const PASSENGER_EYE_HEIGHT = 1.52;
 export class PassengerCamera {
   readonly passenger = new Group();
   readonly lookRig = new Group();
@@ -11,7 +12,7 @@ export class PassengerCamera {
     this.passenger.name = 'PassengerRig';
     this.lookRig.name = 'CameraYawRig';
     this.pitchRig.name = 'CameraPitchRig';
-    this.passenger.position.set(0, 1.34, 1.45);
+    this.passenger.position.set(0, PASSENGER_EYE_HEIGHT, -2.35);
     this.lookRig.rotation.order = 'YXZ';
     root.add(this.passenger);
     this.passenger.add(this.lookRig);

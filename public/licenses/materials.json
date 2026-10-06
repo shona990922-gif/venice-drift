@@ -1,0 +1,141 @@
+[
+  {
+    "id": "plastered_wall_04",
+    "source": "https://polyhaven.com/a/plastered_wall_04",
+    "license": "CC0-1.0",
+    "resolution": "2k",
+    "files": [
+      {
+        "file": "plaster-color.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/plastered_wall_04/plastered_wall_04_diff_2k.jpg",
+        "md5": "895416a6d0f0b41c8a53a3436bed5a05",
+        "bytes": 1465312
+      },
+      {
+        "file": "plaster-normal.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/plastered_wall_04/plastered_wall_04_nor_gl_2k.jpg",
+        "md5": "119d0993d303caadcfe73003db001c42",
+        "bytes": 1760685
+      },
+      {
+        "file": "plaster-arm.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/plastered_wall_04/plastered_wall_04_arm_2k.jpg",
+        "md5": "251fc96b9f3808b8dd26c1410f5870e4",
+        "bytes": 1079967
+      }
+    ]
+  },
+  {
+    "id": "white_sandstone_blocks_02",
+    "source": "https://polyhaven.com/a/white_sandstone_blocks_02",
+    "license": "CC0-1.0",
+    "resolution": "1k",
+    "files": [
+      {
+        "file": "stone-color.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_sandstone_blocks_02/white_sandstone_blocks_02_diff_1k.jpg",
+        "md5": "5a31e6268c764ffccc358420e3aa3fb5",
+        "bytes": 910262
+      },
+      {
+        "file": "stone-normal.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_sandstone_blocks_02/white_sandstone_blocks_02_nor_gl_1k.jpg",
+        "md5": "0de5ad6426e1415bc36d5d31c3a0f179",
+        "bytes": 826220
+      },
+      {
+        "file": "stone-arm.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_sandstone_blocks_02/white_sandstone_blocks_02_arm_1k.jpg",
+        "md5": "16deb112a37a5e9e966609d23f86ef0e",
+        "bytes": 683632
+      }
+    ]
+  },
+  {
+    "id": "medieval_red_brick",
+    "source": "https://polyhaven.com/a/medieval_red_brick",
+    "license": "CC0-1.0",
+    "resolution": "1k",
+    "files": [
+      {
+        "file": "brick-color.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_red_brick/medieval_red_brick_diff_1k.jpg",
+        "md5": "217f3e9db4fa2a89dfa49d5bf5e5bf97",
+        "bytes": 872053
+      },
+      {
+        "file": "brick-normal.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_red_brick/medieval_red_brick_nor_gl_1k.jpg",
+        "md5": "e4e1bde5cf80bd1aa9c4614d2d06ef53",
+        "bytes": 1186400
+      },
+      {
+        "file": "brick-arm.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/medieval_red_brick/medieval_red_brick_arm_1k.jpg",
+        "md5": "b9418925188c756fb86817e6ba7a2120",
+        "bytes": 741039
+      }
+    ]
+  },
+  {
+    "id": "clay_roof_tiles_02",
+    "source": "https://polyhaven.com/a/clay_roof_tiles_02",
+    "license": "CC0-1.0",
+    "resolution": "1k",
+    "files": [
+      {
+        "file": "roof-color.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_02/clay_roof_tiles_02_diff_1k.jpg",
+        "md5": "43c45fa3ac4c68ffb28aa813cec32608",
+        "bytes": 903929
+      },
+      {
+        "file": "roof-normal.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_02/clay_roof_tiles_02_nor_gl_1k.jpg",
+        "md5": "9e24ddc6fbf048291f8e24bfb1f16e6d",
+        "bytes": 990101
+      },
+      {
+        "file": "roof-arm.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_02/clay_roof_tiles_02_arm_1k.jpg",
+        "md5": "b3ecf39f9c8eb803131f84fbfe20e865",
+        "bytes": 564611
+      }
+    ]
+  },
+  {
+    "id": "dark_wooden_planks",
+    "source": "https://polyhaven.com/a/dark_wooden_planks",
+    "license": "CC0-1.0",
+    "resolution": "1k",
+    "files": [
+      {
+        "file": "wood-color.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/dark_wooden_planks/dark_wooden_planks_diff_1k.jpg",
+        "md5": "7ec8fe3e0b84289a4add3b10a54090bb",
+        "bytes": 701221
+      },
+      {
+        "file": "wood-normal.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/dark_wooden_planks/dark_wooden_planks_nor_gl_1k.jpg",
+        "md5": "4093b4023a4270b3a06b762076106d58",
+        "bytes": 658444
+      },
+      {
+        "file": "wood-arm.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/dark_wooden_planks/dark_wooden_planks_arm_1k.jpg",
+        "md5": "5e5911f2c6d4fbce78c995ec7591eaa9",
+        "bytes": 777830
+      }
+    ]
+  },
+  {
+    "id": "kloofendal_48d_partly_cloudy_puresky",
+    "source": "https://polyhaven.com/a/kloofendal_48d_partly_cloudy_puresky",
+    "license": "CC0-1.0",
+    "resolution": "2k",
+    "file": "afternoon-sky.hdr",
+    "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/kloofendal_48d_partly_cloudy_puresky_2k.hdr",
+    "md5": "2eba3a4d7eeb23cbfbeca364c97e7980"
+  }
+]

@@ -1,40 +1,24 @@
-import { Color, DirectionalLight, Fog, HemisphereLight, PMREMGenerator, Scene, Vector3, WebGLRenderer } from 'three';
-import { Sky } from 'three/addons/objects/Sky.js';
+import { Color, DirectionalLight, EquirectangularReflectionMapping, Fog, PMREMGenerator, Scene, Vector3, WebGLRenderer } from 'three';
+import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
+/** One photographic clear-afternoon atmosphere. No weather/time-of-day system. */
 export class SkySystem {
-  readonly sky = new Sky();
-  readonly sun = new DirectionalLight('#fff2de',2.6);
-  readonly direction = new Vector3(-0.48,0.72,-0.44).normalize();
-  readonly environment;
-  constructor(scene:Scene,renderer:WebGLRenderer) {
-    this.sky.scale.setScalar(380);
-    const u=this.sky.material.uniforms;
-    u.turbidity.value=2.3;u.rayleigh.value=1.25;
-    u.mieCoefficient.value=.004;u.mieDirectionalG.value=.78;
-    u.sunPosition.value.copy(this.direction);
-    if(u.cloudCoverage){u.cloudCoverage.value=.23;u.cloudDensity.value=.32;u.cloudElevation.value=.48;}
-    this.sky.layers.enable(1);scene.add(this.sky);
-    const envScene=new Scene();envScene.add(this.sky.clone());
-    const envSky=envScene.children[0] as Sky;
-    // PMREM excludes the solar disc; directional light owns the sun energy.
-    const hadDisc=u.showSunDisc?.value;
-    if(u.showSunDisc)u.showSunDisc.value=0;
-    const generator=new PMREMGenerator(renderer);
-    this.environment=generator.fromScene(envScene,.025,.1,450);
-    if(u.showSunDisc)u.showSunDisc.value=hadDisc;
-    scene.environment=this.environment.texture;scene.environmentIntensity=.09;
-    envSky.removeFromParent();generator.dispose();
-    scene.background=new Color('#cbdce0');scene.fog=new Fog('#cbdce0',110,285);
-    this.sun.castShadow=true;this.sun.shadow.mapSize.set(2048,2048);
-    Object.assign(this.sun.shadow.camera,{left:-55,right:55,top:55,bottom:-55,near:1,far:180});
-    this.sun.shadow.camera.updateProjectionMatrix();
-    this.sun.shadow.bias=-.00012;this.sun.shadow.normalBias=.035;
-    this.sun.layers.enable(1);this.sun.target.layers.enable(1);scene.add(this.sun,this.sun.target);
-    const hemi=new HemisphereLight('#dae6ec','#748070',.35);hemi.layers.enable(1);scene.add(hemi);
-  }
-  update(position:Vector3,time:number) {
-    this.sun.position.copy(position).addScaledVector(this.direction,95);
-    this.sun.target.position.copy(position);this.sun.target.updateMatrixWorld();
-    this.sky.position.set(position.x,0,position.z);
-    if(this.sky.material.uniforms.time)this.sky.material.uniforms.time.value=time;
-  }
+ readonly sun=new DirectionalLight('#fff1d9',4.6);
+ readonly direction=new Vector3(-.72,1.65,.45).normalize();
+ readonly environment={dispose:()=>{}};
+ readonly ready:Promise<void>;
+ constructor(scene:Scene,renderer:WebGLRenderer){
+  scene.background=new Color('#a9cbdc');scene.fog=new Fog('#c1d5db',110,240);
+  this.sun.castShadow=true;this.sun.shadow.mapSize.set(2048,2048);
+  Object.assign(this.sun.shadow.camera,{left:-38,right:38,top:38,bottom:-38,near:1,far:165});
+  this.sun.shadow.camera.updateProjectionMatrix();this.sun.shadow.bias=-.00012;this.sun.shadow.normalBias=.035;
+  this.sun.layers.enable(1);this.sun.target.layers.enable(1);scene.add(this.sun,this.sun.target);
+  this.ready=new HDRLoader().loadAsync(`${import.meta.env.BASE_URL}assets/textures/afternoon-sky.hdr`).then(texture=>{
+   texture.mapping=EquirectangularReflectionMapping;
+   scene.background=texture;scene.backgroundIntensity=1.0;scene.backgroundRotation.y=1.8;
+   const pmrem=new PMREMGenerator(renderer),environment=pmrem.fromEquirectangular(texture);pmrem.dispose();
+   scene.environment=environment.texture;scene.environmentIntensity=1.48;scene.environmentRotation.y=1.8;
+   this.environment.dispose=()=>{environment.dispose();texture.dispose();};
+  });
+ }
+ update(position:Vector3,_time:number){this.sun.position.copy(position).addScaledVector(this.direction,95);this.sun.target.position.copy(position);this.sun.target.updateMatrixWorld();}
 }
