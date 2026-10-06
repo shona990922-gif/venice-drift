@@ -8,96 +8,96 @@
       "file": "canal-00.glb",
       "start": 0,
       "end": 42,
-      "bytes": 2374240,
-      "triangles": 108120
+      "bytes": 2478004,
+      "triangles": 114222
     },
     {
       "index": 1,
       "file": "canal-01.glb",
       "start": 42,
       "end": 84,
-      "bytes": 2344140,
-      "triangles": 107860
+      "bytes": 2312552,
+      "triangles": 106275
     },
     {
       "index": 2,
       "file": "canal-02.glb",
       "start": 84,
       "end": 126,
-      "bytes": 2441940,
-      "triangles": 111816
+      "bytes": 2526000,
+      "triangles": 116229
     },
     {
       "index": 3,
       "file": "canal-03.glb",
       "start": 126,
       "end": 168,
-      "bytes": 2348168,
-      "triangles": 105940
+      "bytes": 2369396,
+      "triangles": 105690
     },
     {
       "index": 4,
       "file": "canal-04.glb",
       "start": 168,
       "end": 210,
-      "bytes": 2470388,
-      "triangles": 114048
+      "bytes": 2538968,
+      "triangles": 117042
     },
     {
       "index": 5,
       "file": "canal-05.glb",
       "start": 210,
       "end": 252,
-      "bytes": 2323584,
-      "triangles": 102664
+      "bytes": 2310624,
+      "triangles": 103427
     },
     {
       "index": 6,
       "file": "canal-06.glb",
       "start": 252,
       "end": 294,
-      "bytes": 2400908,
-      "triangles": 106780
+      "bytes": 2467564,
+      "triangles": 110425
     },
     {
       "index": 7,
       "file": "canal-07.glb",
       "start": 294,
       "end": 336,
-      "bytes": 2245300,
-      "triangles": 98084
+      "bytes": 2279088,
+      "triangles": 99910
     },
     {
       "index": 8,
       "file": "canal-08.glb",
       "start": 336,
       "end": 378,
-      "bytes": 2419388,
-      "triangles": 111620
+      "bytes": 2492576,
+      "triangles": 114618
     },
     {
       "index": 9,
       "file": "canal-09.glb",
       "start": 378,
       "end": 420,
-      "bytes": 2364712,
-      "triangles": 111188
+      "bytes": 2337660,
+      "triangles": 109711
     },
     {
       "index": 10,
       "file": "canal-10.glb",
       "start": 420,
       "end": 462,
-      "bytes": 1231592,
-      "triangles": 58010
+      "bytes": 1307124,
+      "triangles": 61273
     },
     {
       "index": 11,
       "file": "canal-11.glb",
       "start": 462,
       "end": 499.7268851894936,
-      "bytes": 1161148,
-      "triangles": 53090
+      "bytes": 1175156,
+      "triangles": 53404
     }
   ]
 }

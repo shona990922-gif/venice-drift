@@ -28,14 +28,13 @@ export class EnvironmentController {
   // One shared facade material, but a stable different switch-on threshold for
   // each opening. It reads world-space cells, so streaming never changes lights.
   kit.glass.onBeforeCompile=s=>{s.uniforms.uCityLights=this.cityLights;
-   s.vertexShader='varying vec3 vWindowWorld;\n'+s.vertexShader;
-   s.vertexShader=s.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvWindowWorld=(modelMatrix*vec4(position,1.)).xyz;');
-   s.fragmentShader='uniform float uCityLights;varying vec3 vWindowWorld;\n'+s.fragmentShader;
+   s.vertexShader='attribute float _light_seed;varying float vWindowSeed;\n'+s.vertexShader;
+   s.vertexShader=s.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvWindowSeed=_light_seed;');
+   s.fragmentShader='uniform float uCityLights;varying float vWindowSeed;\n'+s.fragmentShader;
    s.fragmentShader=s.fragmentShader.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
-    vec3 cell=floor(vWindowWorld/vec3(2.1,3.1,2.1));
-    float seed=fract(sin(dot(cell,vec3(12.9898,78.233,39.425)))*43758.5453);
+    float seed=vWindowSeed;
     float lit=smoothstep(seed,seed+.12,uCityLights)*smoothstep(0.,.08,uCityLights);
-    totalEmissiveRadiance+=vec3(1.,.46,.14)*lit*.82;`);
+    totalEmissiveRadiance+=vec3(1.,.40,.11)*lit*.55;`);
   };kit.glass.customProgramCacheKey=()=> 'venice-evening-windows-v1';kit.glass.needsUpdate=true;
  }
  setSun(el:number,az:number){this.elevation=el;this.azimuth=az;const e=MathUtils.degToRad(el),a=MathUtils.degToRad(az),h=Math.cos(e);this.direction.set(Math.cos(a)*h,Math.sin(e),Math.sin(a)*h);this.sky.setSun(this.direction);this.water.ocean.setSun(this.direction);}

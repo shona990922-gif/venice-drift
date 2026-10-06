@@ -4,7 +4,7 @@ import type {RouteController} from '../../journey/RouteController';
 /** Metre-scale strip follows the existing canal. Nothing extends under streets. */
 export function makeCanalGeometry(route:RouteController, halfWidth:number, step=.30) {
   const positions:number[]=[],uv:number[]=[],bank:number[]=[],indices:number[]=[];
-  const length=route.length+36,start=-18,n=Math.ceil(length/step),across=Math.ceil(halfWidth*2/step);
+  const length=route.length+80,start=-38,n=Math.ceil(length/step),across=Math.ceil(halfWidth*2/step);
   for(let i=0;i<=n;i++) {
     const s=start+length*i/n,p=route.pointAtDistance(s),t=route.tangentAtDistance(s);
     for(let j=0;j<=across;j++) {

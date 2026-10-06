@@ -40,7 +40,7 @@ export class VenetianKit{
   for(let floor=0;floor<s.floors.length;floor++){
    const y=s.floors[floor];
    for(let j=0;j<s.columns.length;j++){
-    const x=s.columns[j],id=seed+floor*37+j*19;
+    const x=s.columns[j]+(floor>1?(rand(seed+floor)-.5)*.22:0),id=seed+floor*37+j*19;
     const wh=floor===0?1.68:floor===1?(s.type==='gothic'?2.8:2.35):1.9;
     const ww=s.type==='gothic'&&floor===1?1.25:1.02+rand(id)*.16;
     const arch=(s.type!=='house'&&floor===1)||(s.type==='palazzo'&&floor===2);
@@ -85,7 +85,9 @@ export class VenetianKit{
   const frame=this.windowPath(x,y-.10,w+.28,h+.22,arch,gothic);frame.holes.push(new Path(this.windowPath(x,y,w,h,arch,gothic).getPoints()));
   b.add(this.extrusion(frame,.12),this.stone,new Vector3(0,0,.015));
   b.add(this.extrusion(this.windowPath(x,y,w,h,arch,gothic),.04),this.recess,new Vector3(0,0,-.19));
-  b.add(new ShapeGeometry(this.windowPath(x,y+.045,w-.09,h-.09,arch,gothic)),this.glass,new Vector3(0,0,-.14));
+  const pane=new ShapeGeometry(this.windowPath(x,y+.045,w-.09,h-.09,arch,gothic));
+  pane.setAttribute('_light_seed',new Float32BufferAttribute(new Float32Array(pane.attributes.position.count).fill(rand(id+771)),1));
+  b.add(pane,this.glass,new Vector3(0,0,-.14));
   b.box(this.greenDark,.045,h-.08,.055,x,y+h/2,-.09);
   b.box(this.greenDark,w-.05,.045,.055,x,y+h*.44,-.09);
   if(h>2.3)b.box(this.greenDark,w-.05,.045,.055,x,y+h*.76,-.09);
