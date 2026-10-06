@@ -30,6 +30,7 @@ export class JourneyScenery {
   this.collision.push(...b.flush('Bridge '+style));d.flush('Bridge railing '+style);root.position.copy(this.route.pointAtDistance(distance));const t=this.route.tangentAtDistance(distance);root.rotation.y=Math.atan2(-t.x,-t.z);root.name=ROUTE.bridges[style].name;return root;
  }
  private church(){const k=this.kit,b=new GeometryBatch(this.landmark),d=new GeometryBatch(this.landmark,false);const p=this.route.pointAtDistance(ROUTE.landmarkDistance),t=this.route.tangentAtDistance(ROUTE.landmarkDistance),cross=new Vector3(-t.z,0,t.x);this.landmark.position.copy(p.addScaledVector(cross,22));this.landmark.rotation.y=Math.atan2(-t.x,-t.z);this.root.add(this.landmark);
+  b.box(k.stone,23,.70,25,0,0,-5);b.box(k.stone,5.2,1.1,7,-12,.03,-7);
   b.box(k.walls[3],18,13,14,0,6.5,-5);b.box(k.stone,19,.65,15,0,13.2,-5);b.cylinder(k.stone,6.1,6.4,3.1,0,14.5,-5,32);
   const points=[];for(let i=0;i<=24;i++){const a=i/24*Math.PI/2;points.push(new Vector2(Math.cos(a)*6.2,Math.sin(a)*8.1));}b.add(new LatheGeometry(points,48),k.roof,new Vector3(0,15.9,-5));b.cylinder(k.stone,.65,.85,2.5,0,24,-5,16);b.cylinder(k.iron,.03,.04,1.8,0,25.9,-5,7);b.box(k.iron,1.05,.07,.06,0,26.25,-5);
   for(const x of [-7.3,-4.3,4.3,7.3]){b.cylinder(k.stone,.33,.41,10,x,5.4,2.5,12);b.box(k.stone,.95,.4,.95,x,.56,2.5);b.box(k.stone,.95,.3,.95,x,10.5,2.5);}

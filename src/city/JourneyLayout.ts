@@ -8,6 +8,7 @@ export const kitMaterials=(kit:VenetianKit)=>{const map=new Map<string,MeshStand
 export function bakeKit(){const set=Object.fromEntries(['plaster','stone','brick','roof','wood'].map(n=>[n,{color:new Texture(),normal:new Texture(),arm:new Texture()}])) as PBRSet;const k=new VenetianKit(set);kitMaterials(k);return k;}
 const motifs=[{type:'house',color:2,h:12.5,levels:[1.1,4.2,7.4,10.2]},{type:'gothic',color:4,h:16.1,levels:[1.3,5.0,9,12.8]},{type:'palazzo',color:0,h:15.5,levels:[1.5,5.1,8.8,12.1]},{type:'house',color:1,h:11.2,levels:[1.2,4.5,8.1]},{type:'palazzo',color:3,h:15.9,levels:[1.4,5.5,9.5,13]},{type:'house',color:5,h:13.3,levels:[1.2,4.8,8.2,10.7]}]as const;
 export function facadeSpecs(chunk:number){const out:FacadeSpec[]=[];for(const side of [-1,1])for(let j=0;j<3;j++){
+ if(side===1&&chunk*CHUNK_LENGTH+7+j*14>425)continue;
  const id=chunk*23+j*7+(side===1?107:3),motif=motifs[(chunk*3+j+(side===1?2:0))%motifs.length],width=12.4+rand(id)*1.3;
  const columns=Array.from({length:4},(_,i)=>(i-1.5)*(2.65+rand(id+1)*.3)+(i%2?.12:0));
  out.push({name:`${motif.type} ${chunk}-${side}-${j}`,s:chunk*CHUNK_LENGTH+7+j*14,side,width,height:motif.h+(rand(id+4)-.5)*1.1,color:motif.color,floors:[...motif.levels],columns,type:motif.type,seed:id});

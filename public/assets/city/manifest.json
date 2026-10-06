@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "length": 499.7268830258048,
+  "length": 499.7268851894936,
   "chunkLength": 42,
   "chunks": [
     {
@@ -8,7 +8,7 @@
       "file": "canal-00.glb",
       "start": 0,
       "end": 42,
-      "bytes": 2374248,
+      "bytes": 2374240,
       "triangles": 108120
     },
     {
@@ -24,7 +24,7 @@
       "file": "canal-02.glb",
       "start": 84,
       "end": 126,
-      "bytes": 2441936,
+      "bytes": 2441940,
       "triangles": 111816
     },
     {
@@ -40,7 +40,7 @@
       "file": "canal-04.glb",
       "start": 168,
       "end": 210,
-      "bytes": 2470380,
+      "bytes": 2470388,
       "triangles": 114048
     },
     {
@@ -48,7 +48,7 @@
       "file": "canal-05.glb",
       "start": 210,
       "end": 252,
-      "bytes": 2323588,
+      "bytes": 2323584,
       "triangles": 102664
     },
     {
@@ -56,7 +56,7 @@
       "file": "canal-06.glb",
       "start": 252,
       "end": 294,
-      "bytes": 2400916,
+      "bytes": 2400908,
       "triangles": 106780
     },
     {
@@ -64,7 +64,7 @@
       "file": "canal-07.glb",
       "start": 294,
       "end": 336,
-      "bytes": 2245312,
+      "bytes": 2245300,
       "triangles": 98084
     },
     {
@@ -72,7 +72,7 @@
       "file": "canal-08.glb",
       "start": 336,
       "end": 378,
-      "bytes": 2419400,
+      "bytes": 2419388,
       "triangles": 111620
     },
     {
@@ -80,7 +80,7 @@
       "file": "canal-09.glb",
       "start": 378,
       "end": 420,
-      "bytes": 2364704,
+      "bytes": 2364712,
       "triangles": 111188
     },
     {
@@ -88,16 +88,16 @@
       "file": "canal-10.glb",
       "start": 420,
       "end": 462,
-      "bytes": 2367760,
-      "triangles": 111496
+      "bytes": 1231592,
+      "triangles": 58010
     },
     {
       "index": 11,
       "file": "canal-11.glb",
       "start": 462,
-      "end": 499.7268830258048,
-      "bytes": 2241640,
-      "triangles": 102608
+      "end": 499.7268851894936,
+      "bytes": 1161148,
+      "triangles": 53090
     }
   ]
 }
