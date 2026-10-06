@@ -1,0 +1,32 @@
+[
+  {
+    "id": "canal-water",
+    "author": "krakenkraft",
+    "title": "Nice burbling water in a canale in Venice",
+    "source": "https://freesound.org/people/krakenkraft/sounds/638067/",
+    "download": "https://cdn.freesound.org/previews/638/638067_6974482-hq.mp3",
+    "license": "CC0-1.0",
+    "sourceSha256": "b3048b0b9fffaa53886a927f3579a6bf065bdda9038b5ff4a1b06257782ea936",
+    "processing": "trimmed, high-pass/low-pass filtered, normalized and transcoded; source preview used where public HQ preview is available"
+  },
+  {
+    "id": "venice-ambience",
+    "author": "krakenkraft",
+    "title": "Venice waterclaps tourist ambience",
+    "source": "https://freesound.org/people/krakenkraft/sounds/730929/",
+    "download": "https://cdn.freesound.org/previews/730/730929_6974482-hq.mp3",
+    "license": "CC0-1.0",
+    "sourceSha256": "04780cce51fea717df2d6bc5bb9185e2ccdab6de8924af9082f1525e5738c704",
+    "processing": "trimmed, high-pass/low-pass filtered, normalized and transcoded; source preview used where public HQ preview is available"
+  },
+  {
+    "id": "birds",
+    "author": "isaiah658",
+    "title": "Ambient Bird Sounds",
+    "source": "https://opengameart.org/content/ambient-bird-sounds",
+    "download": "https://opengameart.org/sites/default/files/birds-isaiah658.ogg",
+    "license": "CC0-1.0",
+    "sourceSha256": "359e4e3f9da9d75aac64cede511c7e3ef8b461f9d9f8c230f8f80e44c4b3e35f",
+    "processing": "trimmed, high-pass/low-pass filtered, normalized and transcoded; source preview used where public HQ preview is available"
+  }
+]

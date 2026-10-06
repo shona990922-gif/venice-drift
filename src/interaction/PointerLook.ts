@@ -35,7 +35,7 @@ export class PointerLook extends LookState {
     this.pointer = e.pointerId;
     this.x = e.clientX; this.y = e.clientY;
     this.lastPointerType = e.pointerType;
-    this.element.setPointerCapture(e.pointerId);
+    try { this.element.setPointerCapture(e.pointerId); } catch { /* Synthetic QA events / released native contact have no active capture. */ }
     this.element.classList.add('dragging');
     e.preventDefault();
   };

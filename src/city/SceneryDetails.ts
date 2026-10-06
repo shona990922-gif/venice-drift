@@ -4,7 +4,7 @@ import {BoatController} from '../journey/BoatController';
 import {GeometryBatch} from './GeometryBatch';
 import {VenetianKit} from './VenetianKit';
 export class SceneryDetails {
- readonly root=new Group();private groups:{distance:number;group:Group}[]=[];private lamps:PointLight[]=[];
+ readonly root=new Group();private groups:{distance:number;group:Group}[]=[];private lamps:PointLight[]=[];private ends:{distance:number;near:Group;far:Group}[]=[];
  private ownMaterials:MeshStandardMaterial[]=[];
  constructor(readonly route:RouteController,readonly kit:VenetianKit){
   for(const [s,side]of [[24,-1],[119,1],[236,-1],[339,1],[410,-1],[466,1]])this.moor(s,side);
@@ -48,12 +48,15 @@ export class SceneryDetails {
    for(let x=-4.8;x<=4.8;x+=3.2)for(let y=1.4;y<h-1;y+=3.2){b.box(k.stone,1.23,2.04,.12,x,y+1,.06);b.box(k.greenDark,.93,1.8,.15,x,y+1,.14);}
   }
   for(const s of [-36,this.route.length+26]){
-   const p=this.route.pointAtDistance(s),t=this.route.tangentAtDistance(s);b.transform.makeRotationY(Math.atan2(-t.x,-t.z)+(s<0?Math.PI:0)).setPosition(p);
-   for(let i=-3;i<=3;i++){const h=8+(i+4)%3*2.6;b.box(k.walls[(i+7)%6],9.6,h,6,i*10,h/2,-4);b.box(k.roof,9.9,.6,6.5,i*10,h+.2,-4);
-    for(let x=-2.7;x<=2.7;x+=2.7)for(let y=2;y<h-1;y+=3.2)b.box(k.greenDark,.83,1.65,.06,i*10+x,y,.01);
-   }
+   const p=this.route.pointAtDistance(s),t=this.route.tangentAtDistance(s),near=new Group(),far=new Group();near.position.copy(p);far.position.copy(p);near.rotation.y=far.rotation.y=Math.atan2(-t.x,-t.z)+(s<0?Math.PI:0);this.root.add(near,far);this.ends.push({distance:s,near,far});
+   const nb=new GeometryBatch(near),nd=new GeometryBatch(near,false),fb=new GeometryBatch(far);
+   for(let i=-3;i<=3;i++){const h=12+(i+4)%3*1.5;nb.transform.makeTranslation(i*10,0,0);nd.transform.copy(nb.transform);
+    k.facade(nb,nd,{name:'Terminal palazzo '+i,s,side:1,width:9.7,height:h,color:(i+7)%6,floors:h>13?[1.2,4.6,7.8,10.8]:[1.2,4.6,8.1],columns:[-3.2,-1.1,1.1,3.2],type:i%2===0?'palazzo':'house',seed:900+i*17});
+    fb.box(k.walls[(i+7)%6],9.7,h,8,i*10,h/2,-4);fb.box(k.roof,10,.6,8.2,i*10,h+.2,-4);
+    for(let x=-3.2;x<=3.2;x+=2.13)for(let y=1.2;y<h-2;y+=3.2)fb.box(k.greenDark,.93,1.8,.06,i*10+x,y+1,.01);
+   }nb.flush('Terminal elevations').forEach(m=>m.castShadow=false);nd.flush('Terminal details').forEach(m=>m.castShadow=false);fb.flush('Terminal silhouettes').forEach(m=>m.castShadow=false);
   }const meshes=b.flush('Distant closing elevations');meshes.forEach(m=>m.castShadow=false);
  }
- update(distance:number,lightLevel:number){for(const {distance:s,group}of this.groups)group.visible=Math.abs(s-distance)<95;for(const lamp of this.lamps)lamp.intensity=lightLevel*5.5;}
+ update(distance:number,lightLevel:number){for(const e of this.ends){const d=Math.abs(e.distance-distance);e.near.visible=d<90;e.far.visible=!e.near.visible;}for(const {distance:s,group}of this.groups)group.visible=Math.abs(s-distance)<95;for(const lamp of this.lamps)lamp.intensity=lightLevel*5.5;}
  dispose(){this.root.traverse(o=>{if(o instanceof Mesh)o.geometry.dispose();});for(const m of new Set(this.ownMaterials))m.dispose();this.root.removeFromParent();}
 }
