@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1e3734" />
+  <meta name="description" content="坐上贡多拉，沿水巷缓缓前行。Venice Drift — 自动乘船与自由环视的 WebGL2 体验。ROUND 01 技术原型。" />
+  <title>Venice Drift — 威尼斯水巷漫游</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+</head>
+<body>
+  <canvas id="scene" aria-label="贡多拉乘坐视角。鼠标按住拖动或单指滑动环视。" tabindex="0"></canvas>
+  <div id="loading"><span class="loading-mark"></span><p>水巷正在醒来<span>Preparing the canal</span></p></div>
+  <div id="app">
+    <header><a class="wordmark" href="./" aria-label="Venice Drift 重新开始"><svg viewBox="0 0 50 28" aria-hidden="true"><path d="M3 17Q24 31 47 9M9 17Q24 24 43 13M24 5v12M20 10h9"/></svg><span>VENICE DRIFT</span></a><div class="top-actions"><div class="quality-control"><button id="quality-toggle" aria-haspopup="true" aria-expanded="false" title="画质"><span class="quality-dot"></span><span id="quality-label">Auto</span></button><div id="quality-menu" hidden><span class="menu-label">画面质量</span><button data-quality="auto">自动适应 <small>Auto</small></button><button data-quality="high">高 <small>High · 1024²</small></button><button data-quality="medium">中 <small>Medium · 512²</small></button><button data-quality="low">低 <small>Low · 256²</small></button><p>所有档位均保留动态倒影</p></div></div><button id="fullscreen" title="全屏" aria-label="进入全屏"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/></svg></button></div></header>
+    <main id="start-screen">
+      <div class="intro"><p class="eyebrow"><span></span> A SLOW JOURNEY THROUGH WATER</p><h1>Venice<br><em>Drift.</em></h1><p class="chinese-title">威尼斯水巷漫游</p><p class="intro-copy">坐下来，让水巷缓缓经过。<br>船会自行前行，你只需要环顾四周。</p><button id="start-journey" class="start-button" disabled><span>Start Journey <small>开始漫游</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-5-5 5 5-5 5"/></svg></button><p class="interaction-note"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="17" rx="5"/><path d="M12 3v5M3 12l-2 2 2 2m18-4 2 2-2 2"/></svg><span id="entry-hint">按住鼠标拖动，自由环视</span></p></div>
+      <div class="phase-note"><span>CANAL STUDY — 01</span><p>水面 · 航行 · 视线</p><small>技术白盒 / 非最终美术</small></div>
+      <footer><span>TAKE YOUR TIME.</span><button id="open-debug">ROUND 01 · 技术检查 <span>↗</span></button></footer>
+    </main>
+    <div id="journey-hint" role="status"><span class="hint-orbit">↔</span><div><strong id="ride-hint">Drag to look around</strong><span>船会自行前进，自在看看四周</span></div></div>
+    <aside id="debug" hidden aria-label="技术检查面板">
+      <div class="debug-heading"><span><i></i> LIVE DIAGNOSTICS</span><button id="close-debug" aria-label="关闭调试面板">×</button></div>
+      <div class="big-stats"><div><b id="stat-fps">—</b><small>FPS</small></div><div><b id="stat-calls">—</b><small>DRAW CALLS</small></div><div><b id="stat-triangles">—</b><small>TRIANGLES</small></div></div>
+      <p class="stat-caption">实际合计 · 主画面 + 反射 + 阴影</p>
+      <dl id="debug-details"></dl>
+      <div class="debug-controls"><label><input id="route-toggle" type="checkbox"> 显示航线</label><button id="jump-bridge">定位桥前</button><button id="restart">返回起点</button></div>
+      <p class="debug-foot">D 键显示 / 隐藏 · 定位按钮仅用于技术验收</p>
+    </aside>
+    <div id="toast" role="status"></div>
+  </div>
+  <section id="error" hidden role="alert"><h2>暂时无法进入水巷</h2><p id="error-message"></p><button onclick="location.reload()">重新加载</button></section>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

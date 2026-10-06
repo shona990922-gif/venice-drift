@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.DS_Store
+.openai/*.local.*
+test-results/
+playwright-report/

@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-06",
+  "browser": "153.0.8010.55",
+  "desktop": {
+    "automaticTravel": {
+      "seconds": 3,
+      "metres": 4.455739819612198
+    },
+    "mouseLook": {
+      "yaw": -0.8852436626371455,
+      "retainedYaw": -0.8853119394158606,
+      "continuedMetres": 2.4270198192366372
+    },
+    "performance": {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "frames": 359,
+      "averageFps": 60.00334280461309,
+      "p95FrameMs": 16.700000000000728,
+      "snapshot": {
+        "started": true,
+        "paused": false,
+        "webgl2": true,
+        "elapsed": 18.94919999999985,
+        "distance": 24.42773444937677,
+        "totalDistance": 24.42773444937704,
+        "routeLength": 259.49389123020774,
+        "speed": 1.2917129623396453,
+        "boatPosition": [
+          -15.99829950669045,
+          0,
+          10.019617742293766
+        ],
+        "boatYaw": -0.016405947328527955,
+        "cameraPosition": [
+          -16.022087063192917,
+          1.3430152631157428,
+          11.469422609217464
+        ],
+        "cameraWorldQuaternion": [
+          -0.012704617193444089,
+          -0.011969217787779238,
+          0.00012076804106141911,
+          0.9998476463654837
+        ],
+        "lookYaw": -2.679627894737144e-34,
+        "lookPitch": -0.024999999999999994,
+        "targetYaw": 0,
+        "targetPitch": -0.025,
+        "lastPointerType": "mouse",
+        "heave": 0.005025438526237865,
+        "roll": 0.0018085914412947922,
+        "pitch": -0.0011577719236521395,
+        "bridgeDistance": 2.5722655506232286,
+        "fps": 60.00774293457239,
+        "frameMs": 16.664516129032208,
+        "drawCalls": 169,
+        "triangles": 156725,
+        "textureCount": 5,
+        "geometryCount": 64,
+        "reflectionResolution": 1024,
+        "reflectionUpdates": 1136,
+        "reflectionInterval": 1,
+        "quality": "high",
+        "qualityTier": "high",
+        "pixelRatio": 1,
+        "currentChunk": "Canal_A",
+        "loadedChunks": [
+          "Canal_A (resident whitebox)",
+          "Canal_B (resident whitebox)",
+          "Canal_C (resident whitebox)",
+          "Canal_D (resident whitebox)"
+        ]
+      }
+    },
+    "bridge": {
+      "under": true,
+      "exit": true,
+      "sampleCount": 21,
+      "maxObservedSampleStepMetres": 3.8836472270633635,
+      "recordedFrames": 194,
+      "startDistance": 20.049865017659783,
+      "endDistance": 34.249105516443535
+    },
+    "low": {
+      "resolution": 256,
+      "interval": 2,
+      "updatesIn1_5s": 48
+    }
+  },
+  "mobile": {
+    "emulation": true,
+    "physicalDeviceTested": false,
+    "viewport": [
+      390,
+      844
+    ],
+    "touchYawChange": 1.1063869158913615,
+    "continuedDistance": 3.313279230268165,
+    "mediumSnapshot": {
+      "started": true,
+      "paused": false,
+      "webgl2": true,
+      "elapsed": 6.699608000000028,
+      "distance": 9.029606695544828,
+      "totalDistance": 9.029606695544745,
+      "routeLength": 259.49389123020774,
+      "speed": 1.4669960384418832,
+      "boatPosition": [
+        -16.41687930752088,
+        0,
+        25.404407314292193
+      ],
+      "boatYaw": 0.06504373205741529,
+      "cameraPosition": [
+        -16.322632383726877,
+        1.3461321348782238,
+        26.851341147387323
+      ],
+      "cameraWorldQuaternion": [
+        -0.11164100975492681,
+        0.556182607951375,
+        0.07575754257450347,
+        0.8200353567355372
+      ],
+      "lookYaw": 1.1063869158913615,
+      "lookPitch": -0.27086375908696925,
+      "targetYaw": 1.1063869780033615,
+      "targetPitch": -0.27086377288963603,
+      "lastPointerType": "touch",
+      "heave": 0.010220224797039537,
+      "roll": -0.0005190839832972489,
+      "pitch": 0.00041729564386933305,
+      "bridgeDistance": 17.970393304455172,
+      "fps": 60.00774293457214,
+      "frameMs": 16.664516129032272,
+      "drawCalls": 111,
+      "triangles": 106007,
+      "textureCount": 5,
+      "geometryCount": 64,
+      "reflectionResolution": 512,
+      "reflectionUpdates": 202,
+      "reflectionInterval": 2,
+      "quality": "auto",
+      "qualityTier": "medium",
+      "pixelRatio": 1.25,
+      "currentChunk": "Canal_A",
+      "loadedChunks": [
+        "Canal_A (resident whitebox)",
+        "Canal_B (resident whitebox)",
+        "Canal_C (resident whitebox)",
+        "Canal_D (resident whitebox)"
+      ]
+    },
+    "lowSnapshot": {
+      "started": true,
+      "paused": false,
+      "webgl2": true,
+      "elapsed": 9.116108000000025,
+      "distance": 12.629570685560509,
+      "totalDistance": 12.629570685560152,
+      "routeLength": 259.49389123020774,
+      "speed": 1.5101297279367523,
+      "boatPosition": [
+        -16.498484918880205,
+        0,
+        21.806252950391
+      ],
+      "boatYaw": -0.011849883723113942,
+      "cameraPosition": [
+        -16.515666848158446,
+        1.3357962390015576,
+        23.256151147267687
+      ],
+      "cameraWorldQuaternion": [
+        -0.11566377536747537,
+        0.5203686179930177,
+        0.07207439261797433,
+        0.8429968412779072
+      ],
+      "lookYaw": 1.1063869780033613,
+      "lookPitch": -0.2708637728896359,
+      "targetYaw": 1.1063869780033615,
+      "targetPitch": -0.27086377288963603,
+      "lastPointerType": "touch",
+      "heave": -0.007006268330737419,
+      "roll": 0.009305727878810335,
+      "pitch": -0.0003463865707798575,
+      "bridgeDistance": 14.370429314439491,
+      "fps": 59.99999999999997,
+      "frameMs": 16.666666666666675,
+      "drawCalls": 112,
+      "triangles": 106473,
+      "textureCount": 5,
+      "geometryCount": 64,
+      "reflectionResolution": 256,
+      "reflectionUpdates": 274,
+      "reflectionInterval": 2,
+      "quality": "low",
+      "qualityTier": "low",
+      "pixelRatio": 1,
+      "currentChunk": "Canal_A",
+      "loadedChunks": [
+        "Canal_A (resident whitebox)",
+        "Canal_B (resident whitebox)",
+        "Canal_C (resident whitebox)",
+        "Canal_D (resident whitebox)"
+      ]
+    }
+  },
+  "errors": []
+}
