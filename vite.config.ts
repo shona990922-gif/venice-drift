@@ -38,7 +38,16 @@ const evidence: Connect.NextHandleFunction = async (req, res, next) => {
 };
 export default defineConfig({
   base: "./",
-  build: { target: "es2022", chunkSizeWarningLimit: 850 },
+  build: {
+    target: "es2022",
+    chunkSizeWarningLimit: 850,
+    rollupOptions: {
+      input: {
+        journey: resolve("index.html"),
+        atmosphere: resolve("environment-lab/index.html"),
+      },
+    },
+  },
   server: {
     port: 5188,
     strictPort: true,

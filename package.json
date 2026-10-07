@@ -7,13 +7,14 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run tests",
     "typecheck": "tsc --noEmit",
     "build:city": "node scripts/build-city.mjs",
     "lint": "eslint src tests scripts vite.config.ts",
     "format": "prettier --write src tests scripts *.ts *.js *.html"
   },
   "dependencies": {
+    "@takustaqu/atmosphere": "0.3.2",
     "three": "0.185.1"
   },
   "devDependencies": {

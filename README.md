@@ -1,5 +1,7 @@
 # Venice Drift
 
+**Current scope:** desktop only. Mobile adaptation and mobile acceptance are paused at the user’s request; existing quality tiers remain available without a claim of mobile readiness.
+
 A slow gondola journey through a composed Venetian canal district. Settle into the passenger seat, look around, and let the city move past. Daylight gradually becomes golden hour and sunset; the boat disturbs reflected architecture and the sun's path across the water.
 
 ## Run
@@ -39,7 +41,7 @@ Three.js, TypeScript, Vite and WebGL2 power the scene. WaterThreeJS's original G
 
 The curved canal mesh, dark bed and reduced long waves adapt that ocean renderer to this journey. Planar reflection is the selected canal mode because façades and bridges often lie outside the screen. SSR and hybrid integration remain available in the water module for development; they are not both rendered unconditionally.
 
-Four gondola contact emitters drive the credited height/velocity solver in a moving, world-anchored domain. The resulting normal changes affect reflection, refraction and sun highlights. Stopping emissions lets the wake decay; there is no foam overlay or painted V-shaped texture.
+Ten hull-volume samples (six on Low), plus weak bow and stern impulses, drive the credited height/velocity solver in a 24 m moving, world-anchored domain. The resulting normal changes affect reflection, refraction and sun highlights. Stopping emissions lets the wake decay; there is no foam overlay or painted V-shaped texture.
 
 A unified `EnvironmentController` drives the sun, analytic sky, cloud tint, fog, environment lighting, exposure, water environment and warm city lights. The water body remains blue-green at sunset. Linear HDR is tone-mapped with the source ACES implementation and encoded to sRGB once.
 
@@ -68,4 +70,14 @@ The separate `water-lab/` project and source checkpoint preserve the original A/
 
 See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for WaterThreeJS, the heightfield solver, planar-reflection reference, Three.js, meshoptimizer, Poly Haven textures and CC0 field recordings. Required notices are shipped in `dist/licenses/`.
 
-No paid models, commercial music, account system, driving mode, tasks or multiplayer are included. Light rain is deliberately deferred; this release ends at sunset rather than full night.
+## Atmosphere and dynamic-water lab
+
+Open `/environment-lab/` for **Day / Sunset / Rain** manual presets. Night and Night Rain were removed; twilight remains a bright colour reference, not a night mode. Sun, source cloud genera, exposure, environmental fill and warm lamps can be adjusted together. Poly Haven's three CC0 HDRIs are available inside the same ACES pipeline for qualitative colour comparison.
+
+The lab uses the actual `@takustaqu/atmosphere` shader, not a re-created look. Its sky is art-directed, rather than a physical atmosphere solver. The formal journey retains its established environment sequence; the new manual atmosphere and rain remain isolated in this lab. `procedural-clouds-threejs` is not stacked on top of the current clouds.
+
+Dynamic Water V3 is enabled in the journey; `?water=v2` preserves the previous interaction implementation for rollback and comparison. Both paths share the same WaterThreeJS optical tuning. V3's debug views and GPU tests live only in the lab. Use `?quality=low&halfFloat` to inspect the half-float compatibility path. Rain impacts and hull displacement enter the same propagating GPU field, then modify the existing water normals and optics.
+
+See [the atmosphere module map](docs/atmosphere-lab/README.md) and [V3 implementation and measured limitations](docs/dynamic-water-v3.md). Local evidence is saved through the lab's capture and diagnostic controls. The forced half-float test and a mobile viewport do not certify a physical iOS device.
+
+No paid models, commercial music, account system, driving mode, tasks or multiplayer are included. The experience ends at sunset rather than full night.

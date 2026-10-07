@@ -1,0 +1,29 @@
+[
+  {
+    "id": "venice_sunrise",
+    "source": "https://polyhaven.com/a/venice_sunrise",
+    "license": "CC0-1.0",
+    "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/venice_sunrise_1k.hdr",
+    "file": "assets/atmosphere-references/venice_sunrise_1k.hdr",
+    "bytes": 1521415,
+    "sha256": "97cb218196e84dc0212079a8b375d8792071c3729e910aab04eea6d8eb6e261e"
+  },
+  {
+    "id": "venice_sunset",
+    "source": "https://polyhaven.com/a/venice_sunset",
+    "license": "CC0-1.0",
+    "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/venice_sunset_1k.hdr",
+    "file": "assets/atmosphere-references/venice_sunset_1k.hdr",
+    "bytes": 1440400,
+    "sha256": "92fe2b29b1957828fb8925a57633540bbba5bf380d9285ed553443e834249352"
+  },
+  {
+    "id": "twilight_sunset",
+    "source": "https://polyhaven.com/a/twilight_sunset",
+    "license": "CC0-1.0",
+    "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/twilight_sunset_1k.hdr",
+    "file": "assets/atmosphere-references/twilight_sunset_1k.hdr",
+    "bytes": 1654094,
+    "sha256": "ecf14c0f2a3850e48f51dcf4fd601829f2511120fbea87b03fd039dd3b0d0937"
+  }
+]

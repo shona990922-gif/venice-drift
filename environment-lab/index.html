@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venice Drift · Atmosphere Lab</title>
+  </head>
+  <body>
+    <canvas id="scene" aria-label="Atmosphere 实验场景，可拖动环视"></canvas>
+    <header>
+      <a href="../">VENICE DRIFT</a><span>ATMOSPHERE LAB</span
+      ><button id="panel-toggle" aria-expanded="true">收起面板</button>
+    </header>
+    <div id="view-label">VENICE CANAL / MANUAL ENVIRONMENT</div>
+    <aside id="panel">
+      <div class="intro">
+        <span class="eyebrow">环境手动控制 / 01</span>
+        <h1>同一条河，<br />三种光景。</h1>
+        <p>
+          拖动环视。太阳、天空、照明与水面倒影同步响应。这里的设置不会改变正式旅程。
+        </p>
+      </div>
+      <div id="presets" role="group" aria-label="环境预设"></div>
+      <p id="preset-note">手动模式 · 时间不会随航程推进</p>
+      <div class="toolbar">
+        <button id="play">开始航行</button><button id="hero">夕阳取景点</button
+        ><button id="bridge">桥下取景点</button>
+      </div>
+      <label class="select-row"
+        >视图<select id="view" aria-label="视图">
+          <option value="canal">运河场景</option>
+          <option value="sky">只看天空</option>
+          <option value="reference">Poly Haven HDRI 参考</option>
+        </select></label
+      >
+      <details id="dynamic-controls" open>
+        <summary>Dynamic Water V3</summary>
+        <label class="select-row"
+          >诊断视图<select id="ripple-view" aria-label="动态水诊断">
+            <option value="final">Final Water</option>
+            <option value="height">Ripple Height · isolated</option>
+            <option value="normal">Ripple Normal · isolated</option>
+            <option value="mask">Canal Mask</option>
+            <option value="reflection">Reflection Only</option>
+            <option value="refraction">Refraction Only</option>
+            <option value="glitter">Sun Glitter Only · GGX</option>
+          </select></label
+        >
+        <div class="toolbar">
+          <label
+            ><input id="boat-ripple" type="checkbox" checked /> Boat
+            Ripple</label
+          ><label
+            ><input id="rain-ripple" type="checkbox" checked /> Rain
+            Ripple</label
+          ><label
+            ><input id="rain-particles" type="checkbox" checked /> Rain
+            Particles</label
+          ><label
+            ><input id="base-wave" type="checkbox" checked /> Base Waves</label
+          ><label
+            ><input id="micro-wave" type="checkbox" checked /> Micro
+            Normal</label
+          ><label><input id="ssr" type="checkbox" checked /> SSR</label
+          ><label
+            ><input id="gizmos" type="checkbox" /> Emitters / Window</label
+          >
+        </div>
+        <div class="toolbar">
+          <button id="rain-on">Light Rain</button
+          ><button id="rain-off">Clear</button
+          ><button id="drop">单次落水</button
+          ><button id="backward">回看尾流</button
+          ><button id="boat-only">Boat Interaction Only</button
+          ><button id="rain-only">Rain Ripple Only</button>
+        </div>
+        <div class="toolbar">
+          <button id="rain-check">验证雨滴光学与停雨</button
+          ><button id="rain-sound">雨声：关</button
+          ><button id="solver-check">验证 GPU 波动方程</button
+          ><button id="optics-check">验证倒影与衰减</button
+          ><button id="profile">三组性能对比</button>
+        </div>
+        <pre id="ripple-stats"></pre>
+        <pre id="ripple-result"></pre>
+      </details>
+      <div id="sliders"></div>
+      <details open>
+        <summary>Poly Haven 色彩校准</summary>
+        <p class="caption">
+          三张原始 CC0 HDRI，共用 ACES 输出。不把照片中的城市当作场景资产。
+        </p>
+        <label class="select-row"
+          >参考<select id="reference" aria-label="HDRI 参考">
+            <option value="venice_sunrise">Venice Sunrise · Golden Hour</option>
+            <option value="venice_sunset" selected>
+              Venice Sunset · Sunset
+            </option>
+            <option value="twilight_sunset">Twilight Sunset · 暮色</option>
+          </select></label
+        >
+        <div class="toolbar">
+          <button id="show-reference">查看 HDRI</button
+          ><button id="return-scene">返回场景</button>
+        </div>
+        <div class="toolbar">
+          <button id="golden-study">Golden 校准点</button
+          ><button id="twilight-study">暮色校准点</button>
+        </div>
+        <label class="range-row"
+          >参考旋转<input
+            id="reference-yaw"
+            aria-label="参考旋转"
+            type="range"
+            min="0"
+            max="360"
+            step="1"
+            value="0"
+          /><output id="reference-yaw-value">0°</output></label
+        >
+        <p id="reference-status" class="caption">
+          Venice Sunset：金色地平线、克制晚霞。
+        </p>
+        <a
+          id="reference-link"
+          href="https://polyhaven.com/a/venice_sunset"
+          target="_blank"
+          rel="noreferrer"
+          >查看 Poly Haven 原始来源 ↗</a
+        >
+      </details>
+      <details open>
+        <summary>记录与比较</summary>
+        <div class="toolbar">
+          <button id="reset">重置当前预设</button
+          ><button id="export">导出 JSON</button
+          ><button id="capture">保存截图</button
+          ><button id="measure">记录状态</button>
+        </div>
+        <pre id="measurement"></pre>
+        <p class="caption">
+          仅保留白天、夕阳与轻雨。晚霞保持明亮，不进入黑夜。
+        </p>
+        <a
+          href="http://127.0.0.1:8791/examples/controller/"
+          target="_blank"
+          rel="noreferrer"
+          >原版 Atmosphere 手动控制器 ↗</a
+        >
+      </details>
+      <footer>
+        takustaqu/atmosphere 0.3.2 · WaterThreeJS optics + Dynamic V3<br />procedural-clouds：暂不叠加
+      </footer>
+    </aside>
+    <div id="status" role="status">正在载入天空与运河…</div>
+    <div id="stats"></div>
+    <script type="module" src="../src/environment/lab/main.ts"></script>
+  </body>
+</html>

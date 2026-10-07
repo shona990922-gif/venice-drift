@@ -17,6 +17,7 @@ export const materialWarnings: string[] = [];
 export async function loadMaterials(
   low = false,
   simulateMissing = false,
+  assetBase = import.meta.env.BASE_URL,
 ): Promise<PBRSet> {
   const loader = new TextureLoader();
   const entries = await Promise.all(
@@ -29,7 +30,7 @@ export async function loadMaterials(
               if (simulateMissing && name === "plaster" && type === "color")
                 throw new Error("QA missing material");
               t = await loader.loadAsync(
-                `${import.meta.env.BASE_URL}assets/${low && name === "plaster" ? "textures-low" : "textures"}/${name}-${type}.jpg`,
+                `${assetBase}assets/${low && name === "plaster" ? "textures-low" : "textures"}/${name}-${type}.jpg`,
               );
             } catch {
               materialWarnings.push(`${name}-${type}: using neutral fallback`);

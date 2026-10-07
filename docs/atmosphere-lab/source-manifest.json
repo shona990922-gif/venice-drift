@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/takustaqu/atmosphere",
+  "commit": "92b6b6f69f4399597851d32af4abe4bb3bede81e",
+  "npm": "@takustaqu/atmosphere@0.3.2",
+  "rendererSHA256": "7ebc06d5d0e08397058bcb6a9fd28a1f35fe108696d5f5be546f250186a0335a",
+  "fragmentSHA256": "99a8db34f6c3c11f92c766b6abfa7554d019bcc1d52c95c4d83e6235f75ab250",
+  "note": "fragment.glsl is the evaluated FRAG template, unchanged. noise.ts is copied unchanged. Three.js adapter hooks live outside vendor."
+}

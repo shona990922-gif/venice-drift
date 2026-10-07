@@ -29,6 +29,7 @@ export class CityChunkManager {
   constructor(
     readonly route: RouteController,
     readonly kit: VenetianKit,
+    readonly assetBase = import.meta.env.BASE_URL,
   ) {
     this.materials = kitMaterials(kit);
     this.count = Math.ceil(route.length / CHUNK_LENGTH);
@@ -74,7 +75,7 @@ export class CityChunkManager {
     if ((this.failed.get(i) ?? 0) > performance.now()) return Promise.resolve();
     const promise = this.loader
       .loadAsync(
-        `${import.meta.env.BASE_URL}assets/city/canal-${String(i).padStart(2, "0")}.glb`,
+        `${this.assetBase}assets/city/canal-${String(i).padStart(2, "0")}.glb`,
       )
       .then((gltf) => {
         gltf.scene.traverse((o) => {
