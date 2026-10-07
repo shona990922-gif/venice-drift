@@ -1,4 +1,5 @@
 import "./style.css";
+import { auditSkyMotion } from "./diagnostics/SkyMotionAudit";
 import { auditLook } from "./diagnostics/LookAudit";
 import { disposeSceneAssets } from "./core/dispose";
 import { JourneyAudit } from "./diagnostics/JourneyAudit";
@@ -359,6 +360,12 @@ async function boot() {
       mode: environment.mode,
       rainIntensity: environment.weather.rainIntensity,
       rainImpacts: rain?.impacts ?? 0,
+      sky: {
+        faces: environment.sky.frameFaces,
+        bakes: environment.sky.renders,
+        blend: environment.sky.timeline.blend,
+        interval: environment.sky.timeline.duration,
+      },
       elevation: environment.elevation,
       azimuth: environment.azimuth,
     },
@@ -628,6 +635,27 @@ async function boot() {
       };
       recorder.start();
       setTimeout(() => recorder.stop(), 12000);
+    };
+  if (debug)
+    $("sky-check").onclick = async () => {
+      const button = $("sky-check") as HTMLButtonElement;
+      button.disabled = true;
+      lookAuditBusy = true;
+      try {
+        const result = await auditSkyMotion(renderer, environment);
+        $("measurement").textContent = JSON.stringify(result, null, 2);
+        save(
+          new Blob([JSON.stringify(result, null, 2)], {
+            type: "application/json",
+          }),
+          "sky-motion-" + Date.now() + ".json",
+        );
+      } finally {
+        lookAuditBusy = false;
+        button.disabled = false;
+        frames = elapsed = cs = ts = 0;
+        last = performance.now();
+      }
     };
   if (debug)
     $("look-check").onclick = async () => {

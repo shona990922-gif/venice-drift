@@ -19,7 +19,7 @@ import {
 import { EnvironmentController } from "../EnvironmentController";
 import { type VenetianKit } from "../../city/VenetianKit";
 import { type WaterThreeCanal } from "../../water/v2/WaterThreeCanal";
-import { AtmosphereSky } from "./AtmosphereSky";
+import { AtmosphereSky, SKY_SAMPLE_GLSL } from "./AtmosphereSky";
 import { atmosphereState, PRESETS, type EnvironmentPreset } from "./presets";
 export class ManualEnvironment {
   readonly weather = new WeatherController();
@@ -35,6 +35,8 @@ export class ManualEnvironment {
   private kit?: VenetianKit;
   private ibl: WebGLRenderTarget | null = null;
   private lastIBL = -100;
+  private lastShadow = -100;
+  private iblState = new Vector3(Infinity, Infinity, Infinity);
   private wetMaterials: {
     material: MeshStandardMaterial;
     color: Color;
@@ -56,15 +58,16 @@ export class ManualEnvironment {
     // The existing optical model stays intact. Replace only its environment
     // lookup and make already-present lighting terms follow this shared sky.
     const mat = water.mesh.material;
-    mat.uniforms.uLabSky = { value: this.sky.target.texture };
+    Object.assign(mat.uniforms, this.sky.sampleUniforms);
     mat.uniforms.uLabBodyLight = { value: 1 };
     mat.uniforms.uLabDirect = { value: 1 };
     mat.fragmentShader =
-      "uniform samplerCube uLabSky;uniform float uLabBodyLight,uLabDirect;\n" +
+      SKY_SAMPLE_GLSL +
+      "uniform float uLabBodyLight,uLabDirect;\n" +
       mat.fragmentShader;
     mat.fragmentShader = mat.fragmentShader.replace(
       "vec3 atmosphere(vec3 dir, vec3 sunDir){",
-      "vec3 atmosphere(vec3 dir,vec3 sunDir){return textureCube(uLabSky,normalize(dir)).rgb;}\nvec3 unusedSourceAtmosphere(vec3 dir, vec3 sunDir){",
+      "vec3 atmosphere(vec3 dir,vec3 sunDir){return sampleVeniceSky(dir);}\nvec3 unusedSourceAtmosphere(vec3 dir, vec3 sunDir){",
     );
     mat.fragmentShader = mat.fragmentShader.replace(
       "waterCol *= (0.5",
@@ -102,6 +105,7 @@ export class ManualEnvironment {
       this.current = { ...p };
       this.animator.jump(atmosphereState(p));
       this.lastIBL = -100;
+      this.sky.invalidate();
     }
   }
   update(dt: number, time: number, position: Vector3, eye: Vector3) {
@@ -170,16 +174,21 @@ export class ManualEnvironment {
       this.animator.evolution,
       p.skyExposure,
     );
-    if (baked) {
-      this.water.planar.invalidate();
+    // Direct light and moving shadow position are not tied to cube publication.
+    if (time - this.lastShadow >= 1 / 30) {
       sun.shadow.needsUpdate = true;
-      if (time - this.lastIBL > 0.9) {
-        const old = this.ibl;
-        this.ibl = this.pmrem.fromCubemap(this.sky.target.texture);
-        this.scene.environment = this.ibl.texture;
-        old?.dispose();
-        this.lastIBL = time;
-      }
+      this.lastShadow = time;
+    }
+    const changed =
+      Math.abs(this.iblState.x - s.sunElevation) > 0.015 ||
+      Math.abs(this.iblState.y - s.cloudCover) > 0.025 ||
+      Math.abs(this.iblState.z - p.skyExposure) > 0.025;
+    if (!this.ibl || (baked && time - this.lastIBL > (changed ? 0.6 : 5))) {
+      // Reuse the allocated target; do not allocate/dispose a PMREM every second.
+      this.ibl = this.pmrem.fromCubemap(this.sky.target.texture, this.ibl);
+      this.scene.environment = this.ibl.texture;
+      this.iblState.set(s.sunElevation, s.cloudCover, p.skyExposure);
+      this.lastIBL = time;
     }
   }
   dispose() {

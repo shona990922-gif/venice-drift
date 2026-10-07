@@ -54,6 +54,7 @@ A unified `JourneyEnvironment` reuses the tested lab atmosphere controller for t
 - Detailed nearby façades, simpler mid-range geometry and inexpensive distant silhouettes. Repeated mooring poles are instanced and other static modules are merged by material.
 - Mostly 1K material maps; 2K plaster on desktop and a 1K Low-tier derivative. No 4K texture dependency.
 - High / Medium / Low retain reflections, micro ripple and boat interaction. Reflection targets are 1024 / 512 / 256; simulation grids are 512 / 256 / 128.
+- Sky snapshots are built one cubemap face per frame and crossfaded every frame. The sun is aligned continuously, including the water sky lookup; lighting targets are reused to reduce periodic stalls.
 - Sustained pressure reduces pixel ratio gradually, then reflection resolution, shadows and distant detail. A 30 Hz display cap alone does not trigger degradation.
 - Audio starts after interaction, fades between zones, and suspends when the page is hidden. Missing audio never blocks the ride. Missing textures use neutral PBR fallbacks; failed city chunks retain distant silhouettes and retry.
 

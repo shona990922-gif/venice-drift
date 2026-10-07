@@ -19,7 +19,7 @@ Inspected and ran the upstream manual controller from `takustaqu/atmosphere`, co
 
 This library provides an **art-directed procedural sky**, not a Hillaire-style physical scattering model. No claim of physical atmospheric radiometry is made.
 
-The cubemap is 256² per face on High/Medium and 128² on Low, updated at most every 0.3 s. IBL is regenerated no more often than every 0.9 s and its previous target is disposed. The existing WaterThreeJS optical model, body colour and absorption coefficients remain unchanged. Only its environment lookup and light multipliers follow the new sky. The source's lens droplet effect is disabled; actual world-space rain particles feed water impacts instead.
+The lab cubemap is 256² per face on High/Medium and 128² on Low; the formal journey uses 128². Three targets keep both displayed frames immutable while one face of the next cubemap is rendered per animation frame. Completed frames are interpolated every frame, with a sun-centred reprojection to avoid a stepping or doubled solar disc. The sky dome and water fallback share that exact lookup. IBL work runs on cube publication frames and reuses its allocated target; steady-state refresh is reduced to every five seconds. The existing WaterThreeJS optical model, body colour and absorption coefficients remain unchanged. Only its environment lookup and light multipliers follow the new sky. The source's lens droplet effect is disabled; actual world-space rain particles feed water impacts instead.
 
 ## Colour references and cloud decision
 
