@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "deploy": "npm run build && npx --yes wrangler@4.135.0 pages deploy dist --project-name=venice-drift --branch=main",
     "test": "vitest run tests",
     "typecheck": "tsc --noEmit",
     "build:city": "node scripts/build-city.mjs",

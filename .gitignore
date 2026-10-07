@@ -2,7 +2,11 @@ node_modules
 node_modules/
 dist/
 .DS_Store
-.openai/*.local.*
+.openai/
+.wrangler/
+.env
+.env.*
+!.env.example
 test-results/
 playwright-report/
 work/

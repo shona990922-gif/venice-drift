@@ -1,5 +1,7 @@
 # Venice Drift
 
+**[Open the live journey](https://venice-drift.pages.dev/)** · **[GitHub repository](https://github.com/shona990922-gif/venice-drift)**
+
 **Current scope:** desktop only. Mobile adaptation and mobile acceptance are paused at the user’s request; existing quality tiers remain available without a claim of mobile readiness.
 
 A slow gondola journey through a composed Venetian canal district. Settle into the passenger seat, look around, and let the city move past. Daylight gradually becomes golden hour and sunset; the boat disturbs reflected architecture and the sun's path across the water.
@@ -23,7 +25,11 @@ npm run build
 npm run preview
 ```
 
-The release output is **`dist/`**. Preview it at `http://127.0.0.1:4188/`. Serve the directory over HTTP(S), rather than opening `index.html` as a local file. Relative asset URLs support deployment beneath a subdirectory. No deployment or remote push is performed by these commands.
+The release output is **`dist/`**. Preview it at `http://127.0.0.1:4188/`. Serve the directory over HTTP(S), rather than opening `index.html` as a local file. Relative asset URLs support deployment beneath a subdirectory. No deployment or remote push is performed by the commands above.
+
+## Publishing
+
+The live site is hosted on Cloudflare Pages. `npm run deploy` builds and publishes to the existing `venice-drift` Pages project using your locally authenticated Cloudflare account. GitHub Actions checks installation, lint, all tests and production build; pushing code does **not** automatically publish the website. See [deployment instructions](docs/DEPLOYMENT.md) for setup and rollback details. Credentials and local QA output are excluded from the repository.
 
 ## Experience and controls
 
