@@ -21,6 +21,7 @@ import { type WaterThreeCanal } from "../../water/v2/WaterThreeCanal";
 import { AtmosphereSky, SKY_SAMPLE_GLSL } from "./AtmosphereSky";
 import {
   atmosphereState,
+  directSunVisibility,
   CALM_SKY_ANIMATOR,
   PRESETS,
   type EnvironmentPreset,
@@ -137,14 +138,24 @@ export class ManualEnvironment {
     sun.target.position.copy(position);
     sun.target.updateMatrixWorld();
     sun.color.setRGB(...light.sun.color);
-    sun.intensity = p.lightIntensity * light.sun.intensity;
+    const visibility = directSunVisibility(s.rain);
+    sun.intensity = p.lightIntensity * light.sun.intensity * visibility;
     this.water.ocean.setSun(new Vector3(...light.sun.direction));
     this.water.uniforms.uLabBodyLight.value =
       Math.max(0.065, MathUtils.smoothstep(light.sun.elevation, -0.2, 0.35)) *
       (1 - s.rain * 0.28);
-    this.water.uniforms.uLabDirect.value = light.sun.intensity;
+    this.water.uniforms.uLabDirect.value = light.sun.intensity * visibility;
     this.water.uniforms.uCloudCover.value = 0; // occlusion comes from the shared atmosphere, not a second cloud field
-    this.water.uniforms.uSunGlitter.value = 0.22;
+    // Broaden the daylight glints gently and further at low sun; absorption,
+    // body colour and the boat-driven normal field keep the canal baseline.
+    const sunset = 1 - MathUtils.smoothstep(light.sun.elevation, 0.1, 0.38);
+    this.water.uniforms.uSunGlitter.value = 0.26 + sunset * 0.02;
+    this.water.uniforms.uRoughness.value =
+      this.water.settings.roughness + 0.015 + sunset * 0.02;
+    this.water.uniforms.uDetailStrength.value =
+      this.water.settings.rippleDetail * (1 + sunset * 0.3);
+    this.water.uniforms.uDetailScale.value =
+      this.water.settings.rippleScale * (1 + sunset * 0.55);
     this.base.cityLights.value = p.cityLights;
     if (this.kit) this.kit.lamp.emissiveIntensity = p.cityLights * 3.2;
     this.scene.environmentIntensity = p.ambient;

@@ -186,11 +186,20 @@ export class WaterThreeCanal {
     );
     frag = frag.replace(
       "vec3(1.0, 0.94, 0.82) * D * fh",
-      "mix(vec3(1.,.94,.82),mix(vec3(1.,.52,.24),vec3(1.,.96,.88),sunElev),uCanalMode) * D * fh",
+      "mix(vec3(1.,.94,.82),mix(mix(vec3(1.,.52,.24),vec3(1.,.36,.09),1.-smoothstep(.10,.38,sunElev)),vec3(1.,.96,.88),sunElev),uCanalMode) * D * fh",
+    );
+    // Use the same capillary + dynamic normal for both the reflected disc and
+    // direct glints. This breaks the golden path when the hull displaces water.
+    frag = frag.replace(
+      "dggx(max(dot(N, H), 0.0), rough * rough)",
+      "dggx(max(dot(normalize(mix(N,Nr,uCanalMode)), H), 0.0), rough * rough)",
     );
     frag = frag.replace(
       "sunElev * (1.0 - cs * 0.9)",
-      "sunElev * (1.0 - cs * 0.9)*geometryShadow",
+      // The upstream ocean attenuates the lobe by elevation in addition to
+      // N·L. At 5.5° this extinguishes grazing sun glitter. Keep incidence,
+      // shadowing and GGX, but use a gentler atmospheric attenuation.
+      "mix(sunElev,sqrt(sunElev),uCanalMode*(1.-smoothstep(.10,.38,sunElev))) * (1.0 - cs * 0.9)*geometryShadow",
     );
     frag = frag.replace(
       "float breakE = smoothstep",

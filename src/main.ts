@@ -110,7 +110,7 @@ async function boot() {
       scene,
       renderer,
       water,
-      quality === "low" ? 128 : 256, // Slower cloud bakes leave room for finer edges.
+      quality === "high" ? 384 : quality === "low" ? 128 : 256,
     ),
     pipeline = new WaterRenderer(renderer, scene, water, planar, quality),
     gpu = new GpuTimer(renderer.getContext() as WebGL2RenderingContext);
@@ -360,6 +360,10 @@ async function boot() {
       mode: environment.mode,
       rainIntensity: environment.weather.rainIntensity,
       rainImpacts: rain?.impacts ?? 0,
+      directSunIntensity: environment.sun.intensity,
+      skySunVisibility: environment.sky.material.uniforms.uSunVisibility.value,
+      waterDirectLight: water.uniforms.uLabDirect.value,
+      cloudCover: environment.animator.current.cloudCover,
       sky: {
         faces: environment.sky.frameFaces,
         bakes: environment.sky.renders,

@@ -1,0 +1,96 @@
+{
+  "resources": {
+    "sameOriginEncodedBytes": 22771917,
+    "pbrMemoryEstimateMiB": 128
+  },
+  "version": "1.0.0-rc.1",
+  "fps": 48.50213980028531,
+  "gpu": {
+    "samples": 180,
+    "meanMs": 12.494143488888886,
+    "p95Ms": 23.288374
+  },
+  "framebuffer": [
+    1216,
+    684
+  ],
+  "drawCalls": 266,
+  "triangles": 1213921,
+  "time": 428.72155200006966,
+  "distance": 381,
+  "length": 499.7268851894936,
+  "speed": 1.5490844355514783,
+  "speedFactor": 1,
+  "loop": 0,
+  "quality": "high",
+  "loadedChunks": [
+    11,
+    10,
+    8,
+    9
+  ],
+  "pendingChunks": [],
+  "chunkLoads": 7,
+  "chunkDisposals": 3,
+  "geometryCount": 261,
+  "textureCount": 34,
+  "sizedRenderTargets": 6,
+  "auxiliaryOnePixelTargets": 5,
+  "adaptive": {
+    "pixelScale": 0.76,
+    "changes": [
+      "pixel ratio",
+      "pixel ratio",
+      "pixel ratio",
+      "pixel ratio",
+      "reflection resolution",
+      "shadow resolution",
+      "far detail"
+    ]
+  },
+  "reflectionResolution": 512,
+  "simulationResolution": 512,
+  "emissions": 10,
+  "camera": [
+    42.1376120611148,
+    1.5422566081133295,
+    -333.6235931588505
+  ],
+  "look": [
+    0.00031626756164276904,
+    0.05806844728540335
+  ],
+  "pointer": "mouse",
+  "environment": {
+    "mode": "sunset",
+    "rainIntensity": 2.3065037119014182e-17,
+    "rainImpacts": 25914,
+    "directSunIntensity": 2.8099622813660154,
+    "skySunVisibility": 1,
+    "waterDirectLight": 0.7205031490682093,
+    "cloudCover": 0.29000000000000176,
+    "sky": {
+      "faces": 0,
+      "bakes": 512,
+      "blend": 0.5555555555556818,
+      "interval": 0.9
+    },
+    "elevation": 5.500000000000029,
+    "azimuth": 182.99999999999594
+  },
+  "errors": [],
+  "audio": {
+    "enabled": true,
+    "ready": true,
+    "state": "running",
+    "activeSources": 3,
+    "loadedBuffers": 3,
+    "bridgeEnclosure": 0,
+    "waterSource": "canal-soft / distant Venice waterclaps",
+    "waterGain": 0.1275,
+    "rainGain": 4.239151995750098e-18,
+    "cityGain": 0.0435773753473731,
+    "rms": 0.000987069466637312,
+    "error": null
+  }
+}

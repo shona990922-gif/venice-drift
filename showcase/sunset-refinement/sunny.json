@@ -1,0 +1,88 @@
+{
+  "resources": {
+    "sameOriginEncodedBytes": 22771877,
+    "pbrMemoryEstimateMiB": 128
+  },
+  "version": "1.0.0-rc.1",
+  "fps": 60.00000000000001,
+  "gpu": {
+    "samples": 180,
+    "meanMs": 11.282237016666674,
+    "p95Ms": 13.258
+  },
+  "framebuffer": [
+    1600,
+    900
+  ],
+  "drawCalls": 248,
+  "triangles": 1174857,
+  "time": 79.25045200001199,
+  "distance": 381,
+  "length": 499.7268851894936,
+  "speed": 1.5490844355514783,
+  "speedFactor": 1,
+  "loop": 0,
+  "quality": "high",
+  "loadedChunks": [
+    11,
+    10,
+    8,
+    9
+  ],
+  "pendingChunks": [],
+  "chunkLoads": 7,
+  "chunkDisposals": 3,
+  "geometryCount": 231,
+  "textureCount": 34,
+  "sizedRenderTargets": 6,
+  "auxiliaryOnePixelTargets": 5,
+  "adaptive": {
+    "pixelScale": 1,
+    "changes": []
+  },
+  "reflectionResolution": 1024,
+  "simulationResolution": 512,
+  "emissions": 10,
+  "camera": [
+    42.1376120611148,
+    1.5223790662703425,
+    -333.6235931588505
+  ],
+  "look": [
+    0,
+    0.06
+  ],
+  "pointer": "none",
+  "environment": {
+    "mode": "day",
+    "rainIntensity": 0,
+    "rainImpacts": 0,
+    "directSunIntensity": 3.371975786394292,
+    "skySunVisibility": 1,
+    "waterDirectLight": 0.6743951572788583,
+    "cloudCover": 0.34,
+    "sky": {
+      "faces": 0,
+      "bakes": 89,
+      "blend": 0.18522222222221293,
+      "interval": 0.9
+    },
+    "elevation": 43,
+    "azimuth": 124.99999999999996
+  },
+  "errors": [],
+  "audio": {
+    "enabled": true,
+    "ready": true,
+    "state": "running",
+    "activeSources": 3,
+    "loadedBuffers": 3,
+    "bridgeEnclosure": 0,
+    "waterSource": "canal-soft / distant Venice waterclaps",
+    "waterGain": 0.1275,
+    "rainGain": 0,
+    "cityGain": 0.0435773753473731,
+    "rms": 0.0011137596208940577,
+    "error": null
+  }
+}

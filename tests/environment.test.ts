@@ -4,7 +4,11 @@ import {
   journeyPreset,
   JOURNEY_WEATHER,
 } from "../src/environment/JourneyEnvironment";
-import { PRESETS } from "../src/environment/lab/presets";
+import {
+  PRESETS,
+  directSunVisibility,
+  atmosphereState,
+} from "../src/environment/lab/presets";
 describe("desktop weather controls", () => {
   it("keeps the daylight baseline and ends at sunset, never night", () => {
     expect(journeyPreset(0)).toEqual(PRESETS.day);
@@ -44,5 +48,20 @@ describe("legacy cinematic environment progression", () => {
     expect(hero.azimuth).toBe(267);
     expect(hero.elevation).toBeGreaterThan(7.3);
     expect(hero.elevation).toBeLessThan(12);
+  });
+});
+
+describe("rain obscures the direct sun", () => {
+  it("shares a continuous visibility gate and fully obscures the light-rain preset", () => {
+    expect(directSunVisibility(atmosphereState(PRESETS.day).rain)).toBe(1);
+    expect(directSunVisibility(atmosphereState(PRESETS.sunset).rain)).toBe(1);
+    expect(directSunVisibility(atmosphereState(PRESETS.rain).rain)).toBe(0);
+    let last = 1;
+    for (let i = 0; i <= 300; i++) {
+      const value = directSunVisibility(i / 1000);
+      expect(value).toBeLessThanOrEqual(last);
+      expect(last - value).toBeLessThan(0.01);
+      last = value;
+    }
   });
 });

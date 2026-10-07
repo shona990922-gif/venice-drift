@@ -41,21 +41,21 @@ export interface EnvironmentPreset {
 export const PRESETS: Record<PresetId, EnvironmentPreset> = {
   day: {
     id: "day",
-    label: "Day",
+    label: "Sunny",
     elevation: 43,
     azimuth: 125,
-    cover: 0.23,
+    cover: 0.34,
     precipitation: 0,
     wind: 2,
-    visibility: 40,
-    cirrus: 0.12,
-    cumulus: 0.28,
+    visibility: 55,
+    cirrus: 0.16,
+    cumulus: 0.48,
     stratus: 0,
-    altocumulus: 0,
-    exposure: 1.05,
-    skyExposure: 0,
-    lightIntensity: 4.6,
-    ambient: 1.2,
+    altocumulus: 0.16,
+    exposure: 1.12,
+    skyExposure: 0.05,
+    lightIntensity: 5.0,
+    ambient: 1.5,
     cityLights: 0,
     wetness: 0,
     bortle: 7,
@@ -68,13 +68,13 @@ export const PRESETS: Record<PresetId, EnvironmentPreset> = {
     cover: 0.29,
     precipitation: 0,
     wind: 1.7,
-    visibility: 34,
-    cirrus: 0.2,
-    cumulus: 0.12,
+    visibility: 55,
+    cirrus: 0.18,
+    cumulus: 0.04,
     stratus: 0,
-    altocumulus: 0.06,
+    altocumulus: 0.88,
     exposure: 1.15,
-    skyExposure: 0.35,
+    skyExposure: 0.1,
     lightIntensity: 3.9,
     ambient: 2.2,
     cityLights: 0.5,
@@ -83,7 +83,7 @@ export const PRESETS: Record<PresetId, EnvironmentPreset> = {
   },
   rain: {
     id: "rain",
-    label: "Rain",
+    label: "Light rain",
     elevation: 24,
     azimuth: 160,
     cover: 0.76,
@@ -154,4 +154,12 @@ export function validatePreset(input: unknown): EnvironmentPreset {
     )
       throw Error("Invalid " + key);
   return { ...base, ...p };
+}
+
+/** A single visibility gate for sky disc/halo, city sunlight and water glints.
+ * Input is the atmosphere's already-smoothed optical rain amount, not a preset
+ * switch: the light-rain preset reaches ~0.213 and fully hides direct sun.
+ */
+export function directSunVisibility(rain: number) {
+  return 1 - MathUtils.smoothstep(rain, 0.02, 0.18);
 }

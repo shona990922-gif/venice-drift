@@ -23,6 +23,8 @@ import {
   WebGLRenderer,
 } from "three";
 import { SkyFrameBlend } from "./SkyFrameBlend";
+import { directSunVisibility } from "./presets";
+import { sunsetAtmosphere } from "./SunsetAtmosphere";
 import { type AtmosphereState } from "@takustaqu/atmosphere";
 import fragment from "../vendor/atmosphere/fragment.glsl?raw";
 import { noiseLattice, NOISE_SIZE } from "../vendor/atmosphere/noise";
@@ -39,14 +41,17 @@ export function atmosphereFragment() {
   const tail = fragment.indexOf("  // ── Linear light → display ──");
   if (tail < 0) throw Error("Atmosphere output seam changed");
   return (
-    "#define NOISE_FETCH(uv) textureLod(u_noise,(uv),0.0)\nvarying vec3 vSkyDirection;uniform float uSkyExposure;\n" +
-    fragment
-      .slice(0, tail)
+    "#define NOISE_FETCH(uv) textureLod(u_noise,(uv),0.0)\nvarying vec3 vSkyDirection;uniform float uSkyExposure,uSunVisibility;\n" +
+    sunsetAtmosphere(fragment.slice(0, tail))
       .replace(/\bpatch\b/g, "cloudPatch")
       .replace(/\bactive\b/g, "dropActive")
       // Venice ends at sunset. Omit the stylised lunar disc, its dark occlusion
       // and halo from the shared sky so reflections cannot retain a moon either.
       .replace(moonVisibility, "float moonVis = 0.0;")
+      .replace(
+        "float sunVis = smoothstep",
+        "float sunVis = uSunVisibility * smoothstep",
+      )
       // The demo's wide solar core reads as a large white blob at passenger FOV.
       // Halve its angular extent; retain the original scattering halo/lighting.
       .replace("sunAng * sunAng * 900.0", "sunAng * sunAng * 3600.0")
@@ -123,6 +128,7 @@ export class AtmosphereSky {
       u_sky: { value: new Vector4(7, 0, 0, 0) },
       u_radiant: { value: new Vector2() },
       uSkyExposure: { value: 0 },
+      uSunVisibility: { value: 1 },
     };
     for (const key of [
       "time",
@@ -212,6 +218,7 @@ export class AtmosphereSky {
     u.u_mid.value.set(c.altostratus, c.altocumulus, c.nimbostratus);
     u.u_low.value.set(c.stratus, c.stratocumulus, c.cumulus, c.cumulonimbus);
     u.u_rain.value = s.rain;
+    u.uSunVisibility.value = directSunVisibility(s.rain);
     u.u_wind.value = s.wind;
     u.u_haze.value = s.haze;
     u.u_cbFeat.value.set(s.features.anvil, s.features.velum);
