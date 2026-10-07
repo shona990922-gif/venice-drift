@@ -1,0 +1,139 @@
+{
+  "before": {
+    "height": 0.0000014799912802865457,
+    "normal": 0.00012626006375394464,
+    "peak": 0.016324054449796677
+  },
+  "after": {
+    "height": 1.1009989766212313e-8,
+    "normal": 9.105467702257758e-7,
+    "peak": 0.0007069006096571684
+  },
+  "reflection": {
+    "changedPixels": 38888,
+    "maxChannelChange": 208
+  },
+  "refraction": {
+    "changedPixels": 0,
+    "maxChannelChange": 1
+  },
+  "glitter": {
+    "changedPixels": 0,
+    "maxChannelChange": 0
+  },
+  "unoccludedGGXFixture": {
+    "changedPixels": 36893,
+    "maxChannelChange": 136
+  },
+  "composite": {
+    "changedPixels": 7298,
+    "maxChannelChange": 34
+  },
+  "emissionsAtStop": 156,
+  "emissionsAfter": 156,
+  "pass": true,
+  "snapshot": {
+    "preset": "sunset",
+    "parameters": {
+      "id": "sunset",
+      "label": "Sunset",
+      "elevation": 5.5,
+      "azimuth": 183,
+      "cover": 0.29,
+      "precipitation": 0,
+      "wind": 1.7,
+      "visibility": 34,
+      "cirrus": 0.2,
+      "cumulus": 0.08,
+      "stratus": 0,
+      "altocumulus": 0.24,
+      "exposure": 1.15,
+      "skyExposure": 0.35,
+      "lightIntensity": 3.9,
+      "ambient": 2.2,
+      "cityLights": 0.5,
+      "wetness": 0,
+      "bortle": 7
+    },
+    "actualSun": {
+      "elevation": 5.499999999999999,
+      "azimuth": 183.00000000000003
+    },
+    "fps": 60.03937007874017,
+    "gpu": {
+      "samples": 180,
+      "meanMs": 9.781729850000005,
+      "p95Ms": 13.730375
+    },
+    "drawCalls": 208,
+    "triangles": 743633,
+    "geometry": 199,
+    "textures": 32,
+    "cubeBakes": 111,
+    "cubeResolution": 256,
+    "quality": "medium",
+    "view": "canal",
+    "routeDistance": 391.0495002266674,
+    "waterEmissions": 387,
+    "rainImpacts": 0,
+    "weather": {
+      "intensity": 0,
+      "wetness": 0
+    },
+    "simulation": {
+      "resolution": 256,
+      "hz": 30,
+      "type": "Float32",
+      "origin": [
+        30.09375,
+        -353.34375
+      ],
+      "steps": 1024,
+      "passes": 5624,
+      "framePasses": 0,
+      "scrolls": 107,
+      "emissions": 156,
+      "rain": 0,
+      "rejected": 0,
+      "queue": 0
+    },
+    "waterSettings": {
+      "amplitude": 0.072,
+      "choppiness": 0.1,
+      "waveCount": 26,
+      "speed": 0.65,
+      "directionSpread": 0.95,
+      "swellLength": 150,
+      "rippleDetail": 0.14,
+      "rippleScale": 0.3,
+      "refraction": 0.028,
+      "ssr": 0.85,
+      "glitter": 0.18,
+      "roughness": 0.08,
+      "clarity": 0.65,
+      "depthFalloff": 0.3,
+      "absorptionRed": 0.45,
+      "absorptionGreen": 0.16,
+      "absorptionBlue": 0.1,
+      "maxOpticalDepth": 18,
+      "ssrStep": 0.35,
+      "ssrThickness": 0.55,
+      "shadowAmbient": 0.38,
+      "bow": 1,
+      "side": 1,
+      "stern": 1,
+      "wakeLifetime": 10,
+      "interaction": 1,
+      "exposure": 1.05,
+      "saturation": 1,
+      "sunElevation": 58,
+      "sunAzimuth": 148
+    },
+    "directSun": 0.7205031490682109,
+    "framebuffer": {
+      "width": 1280,
+      "height": 720
+    },
+    "cityErrors": []
+  }
+}

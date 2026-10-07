@@ -51,11 +51,11 @@ export class Water {
   private moveCubeMaterial: THREE.ShaderMaterial;
   private compoundSphereMaterial: THREE.ShaderMaterial;
 
-  constructor(renderer: THREE.WebGLRenderer, size=256) {
+  constructor(renderer: THREE.WebGLRenderer, size=256, forceType?: THREE.TextureDataType, sphereLimit=120) {
     this.renderer = renderer;
 
 
-    const textureType = this.getSimulationTextureType();
+    const textureType = forceType ?? this.getSimulationTextureType();
     const options: THREE.RenderTargetOptions = {
       type: textureType,
       minFilter: THREE.NearestFilter,
@@ -141,12 +141,12 @@ export class Water {
 
     this.compoundSphereMaterial = new THREE.ShaderMaterial({
       vertexShader: sphereDisplacementVert,
-      fragmentShader: compoundSphereDisplacementFrag,
+      fragmentShader: compoundSphereDisplacementFrag.replace(/120/g,String(sphereLimit)),
       uniforms: {
         tInput: { value: null },
-        oldCenters: { value: Array.from({ length: 120 }, () => new THREE.Vector3()) },
-        newCenters: { value: Array.from({ length: 120 }, () => new THREE.Vector3()) },
-        radii: { value: Array(120).fill(0) },
+        oldCenters: { value: Array.from({ length: sphereLimit }, () => new THREE.Vector3()) },
+        newCenters: { value: Array.from({ length: sphereLimit }, () => new THREE.Vector3()) },
+        radii: { value: Array(sphereLimit).fill(0) },
         sphereCount: { value: 0 },
         displacementScale: { value: 1.0 },
         poolWidth: { value: 1.0 },
@@ -170,7 +170,7 @@ export class Water {
     poolWidth = 1.0,
     poolLength = 1.0
   ) {
-    const count = Math.min(oldCenters.length, newCenters.length, radii.length, 120);
+    const count = Math.min(oldCenters.length, newCenters.length, radii.length, this.compoundSphereMaterial.uniforms.radii.value.length);
     this.plane.material = this.compoundSphereMaterial;
     const uniforms = this.compoundSphereMaterial.uniforms;
     uniforms.tInput.value = this.textureA.texture;

@@ -96,6 +96,7 @@ async function boot() {
     new Vector3(0, 1, 0),
     planar,
     quality,
+    query.get("water") !== "v2",
   );
   scene.add(water.mesh, water.bed);
   const environment = new EnvironmentController(scene, renderer, water),

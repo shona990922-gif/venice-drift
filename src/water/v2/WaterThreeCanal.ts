@@ -9,6 +9,9 @@ import {
   WebGLRenderer,
 } from "three";
 import { Ocean, OCEAN_CONFIG } from "./vendor/waterthreejs/Ocean.js";
+import { DynamicRippleSystem } from "../DynamicRippleSystem";
+import { BoatWaterInteraction } from "../BoatWaterInteraction";
+import { CanalMask } from "../RippleWindow";
 import { HeightfieldAdapter } from "../simulation/HeightfieldAdapter";
 import { makeCanalGeometry, makeCanalBed } from "./CanalGeometry";
 import { GondolaWaterInteraction } from "./GondolaWaterInteraction";
@@ -27,8 +30,8 @@ import type { PlanarReflection } from "../PlanarReflection";
  */
 export class WaterThreeCanal {
   readonly ocean: Ocean;
-  readonly simulation: HeightfieldAdapter;
-  readonly interaction = new GondolaWaterInteraction();
+  readonly simulation: HeightfieldAdapter | DynamicRippleSystem;
+  readonly interaction: GondolaWaterInteraction | BoatWaterInteraction;
   readonly settings: CanalSettings = { ...CANAL_DEFAULTS };
   readonly bed;
   originalLook = false;
@@ -39,6 +42,8 @@ export class WaterThreeCanal {
     sun: Vector3,
     readonly planar: PlanarReflection,
     readonly quality: WaterQuality = "medium",
+    readonly dynamicV3 = false,
+    halfFloat = false,
   ) {
     const q = WATER_QUALITY[quality];
     this.ocean = new Ocean(sun, new Vector2(1280, 720));
@@ -47,11 +52,18 @@ export class WaterThreeCanal {
     this.ocean.mesh.name = "WaterThreeJS / Venetian canal";
     this.ocean.mesh.receiveShadow = true;
     this.bed = makeCanalBed(this.ocean.mesh.geometry);
-    this.simulation = new HeightfieldAdapter(
-      renderer,
-      q.simulation,
-      q.simulationHz,
-    );
+    this.simulation = dynamicV3
+      ? new DynamicRippleSystem(
+          renderer,
+          q.simulation,
+          q.simulationHz,
+          new CanalMask(route),
+          halfFloat,
+        )
+      : new HeightfieldAdapter(renderer, q.simulation, q.simulationHz);
+    this.interaction = dynamicV3
+      ? new BoatWaterInteraction(quality === "low")
+      : new GondolaWaterInteraction();
     const material = this.ocean.mesh.material;
     Object.assign(this.ocean.uniforms, UniformsUtils.clone(UniformsLib.lights));
     material.uniforms = this.ocean.uniforms;
@@ -70,7 +82,7 @@ export class WaterThreeCanal {
       uDetailOctaves: { value: q.detailOctaves },
       uLocalField: { value: this.simulation.output.texture },
       uLocalOrigin: { value: this.simulation.origin },
-      uLocalSpan: { value: 30 },
+      uLocalSpan: { value: this.simulation.span },
       uLocalStrength: { value: 1 },
       uWaterView: { value: 0 },
     });
@@ -121,7 +133,7 @@ export class WaterThreeCanal {
     );
     frag = frag.replace(
       "float cs = 0.0;",
-      "vec3 debugReflection=vec3(0.),debugRefraction=vec3(0.),debugAbsorption=vec3(0.);float debugDepth=0.,debugConfidence=0.;float geometryShadow=mix(1.,getShadowMask(),uCanalMode);\nfloat cs = 0.0;",
+      "vec3 debugReflection=vec3(0.),debugRefraction=vec3(0.),debugAbsorption=vec3(0.),debugGlitter=vec3(0.);float debugDepth=0.,debugConfidence=0.;float geometryShadow=mix(1.,getShadowMask(),uCanalMode);\nfloat cs = 0.0;",
     );
     frag = frag.replace(
       "vec3 reflection = atmosphere(Rsky, sunDir);",
@@ -197,6 +209,14 @@ export class WaterThreeCanal {
       if(uWaterView==7)color=vec3(debugConfidence);
       if(uWaterView==8)color=debugAbsorption;
       gl_FragColor = vec4(color, 1.0);`,
+    );
+    frag = frag.replace(
+      /color \+= (mix\(vec3\(1\.,\.94,\.82\)[^\n]+);/,
+      "debugGlitter=$1;color+=debugGlitter;",
+    );
+    frag = frag.replace(
+      "if(uWaterView==8)color=debugAbsorption;",
+      "if(uWaterView==8)color=debugAbsorption; if(uWaterView==9)color=debugGlitter;",
     );
     material.fragmentShader = frag;
     material.needsUpdate = true;

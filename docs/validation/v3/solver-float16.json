@@ -1,0 +1,34 @@
+{
+  "type": "Float16",
+  "resolution": 256,
+  "span": 24,
+  "initial": {
+    "height": 7.550402219679703e-10,
+    "normal": 6.475559302719733e-8,
+    "peak": 0.0028820037841796875,
+    "finite": true
+  },
+  "oneSecond": {
+    "height": 1.7351473708369924e-10,
+    "normal": 1.7960203555606423e-8,
+    "peak": 0.0002570152282714844,
+    "finite": true
+  },
+  "sevenSeconds": {
+    "height": 2.7247945653258165e-12,
+    "normal": 1.0072142772599157e-12,
+    "peak": 0.00000667572021484375,
+    "finite": true
+  },
+  "scrollTexels": [
+    3,
+    2
+  ],
+  "originBefore": [
+    -12,
+    -12
+  ],
+  "scrollError": 0,
+  "cadenceError": 0,
+  "pass": true
+}
