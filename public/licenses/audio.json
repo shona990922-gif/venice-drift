@@ -28,5 +28,17 @@
     "license": "CC0-1.0",
     "sourceSha256": "359e4e3f9da9d75aac64cede511c7e3ef8b461f9d9f8c230f8f80e44c4b3e35f",
     "processing": "trimmed, high-pass/low-pass filtered, normalized and transcoded; source preview used where public HQ preview is available"
+  },
+  {
+    "id": "canal-soft",
+    "author": "krakenkraft",
+    "title": "Venice waterclaps tourist ambience",
+    "source": "https://freesound.org/people/krakenkraft/sounds/730929/",
+    "download": "https://cdn.freesound.org/previews/730/730929_6974482-hq.mp3",
+    "license": "CC0-1.0",
+    "sourceSha256": "04780cce51fea717df2d6bc5bb9185e2ccdab6de8924af9082f1525e5738c704",
+    "processing": "48-second distant Venice field recording; high-pass 90Hz, low-pass 1500Hz, -5dB at 650Hz, soft 3.5:1 compressor, 1.5s/2s fades, 96kbps MP3. Replaces close burbling water in the journey mix.",
+    "derivedFrom": "assets/audio/venice-ambience.mp3",
+    "sha256": "d0b341176ed971458478cad71c545fd8d029f52b57027cbd309154b71412119a"
   }
 ]

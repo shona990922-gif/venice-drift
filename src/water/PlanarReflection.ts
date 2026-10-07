@@ -20,11 +20,21 @@ export function applyObliqueNearPlane(
   const qx = (Math.sign(p[0]) + e[8]) / e[0];
   const qy = (Math.sign(p[1]) + e[9]) / e[5];
   const qw = (1 + e[10]) / e[14];
-  const scale = 2 / (p[0] * qx + p[1] * qy - p[2] + p[3] * qw);
-  e[2] = p[0] * scale;
-  e[6] = p[1] * scale;
-  e[10] = p[2] * scale + 1 - bias;
-  e[14] = p[3] * scale;
+  const denominator = p[0] * qx + p[1] * qy - p[2] + p[3] * qw;
+  // A grazing/degenerate clip plane must not poison the reflection target.
+  if (!Number.isFinite(denominator) || Math.abs(denominator) < 1e-5)
+    return false;
+  const scale = 2 / denominator;
+  const values = [
+    p[0] * scale,
+    p[1] * scale,
+    p[2] * scale + 1 - bias,
+    p[3] * scale,
+  ];
+  if (values.some((v) => !Number.isFinite(v) || Math.abs(v) > 1e5))
+    return false;
+  [e[2], e[6], e[10], e[14]] = values;
+  return true;
 }
 const BIAS = new Matrix4().set(
   0.5,
@@ -48,6 +58,7 @@ export class PlanarReflection {
   readonly camera = new PerspectiveCamera();
   readonly matrix = new Matrix4();
   readonly target: WebGLRenderTarget;
+  readonly valid = { value: 0 };
   interval = 1;
   updates = 0;
   private frame = 0;
@@ -92,12 +103,15 @@ export class PlanarReflection {
       .set(new Vector3(0, 1, 0), -planeY)
       .applyMatrix4(this.camera.matrixWorldInverse);
     const n = this.plane.normal;
-    applyObliqueNearPlane(this.camera.projectionMatrix.elements, [
-      n.x,
-      n.y,
-      n.z,
-      this.plane.constant,
-    ]);
+    if (
+      !applyObliqueNearPlane(this.camera.projectionMatrix.elements, [
+        n.x,
+        n.y,
+        n.z,
+        this.plane.constant,
+      ])
+    )
+      return false;
     this.camera.projectionMatrixInverse
       .copy(this.camera.projectionMatrix)
       .invert();
@@ -105,11 +119,15 @@ export class PlanarReflection {
       .copy(BIAS)
       .multiply(this.camera.projectionMatrix)
       .multiply(this.camera.matrixWorldInverse);
+    return this.matrix.elements.every(Number.isFinite);
   }
   render(scene: Scene, source: PerspectiveCamera) {
     if (!this.force && this.frame++ % this.interval !== 0) return;
     this.force = false;
-    this.sync(source);
+    if (!this.sync(source)) {
+      this.valid.value = 0;
+      return;
+    }
     const previous = this.renderer.getRenderTarget();
     const shadows = this.renderer.shadowMap.autoUpdate;
     const xr = this.renderer.xr.enabled;
@@ -119,6 +137,7 @@ export class PlanarReflection {
       this.renderer.setRenderTarget(this.target);
       this.renderer.clear();
       this.renderer.render(scene, this.camera);
+      this.valid.value = 1;
       this.updates++;
     } finally {
       this.renderer.setRenderTarget(previous);

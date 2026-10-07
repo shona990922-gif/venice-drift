@@ -10,7 +10,7 @@ The release contains the following code and media. Full required notices are shi
 | [WaterThreeJS](https://github.com/achrefelouafi/WaterThreeJS/tree/4f85f4a557da80a1dd24b9243869177f30c604c7), © 2026 mohamedachrefelouafi | Directly vendored Ocean.js, Sky.js, Post.js and shaders/common.js; canal integration is separate | MIT; `WaterThreeJS-MIT.txt` |
 | [threejs-water](https://github.com/jeantimex/threejs-water), original © 2011 Evan Wallace; modifications © 2026 Yong Su | Height/velocity ping-pong solver and ripple/normal shaders, adapted with time-step controls and lifecycle cleanup | MIT; `jeantimex-MIT.txt` |
 | [screen-space-reflections-water-plane](https://github.com/m2-md/screen-space-reflections-water-plane), © 2026 Mustafa Morbel | Mirror-camera / oblique near-plane clipping mathematics | MIT; `planar-reference-MIT.txt` |
-| [takustaqu/atmosphere](https://github.com/takustaqu/atmosphere/tree/92b6b6f69f4399597851d32af4abe4bb3bede81e), © 2026 Harada Moses Kiyohide | 0.3.2 state controller, celestial lighting, original sky/cloud shader and noise; Three.js adapter in the isolated environment lab | MIT; `takustaqu-atmosphere-MIT.txt` |
+| [takustaqu/atmosphere](https://github.com/takustaqu/atmosphere/tree/92b6b6f69f4399597851d32af4abe4bb3bede81e), © 2026 Harada Moses Kiyohide | 0.3.2 state controller, celestial lighting, original sky/cloud shader and noise; Three.js adapter shared by the environment lab and desktop journey | MIT; `takustaqu-atmosphere-MIT.txt` |
 | [meshoptimizer](https://github.com/zeux/meshoptimizer), © 2016–2026 Arseny Kapoulkine | Meshopt GLB decoder bundled by Three.js; build-time encoder | MIT; `meshoptimizer-MIT.txt` |
 
 WaterThreeJS's ocean, object models, beach, particles and volumetric-cloud demo are not shipped. Its object foam was not misrepresented as a heightfield simulation: the separately credited solver supplies propagating gondola disturbances. Earlier experimental water versions remain in the separate water-lab and Git history, not in the release bundle.
@@ -43,7 +43,7 @@ CC0 recordings, downloaded through their public downloadable previews/files, are
 | Venice waterclaps tourist ambience | krakenkraft | [Freesound 730929](https://freesound.org/people/krakenkraft/sounds/730929/) |
 | Ambient Bird Sounds | isaiah658 | [OpenGameArt](https://opengameart.org/content/ambient-bird-sounds) |
 
-Source SHA-256 hashes, download URLs, edits and licensing are in `public/licenses/audio.json`. Bell, wood accents, the short bridge reverberation impulse and the lab’s filtered-noise light-rain bed are original Web Audio synthesis. The birds and synthesized bell are sound design, not claimed as location-authenticated Venice recordings.
+`canal-soft.mp3` is a filtered, dynamically softened derivative of the CC0 Venice waterclaps recording. The close burbling recording is retained for historical reference but no longer loaded by the journey. Source SHA-256 hashes, download URLs, edits and licensing are in `public/licenses/audio.json`. Bell, wood accents, the short bridge reverberation impulse and the filtered-noise light-rain bed are original Web Audio synthesis. The birds and synthesized bell are sound design, not claimed as location-authenticated Venice recordings.
 
 ## Original project assets and research
 

@@ -297,3 +297,22 @@ h1 i {
     bottom: 65px;
   }
 }
+
+#controls {
+  align-items: end;
+}
+.setting {
+  display: grid;
+  gap: 5px;
+}
+.setting > span {
+  padding-left: 14px;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: #e3e9df;
+  text-shadow: 0 1px 5px #102d31;
+}
+#controls select option {
+  background: #183338;
+  color: #f3f0e6;
+}

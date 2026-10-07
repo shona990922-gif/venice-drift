@@ -15,6 +15,13 @@ export class RouteController {
   distance = 0;
   totalDistance = 0;
   speed = data.cruiseSpeed;
+  private pace = 1;
+  get speedFactor() {
+    return this.pace;
+  }
+  setSpeedFactor(value: number) {
+    if (Number.isFinite(value)) this.pace = MathUtils.clamp(value, 0, 1.25);
+  }
   curvature = 0;
   yaw = 0;
   readonly position = new Vector3();
@@ -72,11 +79,13 @@ export class RouteController {
     );
     const target =
       data.cruiseSpeed *
+      this.pace *
       Math.min(
         1 - 0.16 * (1 - MathUtils.smoothstep(bridgeDistance, 3, 15)),
         1 - MathUtils.clamp(this.curvature * 2.5, 0, 0.18),
       );
     this.speed = MathUtils.damp(this.speed, target, 1.4, dt);
+    if (this.pace === 0 && this.speed < 0.005) this.speed = 0;
     const travel = Math.min(this.length - this.distance, this.speed * dt);
     this.distance += travel;
     this.totalDistance += travel;

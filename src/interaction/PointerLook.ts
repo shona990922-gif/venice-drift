@@ -42,6 +42,7 @@ export class PointerLook extends LookState {
       e.button !== 0
     )
       return;
+    this.element.focus({ preventScroll: true });
     this.pointer = e.pointerId;
     this.x = e.clientX;
     this.y = e.clientY;

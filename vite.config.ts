@@ -42,6 +42,13 @@ export default defineConfig({
     target: "es2022",
     chunkSizeWarningLimit: 850,
     rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("/node_modules/three/")) return "three";
+          if (id.includes("/node_modules/@takustaqu/atmosphere/"))
+            return "atmosphere-state";
+        },
+      },
       input: {
         journey: resolve("index.html"),
         atmosphere: resolve("environment-lab/index.html"),

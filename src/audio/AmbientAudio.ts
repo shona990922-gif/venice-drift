@@ -32,6 +32,8 @@ export class AmbientAudio {
   private zone = 0;
   private waterGain = 0;
   private cityGain = 0;
+  private rainBed?: GainNode;
+  private rainGain = 0;
   async setEnabled(on: boolean) {
     this.enabled = on;
     if (!on) {
@@ -88,10 +90,46 @@ export class AmbientAudio {
     }
     this.convolver.buffer = ir;
     this.convolver.connect(this.reverb);
+    // Original, continuous filtered noise: a distant soft rain bed, no close
+    // mouth-like transients. It shares the same mute and lifecycle as the canal.
+    const noise = c.createBuffer(2, c.sampleRate * 4, c.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = noise.getChannelData(ch);
+      let previous = 0;
+      for (let i = 0; i < data.length; i++) {
+        seed = (1664525 * seed + 1013904223) >>> 0;
+        previous = previous * 0.86 + (seed / 2147483648 - 1) * 0.14;
+        data[i] = previous;
+      }
+    }
+    const source = c.createBufferSource(),
+      low = c.createBiquadFilter(),
+      high = c.createBiquadFilter();
+    source.buffer = noise;
+    source.loop = true;
+    low.type = "lowpass";
+    low.frequency.value = 2700;
+    high.type = "highpass";
+    high.frequency.value = 240;
+    this.rainBed = c.createGain();
+    this.rainBed.gain.value = 0;
+    source.connect(high);
+    high.connect(low);
+    low.connect(this.rainBed);
+    this.rainBed.connect(this.dry);
+    source.start();
+    this.active.add(source);
+    source.onended = () => {
+      this.active.delete(source);
+      source.disconnect();
+      high.disconnect();
+      low.disconnect();
+      this.rainBed?.disconnect();
+    };
   }
   private async load() {
     const c = this.context!;
-    const files = ["canal-water", "venice-ambience", "birds"];
+    const files = ["canal-soft", "venice-ambience", "birds"];
     await Promise.all(
       files.map(async (name) => {
         try {
@@ -105,7 +143,12 @@ export class AmbientAudio {
             pan = c.createStereoPanner(),
             filter = c.createBiquadFilter();
           filter.type = "lowpass";
-          filter.frequency.value = name === "venice-ambience" ? 1800 : 6000;
+          filter.frequency.value =
+            name === "canal-soft"
+              ? 1500
+              : name === "venice-ambience"
+                ? 1600
+                : 6000;
           gain.gain.value = 0;
           filter.connect(pan);
           pan.connect(gain);
@@ -116,7 +159,7 @@ export class AmbientAudio {
             pan,
             filter,
             buffer,
-            next: c.currentTime + 0.05,
+            next: c.currentTime + (name === "venice-ambience" ? 7 : 0.05),
             loop: name !== "birds",
           });
         } catch (e) {
@@ -199,7 +242,7 @@ export class AmbientAudio {
     filter.frequency.value = 220;
     filter.Q.value = 0.7;
     gain.gain.setValueAtTime(0, c.currentTime);
-    gain.gain.linearRampToValueAtTime(0.035, c.currentTime + 0.04);
+    gain.gain.linearRampToValueAtTime(0.006, c.currentTime + 0.04);
     gain.gain.exponentialRampToValueAtTime(0.00001, c.currentTime + 0.42);
     osc.connect(filter);
     filter.connect(gain);
@@ -220,6 +263,7 @@ export class AmbientAudio {
     speed: number,
     yaw: number,
     journeyFade: number,
+    rainIntensity = 0,
   ) {
     const c = this.context;
     if (
@@ -250,14 +294,16 @@ export class AmbientAudio {
       terrace = Math.exp(-(((distance - 416) / 40) ** 2));
     this.zone = under;
     this.waterGain =
-      (0.42 + 0.08 * open) * (0.75 + 0.25 * Math.min(1, speed / 1.55));
-    this.cityGain = 0.025 + 0.045 * open + 0.1 * terrace;
-    const water = this.channels.get("canal-water"),
+      (0.17 + 0.035 * open) * (0.75 + 0.25 * Math.min(1, speed / 1.55));
+    this.cityGain = 0.018 + 0.03 * open + 0.055 * terrace;
+    this.rainGain = Math.min(0.075, rainIntensity * 0.18) * (1 - under * 0.55);
+    this.rainBed?.gain.setTargetAtTime(this.rainGain, now, 1.8);
+    const water = this.channels.get("canal-soft"),
       city = this.channels.get("venice-ambience"),
       birds = this.channels.get("birds");
     if (water) {
       water.gain.gain.setTargetAtTime(this.waterGain, now, 1.2);
-      water.filter.frequency.setTargetAtTime(under > 0 ? 3600 : 6200, now, 0.9);
+      water.filter.frequency.setTargetAtTime(under > 0 ? 1100 : 1500, now, 0.9);
     }
     if (city) {
       city.gain.gain.setTargetAtTime(
@@ -269,7 +315,7 @@ export class AmbientAudio {
     }
     if (birds) {
       birds.gain.gain.setTargetAtTime(
-        0.13 * (1 - under * 0.7) * (1 - progress * 0.45),
+        0.085 * (1 - under * 0.7) * (1 - progress * 0.45),
         now,
         2,
       );
@@ -331,7 +377,9 @@ export class AmbientAudio {
       activeSources: this.active.size,
       loadedBuffers: this.channels.size,
       bridgeEnclosure: this.zone,
+      waterSource: "canal-soft / distant Venice waterclaps",
       waterGain: this.waterGain,
+      rainGain: this.rainGain,
       cityGain: this.cityGain,
       rms,
       error: this.error,

@@ -73,6 +73,7 @@ export class WaterThreeCanal {
       uReflectionMode: { value: 1 },
       uPlanar: { value: planar.target.texture },
       uPlanarMatrix: { value: planar.matrix },
+      uPlanarValid: planar.valid,
       uAbsorption: { value: new Vector3(0.45, 0.16, 0.1) },
       uMaxOpticalDepth: { value: 18 },
       uShadowAmbient: { value: 0.38 },
@@ -105,7 +106,7 @@ export class WaterThreeCanal {
     `,
     );
     material.fragmentShader = `#include <common>\n#include <bsdfs>\n#include <lights_pars_begin>\n#include <shadowmap_pars_fragment>\n#include <shadowmask_pars_fragment>
-      uniform float uCanalMode,uMaxOpticalDepth,uShadowAmbient,uSSRStep,uSSRThickness,uLocalSpan,uLocalStrength;
+      uniform float uPlanarValid,uCanalMode,uMaxOpticalDepth,uShadowAmbient,uSSRStep,uSSRThickness,uLocalSpan,uLocalStrength;
       uniform int uReflectionMode,uSSRSteps,uDetailOctaves,uWaterView;
       uniform vec3 uAbsorption;uniform sampler2D uPlanar,uLocalField;uniform mat4 uPlanarMatrix;uniform vec2 uLocalOrigin;
       ${material.fragmentShader}`;
@@ -143,11 +144,13 @@ export class WaterThreeCanal {
       "if (uSSRStrength > 0.001){",
       `
       if(uReflectionMode!=0){
-        vec4 pp=uPlanarMatrix*vec4(vWorldPos,1.);vec2 puv=pp.xy/pp.w;
+        vec4 pp=uPlanarMatrix*vec4(vWorldPos,1.);vec2 puv=pp.xy/max(pp.w,.0001);
         vec3 vn=mat3(viewMatrix)*(Nr-vec3(0.,1.,0.));
         puv+=vn.xy*(.013+.055/(1.+dist*.2));
-        float inside=step(.002,puv.x)*step(.002,puv.y)*step(puv.x,.998)*step(puv.y,.998);
-        reflection=texture2D(uPlanar,clamp(puv,.002,.998)).rgb;
+        float border=min(min(puv.x,puv.y),min(1.-puv.x,1.-puv.y));
+        float inside=smoothstep(.002,.018,border)*step(.0001,pp.w)*uPlanarValid;
+        vec3 reflected=texture2D(uPlanar,clamp(puv,.002,.998)).rgb;
+        reflection=mix(atmosphere(Rsky,sunDir),reflected,inside);
       }
       if (uReflectionMode!=1 && uSSRStrength > 0.001){`,
     );
@@ -208,6 +211,8 @@ export class WaterThreeCanal {
       if(uWaterView==6)color=vec3(geometryShadow);
       if(uWaterView==7)color=vec3(debugConfidence);
       if(uWaterView==8)color=debugAbsorption;
+      // Prevent isolated HDR singularities from overflowing the half-float target.
+      color=vec3(color.r>=0.?min(color.r,64.):0.,color.g>=0.?min(color.g,64.):0.,color.b>=0.?min(color.b,64.):0.);
       gl_FragColor = vec4(color, 1.0);`,
     );
     frag = frag.replace(

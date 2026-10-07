@@ -34,6 +34,28 @@
     <div id="hint">Drag to look around</div>
     <div id="fade"></div>
     <nav id="controls" aria-label="Journey settings">
+      <label class="setting"
+        ><span>Weather</span
+        ><select id="weather" aria-label="Weather" title="W · Change weather">
+          <option value="journey">Auto light</option>
+          <option value="day">Day</option>
+          <option value="sunset">Sunset</option>
+          <option value="rain">Light rain</option>
+        </select></label
+      >
+      <label class="setting"
+        ><span>Boat speed</span
+        ><select
+          id="speed"
+          aria-label="Boat speed"
+          title="V · Change pace / Space · Stop or resume"
+        >
+          <option value="0">Stopped</option>
+          <option value="0.65">Slow</option>
+          <option value="1" selected>Normal</option>
+          <option value="1.25">Brisk</option>
+        </select></label
+      >
       <button id="sound" aria-label="Sound off">Sound off</button
       ><label
         ><span class="sr-only">Quality</span
@@ -60,6 +82,7 @@
       ><button id="jump-bridge">第一座桥</button
       ><button id="jump-golden">金色时刻</button
       ><button id="jump-end">末段</button
+      ><button id="look-check">环视白屏检查</button
       ><button id="interaction-check">验证尾流</button
       ><button id="jump-hero">夕阳构图</button><button id="pause">暂停</button
       ><button id="measure">测量</button><button id="capture">截图</button

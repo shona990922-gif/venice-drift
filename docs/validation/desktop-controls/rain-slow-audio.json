@@ -1,0 +1,86 @@
+{
+  "resources": {
+    "sameOriginEncodedBytes": 22768686,
+    "pbrMemoryEstimateMiB": 128
+  },
+  "version": "1.0.0-rc.1",
+  "fps": 25.115110925073864,
+  "gpu": {
+    "samples": 180,
+    "meanMs": 17.11155568888889,
+    "p95Ms": 21.968
+  },
+  "framebuffer": [
+    1216,
+    684
+  ],
+  "drawCalls": 204,
+  "triangles": 1058520,
+  "time": 139.52580000000484,
+  "distance": 412.9484706220597,
+  "length": 499.7268851894936,
+  "speed": 1.0063156915659444,
+  "speedFactor": 0.65,
+  "loop": 0,
+  "quality": "high",
+  "loadedChunks": [
+    10,
+    11,
+    9,
+    8
+  ],
+  "pendingChunks": [],
+  "chunkLoads": 6,
+  "chunkDisposals": 2,
+  "geometryCount": 240,
+  "textureCount": 32,
+  "sizedRenderTargets": 6,
+  "auxiliaryOnePixelTargets": 5,
+  "adaptive": {
+    "pixelScale": 0.76,
+    "changes": [
+      "pixel ratio",
+      "pixel ratio",
+      "pixel ratio",
+      "pixel ratio",
+      "reflection resolution",
+      "shadow resolution",
+      "far detail"
+    ]
+  },
+  "reflectionResolution": 512,
+  "simulationResolution": 512,
+  "emissions": 877,
+  "camera": [
+    41.99701620174162,
+    1.5306774681189237,
+    -365.5715817044407
+  ],
+  "look": [
+    0,
+    0.06
+  ],
+  "pointer": "none",
+  "environment": {
+    "mode": "rain",
+    "rainIntensity": 0.3599858249367679,
+    "rainImpacts": 6395,
+    "elevation": 23.999271559250573,
+    "azimuth": 160.00090562903995
+  },
+  "errors": [],
+  "audio": {
+    "enabled": true,
+    "ready": true,
+    "state": "running",
+    "activeSources": 7,
+    "loadedBuffers": 3,
+    "bridgeEnclosure": 0,
+    "waterSource": "canal-soft / distant Venice waterclaps",
+    "waterGain": 0.15509252702680817,
+    "rainGain": 0.06479744848861822,
+    "cityGain": 0.07268083544359039,
+    "rms": 0.005140496081353406,
+    "error": null
+  }
+}

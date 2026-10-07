@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PerspectiveCamera, Raycaster, Vector3 } from "three";
+import { Mesh, PerspectiveCamera, Raycaster, Vector3 } from "three";
 import { RouteController, ROUTE } from "../src/journey/RouteController";
 import { LookState } from "../src/interaction/PointerLook";
 import { JourneyScenery } from "../src/city/JourneyScenery";
@@ -45,6 +45,44 @@ describe("continuous passenger journey", () => {
     console.info(
       `Journey ${route.length.toFixed(3)} m / ${seconds.toFixed(2)} s`,
     );
+  });
+  it("speed controls stop smoothly, hold position, and resume on the same path", () => {
+    const r = new RouteController();
+    r.seek(40);
+    const origin = r.position.clone();
+    r.setSpeedFactor(0);
+    let previous = r.speed;
+    for (let i = 0; i < 600; i++) {
+      r.update(1 / 60);
+      expect(r.speed).toBeLessThanOrEqual(previous);
+      expect(Math.abs(r.speed - previous)).toBeLessThan(0.04);
+      previous = r.speed;
+    }
+    expect(r.speed).toBe(0);
+    const stopped = r.distance;
+    for (let i = 0; i < 120; i++) r.update(1 / 60);
+    expect(r.distance).toBe(stopped);
+    expect(r.position.distanceTo(origin)).toBeLessThan(1.2);
+    r.setSpeedFactor(1.25);
+    for (let i = 0; i < 600; i++) r.update(1 / 60);
+    expect(r.speed).toBeGreaterThan(1.7);
+    expect(r.speed).toBeLessThanOrEqual(1.55 * 1.25);
+    expect(r.distance).toBeGreaterThan(stopped + 10);
+    expect(r.position.distanceTo(r.pointAtDistance(r.distance))).toBe(0);
+    r.setSpeedFactor(NaN);
+    expect(r.speedFactor).toBe(1.25);
+  });
+  it("rejects singular reflection clipping without corrupting projection", () => {
+    const c = new PerspectiveCamera(69, 1.6, 0.07, 450);
+    const before = c.projectionMatrix.elements.slice();
+    expect(
+      applyObliqueNearPlane(c.projectionMatrix.elements, [0, 0, 0, 0]),
+    ).toBe(false);
+    expect(c.projectionMatrix.elements).toEqual(before);
+    expect(
+      applyObliqueNearPlane(c.projectionMatrix.elements, [NaN, 0, 1, 2]),
+    ).toBe(false);
+    expect(c.projectionMatrix.elements).toEqual(before);
   });
   it("turns and bridge approaches have continuous bounded acceleration", () => {
     const r = new RouteController();
@@ -99,6 +137,11 @@ describe("continuous passenger journey", () => {
     for (let chunk = 0; chunk < 12; chunk++) {
       const root = buildChunk(chunk, route, kit);
       root.updateMatrixWorld(true);
+      // Static fixtures can reject whole facade batches before ray/triangle
+      // tests. This keeps the same exhaustive rays/assertions under host load.
+      root.traverse((o) => {
+        if (o instanceof Mesh) o.geometry.computeBoundingBox();
+      });
       for (
         let s = chunk * 42;
         s < Math.min(route.length, (chunk + 1) * 42);

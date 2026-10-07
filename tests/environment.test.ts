@@ -1,6 +1,27 @@
 import { describe, it, expect } from "vitest";
 import { environmentAt } from "../src/environment/EnvironmentController";
-describe("cinematic environment progression", () => {
+import {
+  journeyPreset,
+  JOURNEY_WEATHER,
+} from "../src/environment/JourneyEnvironment";
+import { PRESETS } from "../src/environment/lab/presets";
+describe("desktop weather controls", () => {
+  it("keeps the daylight baseline and ends at sunset, never night", () => {
+    expect(journeyPreset(0)).toEqual(PRESETS.day);
+    expect(journeyPreset(0.43)).toEqual(PRESETS.day);
+    expect(journeyPreset(1).elevation).toBe(PRESETS.sunset.elevation);
+    expect(JOURNEY_WEATHER).toEqual(["journey", "day", "sunset", "rain"]);
+    let previous = journeyPreset(0);
+    for (let i = 1; i <= 1000; i++) {
+      const next = journeyPreset(i / 1000);
+      expect(Math.abs(next.elevation - previous.elevation)).toBeLessThan(0.14);
+      expect(next.elevation).toBeGreaterThanOrEqual(5.5);
+      expect(next.precipitation).toBe(0);
+      previous = next;
+    }
+  });
+});
+describe("legacy cinematic environment progression", () => {
   it("preserves the daylight baseline through the first 43% of the trip", () => {
     expect(environmentAt(0.4)).toEqual(environmentAt(0));
     expect(environmentAt(0).elevation).toBe(58);

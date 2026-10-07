@@ -28,9 +28,12 @@ The release output is **`dist/`**. Preview it at `http://127.0.0.1:4188/`. Serve
 ## Experience and controls
 
 - Start Journey begins the automatic ride and permits ambient audio.
-- Hold and drag the mouse, or swipe with one finger, to look freely. There is no steering or throttle; releasing the pointer does not recenter the view.
-- Sound, Quality and Fullscreen are the only permanent controls. Sound preference is stored locally when browser storage is available.
-- Quality changes preserve journey position and viewing direction across the brief renderer reload.
+- Hold and drag the mouse, or swipe with one finger, to look freely. The boat follows its route automatically; releasing the pointer does not recenter the view.
+- Weather: Auto light (journey progression), Day, Sunset or Light rain. Changes blend gradually, without resetting the route or water field. There is no Night option.
+- Boat speed: Stopped, Slow (~1 m/s), Normal (~1.55 m/s) or Brisk (~1.94 m/s), with smooth acceleration and automatic bridge/turn slowdown. This changes pace, not direction.
+- Desktop shortcuts: **W** cycles weather, **V** cycles pace, **Space** stops/resumes. Shortcuts do not intercept focused form controls.
+- Sound, Quality and Fullscreen remain available. Sound preference is stored locally when browser storage is available. Water audio uses a softer, distant CC0 Venice field recording; light rain follows the weather and the same mute control.
+- Quality changes preserve weather, pace, journey position and viewing direction across the brief renderer reload.
 - The route is **499.73 m**, approximately **5 minutes 34 seconds**, with five sections and three different stone/brick bridge passages. A seven-second gradual fade overlaps continued boat motion and returns to the beginning. This is an open route with a covered reset, not a geometrically seamless closed loop.
 
 The composition is inspired by Venice; it is an authored district, not a surveyed replica of a particular real canal.
@@ -43,7 +46,7 @@ The curved canal mesh, dark bed and reduced long waves adapt that ocean renderer
 
 Ten hull-volume samples (six on Low), plus weak bow and stern impulses, drive the credited height/velocity solver in a 24 m moving, world-anchored domain. The resulting normal changes affect reflection, refraction and sun highlights. Stopping emissions lets the wake decay; there is no foam overlay or painted V-shaped texture.
 
-A unified `EnvironmentController` drives the sun, analytic sky, cloud tint, fog, environment lighting, exposure, water environment and warm city lights. The water body remains blue-green at sunset. Linear HDR is tone-mapped with the source ACES implementation and encoded to sRGB once.
+A unified `JourneyEnvironment` reuses the tested lab atmosphere controller for the sun, source sky/clouds, fog, environment lighting, exposure, water environment and warm city lights. Auto light blends Day into Sunset along the journey; manual weather overrides remain until changed. The water body remains blue-green at sunset. Linear HDR is tone-mapped with the source ACES implementation and encoded to sRGB once.
 
 ## Performance strategy
 
@@ -58,7 +61,7 @@ Measured results and their hardware/emulation limits are in `docs/FINAL_REPORT.m
 
 ## Development and evidence
 
-`?debug=1` enables route inspection, live metrics, screenshots, touch-event verification, wake verification and two-journey recording. Normal URLs contain no debug HUD. `?quality=low` selects a specific quality tier.
+`?debug=1` enables route inspection, live metrics, screenshots, a 288-pose white-screen regression, touch-event verification, wake verification and two-journey recording. Normal URLs contain no debug HUD. `?quality=low` selects a specific quality tier.
 
 On local preview, add `&qa=1` to let debug evidence save into the ignored `qa/` directory. The local-only middleware accepts PNG, JSON and WebM files from localhost. It is not included in `dist` and uploads nothing externally. Canvas recording uses only the app's own rendered frames and audio, never a microphone or screen-sharing permission.
 
@@ -74,7 +77,7 @@ See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for WaterThreeJS, the hei
 
 Open `/environment-lab/` for **Day / Sunset / Rain** manual presets. Night and Night Rain were removed; twilight remains a bright colour reference, not a night mode. Sun, source cloud genera, exposure, environmental fill and warm lamps can be adjusted together. Poly Haven's three CC0 HDRIs are available inside the same ACES pipeline for qualitative colour comparison.
 
-The lab uses the actual `@takustaqu/atmosphere` shader, not a re-created look. Its sky is art-directed, rather than a physical atmosphere solver. The formal journey retains its established environment sequence; the new manual atmosphere and rain remain isolated in this lab. `procedural-clouds-threejs` is not stacked on top of the current clouds.
+The lab uses the actual `@takustaqu/atmosphere` shader, not a re-created look. Its sky is art-directed, rather than a physical atmosphere solver. The formal desktop journey now shares these tested presets, while retaining continuous automatic daylight-to-sunset progression as its default. `procedural-clouds-threejs` is not stacked on top of the current clouds.
 
 Dynamic Water V3 is enabled in the journey; `?water=v2` preserves the previous interaction implementation for rollback and comparison. Both paths share the same WaterThreeJS optical tuning. V3's debug views and GPU tests live only in the lab. Use `?quality=low&halfFloat` to inspect the half-float compatibility path. Rain impacts and hull displacement enter the same propagating GPU field, then modify the existing water normals and optics.
 

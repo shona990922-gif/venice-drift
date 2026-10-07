@@ -1,4 +1,5 @@
 import "./style.css";
+import { auditLook } from "./diagnostics/LookAudit";
 import { disposeSceneAssets } from "./core/dispose";
 import { JourneyAudit } from "./diagnostics/JourneyAudit";
 import { AdaptiveQuality } from "./core/AdaptiveQuality";
@@ -25,7 +26,12 @@ import { PlanarReflection } from "./water/PlanarReflection";
 import { WaterThreeCanal } from "./water/v2/WaterThreeCanal";
 import { WaterRenderer } from "./water/v2/WaterRenderer";
 import { WATER_QUALITY, type WaterQuality } from "./water/v2/Presets";
-import { EnvironmentController } from "./environment/EnvironmentController";
+import {
+  JourneyEnvironment,
+  JOURNEY_WEATHER,
+} from "./environment/JourneyEnvironment";
+import { DynamicRippleSystem } from "./water/DynamicRippleSystem";
+import { RainWaterInteraction } from "./water/RainWaterInteraction";
 import { GpuTimer } from "./diagnostics/GpuTimer";
 const $ = (id: string) => document.getElementById(id)!;
 const query = new URLSearchParams(location.search);
@@ -99,9 +105,61 @@ async function boot() {
     query.get("water") !== "v2",
   );
   scene.add(water.mesh, water.bed);
-  const environment = new EnvironmentController(scene, renderer, water),
+  const environment = new JourneyEnvironment(
+      scene,
+      renderer,
+      water,
+      128, // Cloud cubemap is filtered for lighting; reserve GPU detail for water.
+    ),
     pipeline = new WaterRenderer(renderer, scene, water, planar, quality),
     gpu = new GpuTimer(renderer.getContext() as WebGL2RenderingContext);
+  const rain =
+    water.simulation instanceof DynamicRippleSystem
+      ? new RainWaterInteraction(water.simulation, quality)
+      : null;
+  if (rain) scene.add(rain.mesh);
+  const weatherControl = $("weather") as HTMLSelectElement;
+  const speedControl = $("speed") as HTMLSelectElement;
+  let resumePace = 1;
+  const changeWeather = () => environment.select(weatherControl.value);
+  const changeSpeed = () => {
+    route.setSpeedFactor(Number(speedControl.value));
+    if (route.speedFactor > 0) resumePace = route.speedFactor;
+  };
+  weatherControl.onchange = changeWeather;
+  speedControl.onchange = changeSpeed;
+  const shortcut = (event: KeyboardEvent) => {
+    if (
+      event.repeat ||
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      (event.target instanceof HTMLElement &&
+        (event.target.isContentEditable ||
+          /^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(event.target.tagName)))
+    )
+      return;
+    const key = event.key.toLowerCase();
+    if (key === "w") {
+      weatherControl.value =
+        JOURNEY_WEATHER[
+          (JOURNEY_WEATHER.indexOf(environment.mode) + 1) %
+            JOURNEY_WEATHER.length
+        ];
+      changeWeather();
+    } else if (key === "v") {
+      const speeds = [0, 0.65, 1, 1.25];
+      speedControl.value = String(
+        speeds[(speeds.indexOf(route.speedFactor) + 1) % speeds.length],
+      );
+      changeSpeed();
+    } else if (event.code === "Space" && started) {
+      event.preventDefault();
+      speedControl.value = String(route.speedFactor === 0 ? resumePace : 0);
+      changeSpeed();
+    }
+  };
+  window.addEventListener("keydown", shortcut);
   const materials = await loadMaterials(
       quality === "low",
       debug && query.has("missingTexture"),
@@ -130,8 +188,10 @@ async function boot() {
     fadeReset = false,
     loop = 0,
     shot = false,
-    disposed = false;
+    disposed = false,
+    lookAuditBusy = false;
   const resize = () => {
+    if (innerWidth < 2 || innerHeight < 2) return;
     renderer.setPixelRatio(
       Math.min(devicePixelRatio, profile.pixelRatio) * adaptive.pixelScale,
     );
@@ -244,6 +304,9 @@ async function boot() {
         JSON.stringify({
           started,
           distance: route.distance,
+          weather: environment.mode,
+          speedFactor: route.speedFactor,
+          actualSpeed: route.speed,
           yaw: passenger.input.yaw,
           pitch: passenger.input.pitch,
         }),
@@ -274,6 +337,7 @@ async function boot() {
     distance: route.distance,
     length: route.length,
     speed: route.speed,
+    speedFactor: route.speedFactor,
     loop,
     quality,
     loadedChunks: [...city.loaded.keys()],
@@ -292,6 +356,9 @@ async function boot() {
     look: [passenger.input.yaw, passenger.input.pitch],
     pointer: passenger.input.lastPointerType,
     environment: {
+      mode: environment.mode,
+      rainIntensity: environment.weather.rainIntensity,
+      rainImpacts: rain?.impacts ?? 0,
       elevation: environment.elevation,
       azimuth: environment.azimuth,
     },
@@ -331,6 +398,14 @@ async function boot() {
     sessionStorage.removeItem("venice.resume");
     if (saved) {
       const r = JSON.parse(saved);
+      environment.select(r.weather);
+      weatherControl.value = environment.mode;
+      if ([0, 0.65, 1, 1.25].includes(r.speedFactor)) {
+        speedControl.value = String(r.speedFactor);
+        changeSpeed();
+        if (Number.isFinite(r.actualSpeed))
+          route.speed = Math.max(0, Math.min(1.9375, r.actualSpeed));
+      }
       if (r.started) {
         start();
         seek(Math.max(0, Math.min(route.length, Number(r.distance) || 0)));
@@ -344,6 +419,7 @@ async function boot() {
   } catch {
     /* Storage is optional. */
   }
+  environment.initialize(route.distance / route.length);
   const save = (blob: Blob, name: string) => {
     if (
       import.meta.env.DEV ||
@@ -553,6 +629,40 @@ async function boot() {
       recorder.start();
       setTimeout(() => recorder.stop(), 12000);
     };
+  if (debug)
+    $("look-check").onclick = async () => {
+      const button = $("look-check") as HTMLButtonElement;
+      const old = { yaw: passenger.input.yaw, pitch: passenger.input.pitch };
+      button.disabled = true;
+      lookAuditBusy = true;
+      try {
+        const result = await auditLook(
+          renderer,
+          passenger.camera,
+          (yaw, pitch) => {
+            passenger.input.yaw = passenger.input.targetYaw = yaw;
+            passenger.input.pitch = passenger.input.targetPitch = pitch;
+            passenger.update(0, route.yaw);
+            scene.updateMatrixWorld(true);
+            planar.invalidate();
+            pipeline.render(passenger.camera, time);
+          },
+        );
+        const report = { ...result, ...snapshot() };
+        $("measurement").textContent = JSON.stringify(report, null, 2);
+        save(
+          new Blob([JSON.stringify(report)], { type: "application/json" }),
+          "look-audit-" + Date.now() + ".json",
+        );
+      } finally {
+        passenger.input.yaw = passenger.input.targetYaw = old.yaw;
+        passenger.input.pitch = passenger.input.targetPitch = old.pitch;
+        lookAuditBusy = false;
+        frames = elapsed = cs = ts = 0;
+        last = performance.now();
+        button.disabled = false;
+      }
+    };
   const audit = new JourneyAudit(
     snapshot,
     save,
@@ -582,7 +692,7 @@ async function boot() {
     requestAnimationFrame(frame);
     const raw = (now - last) / 1000;
     last = now;
-    if (document.hidden || contextLost) return;
+    if (document.hidden || contextLost || lookAuditBusy) return;
     const dt = Math.min(0.05, Math.max(0, raw));
     time += dt;
     // Keep moving through the fade, including the hidden reset. The end must
@@ -625,10 +735,11 @@ async function boot() {
     passenger.camera.getWorldPosition(eye);
     renderer.info.reset();
     gpu.begin("journey");
-    environment.update(
+    environment.advance(
+      dt,
+      time,
       route.position,
       eye,
-      time,
       route.distance / route.length,
     );
     audio.update(
@@ -637,10 +748,17 @@ async function boot() {
       started && !paused ? route.speed : 0,
       passenger.input.yaw,
       pipeline.fadeAmount,
+      environment.weather.rainIntensity,
     );
     city.update(route.distance, quality === "low" || adaptive.reducedDetails);
     scenery.update(route.distance, environment.state.lights);
     scene.updateMatrixWorld(true);
+    rain?.update(
+      dt,
+      environment.weather.rainIntensity,
+      environment.current.wind,
+      eye,
+    );
     water.update(
       dt,
       time,
@@ -702,6 +820,8 @@ async function boot() {
     "pagehide",
     () => {
       disposed = true;
+      window.removeEventListener("keydown", shortcut);
+      rain?.dispose();
       audio.dispose();
       disposeSceneAssets(scene);
       passenger.input.dispose();

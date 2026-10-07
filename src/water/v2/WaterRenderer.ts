@@ -53,6 +53,16 @@ export class WaterRenderer {
         "gl_FragColor = vec4(toSRGB(clamp(c, 0.0, 1.0)), 1.0);",
         "gl_FragColor=vec4(mix(toSRGB(clamp(c,0.,1.)),vec3(.082353,.156863,.192157),uJourneyFade),1.);",
       );
+    this.post.compositeMat.fragmentShader =
+      this.post.compositeMat.fragmentShader
+        .replace(
+          "c += texture2D(tBloom, vUv).rgb * uBloom;",
+          "if(uBloom>0.) c += texture2D(tBloom,vUv).rgb*uBloom;",
+        )
+        .replace(
+          "c *= uExposure;",
+          "c=vec3(c.r>=0.?min(c.r,64.):0.,c.g>=0.?min(c.g,64.):0.,c.b>=0.?min(c.b,64.):0.);c *= uExposure;",
+        );
     water.uniforms.uRefractionTex.value = this.capture.texture;
     water.uniforms.uDepthTex.value = this.capture.depthTexture;
   }
@@ -73,13 +83,17 @@ export class WaterRenderer {
     this.water.mesh.visible = false;
     const mask = camera.layers.mask,
       shadow = r.shadowMap.autoUpdate;
-    camera.layers.set(2);
-    r.shadowMap.autoUpdate = false;
-    r.setRenderTarget(this.capture);
-    r.render(this.scene, camera);
-    r.shadowMap.autoUpdate = shadow;
-    camera.layers.mask = mask;
-    this.water.mesh.visible = true;
+    try {
+      camera.layers.set(2);
+      r.shadowMap.autoUpdate = false;
+      r.setRenderTarget(this.capture);
+      r.render(this.scene, camera);
+    } finally {
+      r.shadowMap.autoUpdate = shadow;
+      camera.layers.mask = mask;
+      this.water.mesh.visible = true;
+      r.setRenderTarget(null);
+    }
     r.setRenderTarget(this.hdr);
     r.render(this.scene, camera);
     const p = this.post.compositeMat.uniforms;
