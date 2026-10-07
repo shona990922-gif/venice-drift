@@ -35,7 +35,7 @@ The live site is hosted on Cloudflare Pages. `npm run deploy` builds and publish
 
 - Start Journey begins the automatic ride and permits ambient audio.
 - Hold and drag the mouse, or swipe with one finger, to look freely. The boat follows its route automatically; releasing the pointer does not recenter the view.
-- Weather: Auto light (journey progression), Day, Sunset or Light rain. Changes blend gradually, without resetting the route or water field. There is no Night option.
+- Weather: Auto light (journey progression), Sunny, Sunset or Light rain. Changes blend gradually, without resetting the route or water field. There is no Night option.
 - Boat speed: Stopped, Slow (~1 m/s), Normal (~1.55 m/s) or Brisk (~1.94 m/s), with smooth acceleration and automatic bridge/turn slowdown. This changes pace, not direction.
 - Desktop shortcuts: **W** cycles weather, **V** cycles pace, **Space** stops/resumes. Shortcuts do not intercept focused form controls.
 - Sound, Quality and Fullscreen remain available. Sound preference is stored locally when browser storage is available. Water audio uses a softer, distant CC0 Venice field recording; light rain follows the weather and the same mute control.
@@ -52,7 +52,7 @@ The curved canal mesh, dark bed and reduced long waves adapt that ocean renderer
 
 Ten hull-volume samples (six on Low), plus weak bow and stern impulses, drive the credited height/velocity solver in a 24 m moving, world-anchored domain. The resulting normal changes affect reflection, refraction and sun highlights. Stopping emissions lets the wake decay; there is no foam overlay or painted V-shaped texture.
 
-A unified `JourneyEnvironment` reuses the tested lab atmosphere controller for the sun, source sky/clouds, fog, environment lighting, exposure, water environment and warm city lights. Auto light blends Day into Sunset along the journey; manual weather overrides remain until changed. The water body remains blue-green at sunset. Linear HDR is tone-mapped with the source ACES implementation and encoded to sRGB once.
+A unified `JourneyEnvironment` reuses the tested lab atmosphere controller for the sun, source sky/clouds, fog, environment lighting, exposure, water environment and warm city lights. Auto light blends Day into Sunset along the journey; manual weather overrides remain until changed. Sunny adds clear daylight and fine water glints; sunset has peach cloudlets and a golden horizon. Light rain smoothly hides the solar disc and direct water highlights together. The water body remains blue-green at sunset. Linear HDR is tone-mapped with the source ACES implementation and encoded to sRGB once.
 
 ## Performance strategy
 
@@ -82,7 +82,7 @@ See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for WaterThreeJS, the hei
 
 ## Atmosphere and dynamic-water lab
 
-Open `/environment-lab/` for **Day / Sunset / Rain** manual presets. Night and Night Rain were removed; twilight remains a bright colour reference, not a night mode. Sun, source cloud genera, exposure, environmental fill and warm lamps can be adjusted together. Poly Haven's three CC0 HDRIs are available inside the same ACES pipeline for qualitative colour comparison.
+Open `/environment-lab/` for **Sunny / Sunset / Light rain** manual presets. Night and Night Rain were removed; twilight remains a bright colour reference, not a night mode. Sun, source cloud genera, exposure, environmental fill and warm lamps can be adjusted together. Poly Haven's three CC0 HDRIs are available inside the same ACES pipeline for qualitative colour comparison.
 
 The lab uses the actual `@takustaqu/atmosphere` shader, not a re-created look. Its sky is art-directed, rather than a physical atmosphere solver. The formal desktop journey now shares these tested presets, while retaining continuous automatic daylight-to-sunset progression as its default. `procedural-clouds-threejs` is not stacked on top of the current clouds.
 

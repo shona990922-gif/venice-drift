@@ -55,5 +55,4 @@ not a controlled benchmark.
 
 Actual canvas captures and machine-readable snapshots are in
 `showcase/sunset-refinement/`. The short sunny-glitter capture is in local `qa/`.
-This pass is available at the local preview; it does not overwrite the published
-release.
+For publishing and rollback instructions, see `docs/DEPLOYMENT.md`.
