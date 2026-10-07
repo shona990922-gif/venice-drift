@@ -20,15 +20,21 @@ import { EnvironmentController } from "../EnvironmentController";
 import { type VenetianKit } from "../../city/VenetianKit";
 import { type WaterThreeCanal } from "../../water/v2/WaterThreeCanal";
 import { AtmosphereSky, SKY_SAMPLE_GLSL } from "./AtmosphereSky";
-import { atmosphereState, PRESETS, type EnvironmentPreset } from "./presets";
+import {
+  atmosphereState,
+  CALM_SKY_ANIMATOR,
+  PRESETS,
+  type EnvironmentPreset,
+} from "./presets";
 export class ManualEnvironment {
   readonly weather = new WeatherController();
   readonly sky: AtmosphereSky;
   readonly base: EnvironmentController;
   readonly moon = new DirectionalLight("#b4c2e8", 0);
-  readonly animator = new StateAnimator(atmosphereState(PRESETS.day), {
-    tau: 3.2,
-  });
+  readonly animator = new StateAnimator(
+    atmosphereState(PRESETS.day),
+    CALM_SKY_ANIMATOR,
+  );
   readonly pmrem: PMREMGenerator;
   target = { ...PRESETS.day };
   current = { ...PRESETS.day };
@@ -167,6 +173,14 @@ export class ManualEnvironment {
       m.material.roughness = Math.max(0.36, m.roughness - p.wetness * 0.2);
     }
     this.sky.display.position.copy(eye);
+    // Spend the saved motion budget on cleaner cloud silhouettes. Slow skies
+    // need fewer expensive bakes, while display/sun alignment remain per-frame.
+    const transitioning =
+      Math.abs(this.target.elevation - MathUtils.radToDeg(s.sunElevation)) >
+        0.2 ||
+      Math.abs(this.target.cover - s.cloudCover) > 0.01 ||
+      Math.abs(this.target.skyExposure - p.skyExposure) > 0.01;
+    this.sky.timeline.minimumDuration = transitioning ? 0.4 : 0.9;
     const baked = this.sky.update(
       s,
       time,

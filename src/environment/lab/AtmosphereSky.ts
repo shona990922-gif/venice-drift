@@ -26,8 +26,8 @@ import { SkyFrameBlend } from "./SkyFrameBlend";
 import { type AtmosphereState } from "@takustaqu/atmosphere";
 import fragment from "../vendor/atmosphere/fragment.glsl?raw";
 import { noiseLattice, NOISE_SIZE } from "../vendor/atmosphere/noise";
-/** Adapter around the actual upstream FRAG. Changes are only ray input and
- * scene-linear output. No new cloud/sky model; no second tone map. */
+/** Adapter around the actual upstream FRAG: world rays, scene-linear output
+ * and a tighter photographic solar glare. The cloud/sky model is upstream. */
 export function atmosphereFragment() {
   const ray =
     "vec3 rd = viewRay(p * 2.0 - 1.0, u_cam.x, u_cam.y, u_cam.z, aspect);";
@@ -40,6 +40,9 @@ export function atmosphereFragment() {
       .slice(0, tail)
       .replace(/\bpatch\b/g, "cloudPatch")
       .replace(/\bactive\b/g, "dropActive")
+      // The demo's wide solar core reads as a large white blob at passenger FOV.
+      // Halve its angular extent; retain the original scattering halo/lighting.
+      .replace("sunAng * sunAng * 900.0", "sunAng * sunAng * 3600.0")
       .replace(ray, "vec3 rd = normalize(vSkyDirection);") +
     "\n gl_FragColor=vec4(max(sky,vec3(0.))*exp2(uSkyExposure),1.);\n}\n"
   );

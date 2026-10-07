@@ -1,5 +1,21 @@
-import { resolveConditions, type AtmosphereState } from "@takustaqu/atmosphere";
+import {
+  resolveConditions,
+  type AtmosphereState,
+  type AnimatorOptions,
+} from "@takustaqu/atmosphere";
 import { MathUtils, Vector3 } from "three";
+// Use the upstream animator's independent integrated rates, preserving its
+// phase/seed and weather response. Clouds drift slowly and keep their shape;
+// cinematic sun movement must not accelerate cloud motion into a time lapse.
+export const CALM_SKY_ANIMATOR: AnimatorOptions = {
+  tau: 3.2,
+  windBase: 0.0006,
+  windGust: 0.022,
+  evoBase: 0.00175,
+  evoGust: 0.00225,
+  windPerHour: 0,
+  evoPerHour: 0,
+};
 export type PresetId = "day" | "sunset" | "rain";
 export interface EnvironmentPreset {
   id: PresetId;
@@ -32,10 +48,10 @@ export const PRESETS: Record<PresetId, EnvironmentPreset> = {
     precipitation: 0,
     wind: 2,
     visibility: 40,
-    cirrus: 0.22,
-    cumulus: 0.24,
+    cirrus: 0.12,
+    cumulus: 0.28,
     stratus: 0,
-    altocumulus: 0.04,
+    altocumulus: 0,
     exposure: 1.05,
     skyExposure: 0,
     lightIntensity: 4.6,
@@ -54,9 +70,9 @@ export const PRESETS: Record<PresetId, EnvironmentPreset> = {
     wind: 1.7,
     visibility: 34,
     cirrus: 0.2,
-    cumulus: 0.08,
+    cumulus: 0.12,
     stratus: 0,
-    altocumulus: 0.24,
+    altocumulus: 0.06,
     exposure: 1.15,
     skyExposure: 0.35,
     lightIntensity: 3.9,

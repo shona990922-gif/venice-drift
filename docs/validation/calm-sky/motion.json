@@ -1,0 +1,36 @@
+{
+  "test": "Actual linear HDR sky pixels; fixed camera; 60 Hz simulation, QA readback excluded from performance measurements",
+  "phases": [
+    {
+      "mode": "day",
+      "frames": 120,
+      "changedFrames": 120,
+      "maxHeldFrames": 0,
+      "maxSkyFacesPerFrame": 1,
+      "meanDifference": 0.000003883249839283828,
+      "maxDifference": 0.000010517830762384821,
+      "pass": true
+    },
+    {
+      "mode": "sunset",
+      "frames": 120,
+      "changedFrames": 120,
+      "maxHeldFrames": 0,
+      "maxSkyFacesPerFrame": 1,
+      "meanDifference": 0.001111170999515539,
+      "maxDifference": 0.0015691075002703453,
+      "pass": true
+    },
+    {
+      "mode": "rain",
+      "frames": 120,
+      "changedFrames": 120,
+      "maxHeldFrames": 0,
+      "maxSkyFacesPerFrame": 1,
+      "meanDifference": 0.00047793345134373836,
+      "maxDifference": 0.0006233105292873612,
+      "pass": true
+    }
+  ],
+  "pass": true
+}

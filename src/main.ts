@@ -110,7 +110,7 @@ async function boot() {
       scene,
       renderer,
       water,
-      128, // Cloud cubemap is filtered for lighting; reserve GPU detail for water.
+      quality === "low" ? 128 : 256, // Slower cloud bakes leave room for finer edges.
     ),
     pipeline = new WaterRenderer(renderer, scene, water, planar, quality),
     gpu = new GpuTimer(renderer.getContext() as WebGL2RenderingContext);
