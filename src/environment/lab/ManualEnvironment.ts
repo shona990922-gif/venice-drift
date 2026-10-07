@@ -6,7 +6,6 @@ import {
 } from "@takustaqu/atmosphere";
 import {
   Color,
-  DirectionalLight,
   Fog,
   MathUtils,
   MeshStandardMaterial,
@@ -30,7 +29,6 @@ export class ManualEnvironment {
   readonly weather = new WeatherController();
   readonly sky: AtmosphereSky;
   readonly base: EnvironmentController;
-  readonly moon = new DirectionalLight("#b4c2e8", 0);
   readonly animator = new StateAnimator(
     atmosphereState(PRESETS.day),
     CALM_SKY_ANIMATOR,
@@ -57,9 +55,7 @@ export class ManualEnvironment {
     this.base = new EnvironmentController(scene, renderer, water);
     this.base.sky.mesh.visible = false;
     this.sky = new AtmosphereSky(renderer, size);
-    scene.add(this.sky.display, this.moon, this.moon.target);
-    this.moon.layers.enable(1);
-    this.moon.layers.enable(2);
+    scene.add(this.sky.display);
     this.pmrem = new PMREMGenerator(renderer);
     // The existing optical model stays intact. Replace only its environment
     // lookup and make already-present lighting terms follow this shared sky.
@@ -142,12 +138,6 @@ export class ManualEnvironment {
     sun.target.updateMatrixWorld();
     sun.color.setRGB(...light.sun.color);
     sun.intensity = p.lightIntensity * light.sun.intensity;
-    this.moon.position
-      .copy(position)
-      .addScaledVector(new Vector3(...light.moon.direction), 95);
-    this.moon.target.position.copy(position);
-    this.moon.target.updateMatrixWorld();
-    this.moon.intensity = p.lightIntensity * light.moon.intensity * 0.7;
     this.water.ocean.setSun(new Vector3(...light.sun.direction));
     this.water.uniforms.uLabBodyLight.value =
       Math.max(0.065, MathUtils.smoothstep(light.sun.elevation, -0.2, 0.35)) *

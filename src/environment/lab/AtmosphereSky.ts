@@ -32,6 +32,10 @@ export function atmosphereFragment() {
   const ray =
     "vec3 rd = viewRay(p * 2.0 - 1.0, u_cam.x, u_cam.y, u_cam.z, aspect);";
   if (!fragment.includes(ray)) throw Error("Atmosphere source seam changed");
+  const moonVisibility =
+    "float moonVis = nightF * clamp(1.0 - u_cover * 0.9 - gloom, 0.0, 1.0);";
+  if (!fragment.includes(moonVisibility))
+    throw Error("Atmosphere moon seam changed");
   const tail = fragment.indexOf("  // ── Linear light → display ──");
   if (tail < 0) throw Error("Atmosphere output seam changed");
   return (
@@ -40,6 +44,9 @@ export function atmosphereFragment() {
       .slice(0, tail)
       .replace(/\bpatch\b/g, "cloudPatch")
       .replace(/\bactive\b/g, "dropActive")
+      // Venice ends at sunset. Omit the stylised lunar disc, its dark occlusion
+      // and halo from the shared sky so reflections cannot retain a moon either.
+      .replace(moonVisibility, "float moonVis = 0.0;")
       // The demo's wide solar core reads as a large white blob at passenger FOV.
       // Halve its angular extent; retain the original scattering halo/lighting.
       .replace("sunAng * sunAng * 900.0", "sunAng * sunAng * 3600.0")
