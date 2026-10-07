@@ -6,6 +6,7 @@ import {
   DataUtils,
   FloatType,
   HalfFloatType,
+  LinearFilter,
   Mesh,
   NearestFilter,
   OrthographicCamera,
@@ -83,10 +84,18 @@ export class DynamicRippleSystem {
       halfFloat ? HalfFloatType : undefined,
       12,
     );
+    // Keep the solver's nearest samples exact. Only the normal/height output
+    // consumed by the visible water is interpolated, avoiding stair-stepped
+    // highlights as a narrow hull wave crosses simulation texels.
+    const outputFilter =
+      this.b.textureA.texture.type === HalfFloatType ||
+      renderer.extensions.has("OES_texture_float_linear")
+        ? LinearFilter
+        : NearestFilter;
     this.output = new WebGLRenderTarget(resolution, resolution, {
       type: this.b.textureA.texture.type,
-      minFilter: NearestFilter,
-      magFilter: NearestFilter,
+      minFilter: outputFilter,
+      magFilter: outputFilter,
       depthBuffer: false,
     });
     this.maskTarget = new WebGLRenderTarget(256, 256, {

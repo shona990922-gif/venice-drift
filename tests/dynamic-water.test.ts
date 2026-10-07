@@ -5,6 +5,7 @@ import { RainImpactQueue } from "../src/water/WaterImpact";
 import { BoatWaterInteraction } from "../src/water/BoatWaterInteraction";
 import { RouteController, ROUTE } from "../src/journey/RouteController";
 import { CANAL_DEFAULTS } from "../src/water/v2/Presets";
+import type { WaterImpact } from "../src/water/WaterImpact";
 
 describe("world anchored dynamic interaction", () => {
   it("retains the same world position across integer texel scrolls", () => {
@@ -86,5 +87,82 @@ describe("world anchored dynamic interaction", () => {
       CANAL_DEFAULTS,
     );
     expect(b.centers).toHaveLength(6);
+  });
+  it("places visible contact waves beyond both hull tips, with no net water added", () => {
+    const b = new BoatWaterInteraction();
+    const drops: WaterImpact[] = [];
+    const forward = new Vector3(1, 0, 0);
+    const sim = {
+      createRipple() {},
+      enqueue: (e: WaterImpact) => drops.push(e),
+    };
+    b.update(new Vector3(), forward, 1.55, sim, CANAL_DEFAULTS);
+    b.update(new Vector3(0.25, 0, 0), forward, 1.55, sim, CANAL_DEFAULTS);
+    const bow = drops.find((e) => e.source === "BOAT_BOW")!;
+    const stern = drops.find((e) => e.source === "BOAT_STERN")!;
+    expect(bow.worldPosition.x - 0.24).toBeGreaterThan(5.15);
+    expect(stern.worldPosition.x - 0.24).toBeLessThan(-4.85);
+    expect(
+      drops.reduce((sum, e) => sum + e.strength * e.radius ** 2, 0),
+    ).toBeCloseTo(0, 12);
+    expect(Math.max(...drops.map((e) => Math.abs(e.strength)))).toBeLessThan(
+      0.01,
+    );
+  });
+  it("leaves the same distance-spaced trail at different rendering frame rates", () => {
+    const sample = (hz: number) => {
+      const b = new BoatWaterInteraction();
+      const drops: WaterImpact[] = [];
+      const forward = new Vector3(0, 0, -1);
+      const sim = {
+        createRipple() {},
+        enqueue: (e: WaterImpact) => drops.push(e),
+      };
+      for (let i = 0; i <= hz * 4; i++)
+        b.update(
+          new Vector3(0, 0, (-1.55 * i) / hz),
+          forward,
+          1.55,
+          sim,
+          CANAL_DEFAULTS,
+        );
+      return drops;
+    };
+    const slow = sample(30),
+      fast = sample(120);
+    expect(slow.length).toBeGreaterThan(0);
+    expect(slow).toHaveLength(fast.length);
+    slow.forEach((e, i) => {
+      expect(e.worldPosition.distanceTo(fast[i].worldPosition)).toBeLessThan(
+        1e-9,
+      );
+      expect(e.strength).toBe(fast[i].strength);
+    });
+  });
+  it("lets the side control independently reduce hull drag without removing bow or stern", () => {
+    const b = new BoatWaterInteraction();
+    const gains: number[] = [],
+      drops: WaterImpact[] = [];
+    const sim = {
+      createRipple() {},
+      moveHull: (
+        _old: Vector3[],
+        _next: Vector3[],
+        _r: number[],
+        gain: number,
+      ) => gains.push(gain),
+      enqueue: (e: WaterImpact) => drops.push(e),
+    };
+    const forward = new Vector3(0, 0, -1);
+    b.update(new Vector3(), forward, 1.55, sim, CANAL_DEFAULTS);
+    b.update(new Vector3(0, 0, -0.25), forward, 1.55, sim, CANAL_DEFAULTS);
+    b.update(new Vector3(0, 0, -0.5), forward, 1.55, sim, {
+      ...CANAL_DEFAULTS,
+      side: 0,
+    });
+    expect(gains[0]).toBeGreaterThan(0);
+    expect(gains[1]).toBe(0);
+    expect(drops.filter((e) => e.source === "BOAT_BOW")).toHaveLength(4);
+    expect(drops.filter((e) => e.source === "BOAT_STERN")).toHaveLength(4);
   });
 });

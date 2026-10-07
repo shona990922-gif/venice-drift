@@ -448,6 +448,20 @@ async function boot() {
       setTimeout(() => URL.revokeObjectURL(a.href), 3000);
     }
   };
+  const setWakeView = () => {
+    const view = ($("wake-view") as HTMLSelectElement).value;
+    passenger.input.targetYaw =
+      view === "stern" ? Math.PI - 0.35 : view === "side" ? -1.1 : -0.48;
+    passenger.input.targetPitch = view === "stern" ? -0.22 : -0.42;
+  };
+  if (debug) {
+    $("wake-view").onchange = setWakeView;
+    $("wake-visible").onchange = () => {
+      water.uniforms.uLocalStrength.value = Number(
+        ($("wake-visible") as HTMLInputElement).checked,
+      );
+    };
+  }
   if (debug)
     $("interaction-check").onclick = async () => {
       const button = $("interaction-check") as HTMLButtonElement;
@@ -456,10 +470,16 @@ async function boot() {
       const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
       start();
       seek(ROUTE.heroDistance);
+      speedControl.value = "1";
+      route.setSpeedFactor(1);
       paused = false;
       $("pause").textContent = "暂停";
-      passenger.input.targetYaw = 0;
-      passenger.input.targetPitch = -0.25;
+      setWakeView();
+      const captureId =
+        "wake-" +
+        ($("wake-view") as HTMLSelectElement).value +
+        "-" +
+        Date.now();
       await wait(6500);
       paused = true;
       $("pause").textContent = "继续";
@@ -488,9 +508,13 @@ async function boot() {
         water.uniforms.uLocalStrength.value = 1;
         pipeline.render(passenger.camera, time);
         gl.readPixels(0, 0, size.x, size.y, gl.RGBA, gl.UNSIGNED_BYTE, a);
+        if (view === 0)
+          canvas.toBlob((blob) => blob && save(blob, captureId + "-on.png"));
         water.uniforms.uLocalStrength.value = 0;
         pipeline.render(passenger.camera, time);
         gl.readPixels(0, 0, size.x, size.y, gl.RGBA, gl.UNSIGNED_BYTE, b);
+        if (view === 0)
+          canvas.toBlob((blob) => blob && save(blob, captureId + "-off.png"));
         let changed = 0,
           max = 0;
         for (let i = 0; i < pixels; i += 4) {
@@ -507,6 +531,7 @@ async function boot() {
       const reflection = compare(1),
         composite = compare(0);
       water.uniforms.uLocalStrength.value = 1;
+      ($("wake-visible") as HTMLInputElement).checked = true;
       water.uniforms.uWaterView.value = 0;
       button.textContent = "验证停止后的自然衰减…";
       await wait(10000);
@@ -522,8 +547,9 @@ async function boot() {
         emissionsAtStop: emissions,
         emissionsAfterDecay: water.interaction.count,
         pass:
-          reflection.changedPixels > 20 &&
-          composite.changedPixels > 20 &&
+          reflection.changedPixels > size.x * size.y * 0.01 &&
+          composite.changedPixels > size.x * size.y * 0.01 &&
+          before.peakHeightMetres < 0.06 &&
           ratio < 0.3 &&
           emissions === water.interaction.count,
         snapshot: snapshot(),
